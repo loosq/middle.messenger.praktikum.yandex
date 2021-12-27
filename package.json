@@ -1,0 +1,25 @@
+{
+  "name": "messenger",
+  "author": "Polonskii Sergei",
+  "repository": "https://github.com/loosq/messenger",
+  "scripts": {
+    "start": "node index.js",
+    "start-server-dev": "nodemon index.js",
+    "build": "parcel src/pages/chat/chat.pug",
+    "build-dist": "parcel build src/pages/chat/chat.pug"
+  },
+  "engine": "16.13.1",
+  "devDependencies": {
+    "express": "4.17.2",
+    "parcel": "2.0.1",
+    "@parcel/transformer-pug": "2.2.0",
+    "autoprefixer": "10.4.0",
+    "eslint": "6.8.0",
+    "eslint-plugin-html": "6.2.0",
+    "nodemon": "2.0.15",
+    "postcss": "8.4.5",
+    "postcss-custom-properties": "12.0.1",
+    "postcss-import": "14.0.2",
+    "postcss-url": "10.1.3"
+  }
+}
