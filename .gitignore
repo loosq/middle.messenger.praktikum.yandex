@@ -1,0 +1,11 @@
+#билд проекта
+/dist
+
+#файлы вёрстки
+#/templates
+
+#файлы окружения
+/node_modules
+package-lock.json
+.parcel-cache
+.idea
