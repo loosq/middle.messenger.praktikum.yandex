@@ -1,12 +1,18 @@
 {
   "name": "messenger",
   "source": "src/index.html",
-  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "parcel",
     "build": "parcel build"
   },
   "dependencies": {
-    "parcel": "^2.0.1"
+    "parcel": "2.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.0",
+    "postcss": "8.4.5",
+    "postcss-custom-properties": "12.0.1",
+    "postcss-import": "14.0.2",
+    "postcss-url": "10.1.3"
   }
 }

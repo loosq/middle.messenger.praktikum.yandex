@@ -1,0 +1,8 @@
+@import "normalize.css";
+@import "fonts.css";
+@import "root.css";
+
+body {
+    background: var(--bgColor);
+    font-family: var(--mainFont);
+}
