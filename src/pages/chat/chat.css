@@ -1,0 +1,7 @@
+.chats-wrapper{
+    width: 310px;
+    background: #FBFBFB;
+    border-right: 1px solid #EAEAEA;
+    height: 100%;
+    align-self: flex-start;
+}

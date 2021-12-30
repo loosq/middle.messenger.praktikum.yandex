@@ -1,8 +1,11 @@
 @import "normalize.css";
+@import "reset.css";
 @import "fonts.css";
 @import "root.css";
+@import "base.css";
 
 body {
+    height: 100vh;
     background: var(--bgColor);
     font-family: var(--mainFont);
 }
