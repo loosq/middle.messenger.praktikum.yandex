@@ -1,4 +1,9 @@
-.flex {
+a:hover, button:hover {
+    opacity: .8;
+    cursor: pointer;
+}
+
+.row {
     display: flex;
 }
 
@@ -13,6 +18,10 @@
 
 .content-center {
     justify-content: center;
+}
+
+.content-end {
+    justify-content: end;
 }
 
 .text-center {

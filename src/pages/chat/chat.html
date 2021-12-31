@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="../../styles/styles.css"/>
-	<link rel="stylesheet" href="./chat.css"/>
-	<title>Chat</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../styles/styles.css"/>
+    <link rel="stylesheet" href="./chat.css"/>
+    <title>Chat</title>
 </head>
-<body class="column content-center items-center">
+<body class="row">
 <div class="chats-wrapper relative">
-	<div>
-        <span>
+    <div class="operations-wrapper column">
+        <span class="operations-wrapper__profile row full-width content-end items-center">
             <a>Профиль</a>
             <svg
-	            width="6" height="10" viewBox="0 0 6 10" fill="none"
-	            xmlns="http://www.w3.org/2000/svg"
+                    width="6" height="10" viewBox="0 0 6 10" fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
             >
                 <path d="M1 9L5 5L1 1" stroke="#999999"/>
             </svg>
-    </span>
-		<input type="text" id="search-chat"/>
-	</div>
-	<div class="chat-preview">
-		<img src="" alt="">
-		<div>
-			<span>Андрей</span>
-			<span>Изображение</span>
-		</div>
-		<span>10:49</span>
-		<span>4</span>
-	</div>
+    	</span>
+        <input class="operations-wrapper__search" type="text" placeholder="Поиск"/>
+    </div>
+    <div class="chat-preview">
+        <img src="" alt="">
+        <div>
+            <span>Андрей</span>
+            <span>Изображение</span>
+        </div>
+        <span>10:49</span>
+        <span>4</span>
+    </div>
 </div>
-<div class="current-chat">
-	<span>Выберите чат чтобы отправить сообщение</span>
+<div class="current-chat column content-center">
+    <span class="text-center current-chat__info-message">Выберите чат чтобы отправить сообщение</span>
 </div>
 </body>
 </html>

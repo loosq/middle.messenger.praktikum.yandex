@@ -6,6 +6,6 @@
 
 body {
     height: 100vh;
-    background: var(--bgColor);
+    background: var(--white);
     font-family: var(--mainFont);
 }

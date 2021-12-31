@@ -58,11 +58,9 @@
     margin-bottom: 14px;
     font-size: 13px;
     line-height: 15px;
-    cursor: pointer;
 }
 
 .modal__link {
-    cursor: pointer;
     color: var(--accentColor);
     font-size: 11px;
     line-height: 13px;

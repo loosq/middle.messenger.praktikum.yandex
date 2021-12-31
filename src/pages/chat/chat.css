@@ -1,7 +1,36 @@
-.chats-wrapper{
+.chats-wrapper {
     width: 310px;
     background: #FBFBFB;
     border-right: 1px solid #EAEAEA;
     height: 100%;
     align-self: flex-start;
+}
+
+.operations-wrapper {
+    padding: 20px 10px;
+}
+
+.operations-wrapper__profile {
+    margin-bottom: 22px;
+    color: var(--secondaryColor);
+}
+
+.operations-wrapper__profile svg {
+    margin-left: 5px;
+}
+
+.current-chat {
+    flex-grow: 1;
+}
+
+.current-chat__info-message {
+    color: var(--secondaryColor);
+}
+
+.operations-wrapper__search {
+    background: #EFEFEF;
+    height: 20px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    font-size: 16px;
 }

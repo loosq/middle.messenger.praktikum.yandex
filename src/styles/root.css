@@ -1,6 +1,7 @@
 :root {
     --white: #fff;
     --accentColor: #3369F3;
+    --secondaryColor: #999;
     --errorColor: #FF2F2F;
     --mainFont: Roboto, sans-serif;
 }
