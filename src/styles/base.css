@@ -1,6 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none
+}
+
 a:hover, button:hover {
     opacity: .8;
     cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .row {
@@ -16,12 +30,20 @@ a:hover, button:hover {
     align-items: center;
 }
 
+.items-start {
+    align-items: flex-start;
+}
+
 .content-center {
     justify-content: center;
 }
 
 .content-end {
-    justify-content: end;
+    justify-content: flex-end;
+}
+
+.content-between {
+    justify-content: space-between;
 }
 
 .text-center {
@@ -36,6 +58,39 @@ a:hover, button:hover {
     width: 100%;
 }
 
+.full-height {
+    height: 100%;
+}
+
 .relative {
     position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.absolute-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.absolute-top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.absolute-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.absolute-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
