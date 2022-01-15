@@ -1,21 +1,17 @@
 {
   "name": "messenger",
-  "source": "src/index.html",
   "scripts": {
-    "start": "parcel express/templates/layout.pug",
-    "build": "parcel build",
-    "start-server": "node express/index.js",
+    "start": "node express/index.js",
     "start-server-dev": "nodemon express/index.js"
-
-  },
-  "dependencies": {
-    "parcel": "2.0.1"
   },
   "devDependencies": {
+    "express": "4.17.2",
+    "parcel": "2.0.1",
     "@parcel/transformer-pug": "2.0.1",
     "autoprefixer": "10.4.0",
     "eslint": "6.8.0",
     "eslint-plugin-html": "6.2.0",
+    "nodemon": "2.0.15",
     "postcss": "8.4.5",
     "postcss-custom-properties": "12.0.1",
     "postcss-import": "14.0.2",
