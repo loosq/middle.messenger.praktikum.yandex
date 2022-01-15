@@ -1,6 +1,9 @@
 extends ../../layout.pug
 
-body(class="row")
+append head
+  link(rel="stylesheet" href="/express/templates/pages/chat/chat.css")
+block content
+  body(class="row")
   div(class="chats-wrapper relative")
     div(class="operations-wrapper column")
       span(class="operations-wrapper__profile row full-width content-end items-center")

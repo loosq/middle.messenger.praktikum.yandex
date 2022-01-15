@@ -2,8 +2,11 @@
   "name": "messenger",
   "source": "src/index.html",
   "scripts": {
-    "start": "parcel src/layout.pug",
-    "build": "parcel build"
+    "start": "parcel express/templates/layout.pug",
+    "build": "parcel build",
+    "start-server": "node express/index.js",
+    "start-server-dev": "nodemon express/index.js"
+
   },
   "dependencies": {
     "parcel": "2.0.1"
