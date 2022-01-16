@@ -1,5 +1,7 @@
 {
   "name": "messenger",
+  "author": "Polonskii Sergei",
+  "repository": "https://github.com/loosq/messenger",
   "scripts": {
     "start": "node index.js",
     "start-server-dev": "nodemon index.js",
