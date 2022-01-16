@@ -2,7 +2,7 @@
 /dist
 
 #файлы вёрстки
-#/templates
+#/src
 
 #файлы окружения
 /node_modules
