@@ -6,7 +6,7 @@
     "start": "node index.js",
     "start-server-dev": "nodemon index.js",
     "build": "parcel src/pages/chat/chat.pug",
-    "build-dist": "parcel build src/pages/chat/chat.pug --out-file index.html"
+    "build-dist": "parcel build src/pages/chat/chat.pug"
   },
   "engine": "16.13.1",
   "devDependencies": {
