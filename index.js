@@ -11,6 +11,5 @@ app.use((err, req, res, next) => {
     next(err);
 });
 app.get(`/`, (req, res) => res.sendFile(`${__dirname}/dist/chat.html`));
-app.get(`/profile`, (req, res) => res.sendFile(`${__dirname}/dist/profile.html`));
 
 app.listen(DEFAULT_PORT);
