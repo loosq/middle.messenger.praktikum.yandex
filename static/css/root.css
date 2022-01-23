@@ -1,8 +1,9 @@
 :root {
-    --white: #fff;
-    --black: #1E1E1E;
-    --accentColor: #3369F3;
-    --secondaryColor: #999;
-    --errorColor: #FF2F2F;
-    --mainFont: Roboto, sans-serif;
+  --white: #fff;
+  --black: #1e1e1e;
+  --accentColor: #3369f3;
+  --secondaryColor: #999;
+  --errorColor: #ff2f2f;
+  --mainFont: Roboto, sans-serif;
+  --messagesBg: #efefef;
 }

@@ -3,23 +3,33 @@
   "author": "Polonskii Sergei",
   "repository": "https://github.com/loosq/messenger",
   "scripts": {
-    "start": "node index.js",
-    "start-server-dev": "nodemon index.js",
+    "start": "node src/index.js",
+    "start-server-dev": "nodemon src/index.js",
     "build": "parcel src/pages/chat/chat.pug",
-    "build-dist": "parcel build src/pages/chat/chat.pug"
+    "build-dist": "parcel build src/pages/chat/chat.pug",
+    "lint": "concurrently \"npm run lintJs\" \"npm run lintCss\"",
+    "lint::fix": "concurrently \"npm run lintJs::fix\" \"npm run lintCss::fix\"",
+    "lintJs": "eslint --ext .js src/",
+    "lintJs::fix": "eslint --fix src/",
+    "lintCss": "stylelint **/*.css",
+    "lintCss::fix": "stylelint **/*.css --fix"
   },
   "engine": "16.13.1",
   "devDependencies": {
     "express": "4.17.2",
+    "@parcel/transformer-pug": "2.2.1",
     "parcel": "2.0.1",
-    "@parcel/transformer-pug": "2.2.0",
     "autoprefixer": "10.4.0",
+    "concurrently": "7.0.0",
     "eslint": "6.8.0",
     "eslint-plugin-html": "6.2.0",
+    "eslint-plugin-pug": "1.2.4",
     "nodemon": "2.0.15",
     "postcss": "8.4.5",
     "postcss-custom-properties": "12.0.1",
     "postcss-import": "14.0.2",
-    "postcss-url": "10.1.3"
+    "postcss-url": "10.1.3",
+    "stylelint": "14.2.0",
+    "stylelint-config-standard": "24.0.0"
   }
 }

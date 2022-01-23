@@ -5,7 +5,7 @@
 @import "base.css";
 
 body {
-    height: 100vh;
-    background: var(--white);
-    font-family: var(--mainFont);
+  height: 100vh;
+  background: var(--white);
+  font-family: var(--mainFont);
 }

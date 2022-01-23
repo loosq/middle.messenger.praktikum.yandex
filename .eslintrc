@@ -1,5 +1,8 @@
 {
   "plugins": [
-    "html"
-  ]
+    "pug"
+  ],
+  "env": {
+    "es6": true
+  }
 }
