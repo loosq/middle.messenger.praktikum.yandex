@@ -1,0 +1,44 @@
+extends ../../layout.pug
+
+append head
+  style
+    include ./profile.css
+block content
+  body(class="profile column items-center content-center text-center")
+    a(class="profile__side absolute-top-left full-height column items-center content-center")
+      svg(width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg")
+        circle(cx="14" cy="14" r="14" transform="rotate(-180 14 14)" fill="#3369F3")
+        rect(x="20" y="14.8" width="11" height="1.6" transform="rotate(-180 20 14.8)" fill="white")
+        path(d="M13 19L9 14L13 9" stroke="white" stroke-width="1.6")
+    div(class="profile__data")
+      div(class="profile__img-wrapper relative")
+        span(class="profile__img-change absolute-centered") Поменять<br/>аватар
+        img(class="profile__img" height="130" width="130" src="/images/avatar1.png" alt="Аватар пользователя")
+      h3(class="profile__title") Иван
+      ul(class="profile__info")
+        li(class="profile__item row content-between items-center")
+          span Почта
+          span pochta@yandex.ru
+        li(class="profile__item row content-between items-center")
+          span Логин
+          span ivanivanov
+        li(class="profile__item row content-between items-center")
+          span Имя
+          span Иван
+        li(class="profile__item row content-between items-center")
+          span Фамилия
+          span Иванов
+        li(class="profile__item row content-between items-center")
+          span Имя в чате
+          span Иван
+        li(class="profile__item row content-between items-center")
+          span Телефон
+          span +7 (909) 967 30 30
+      ul(class="profile__info profile__info-controls")
+        li(class="profile__item row content-between items-center")
+          a(class="profile__item-link" href="") Изменить данные
+        li(class="profile__item row content-between items-center")
+          a(class="profile__item-link" href="") Изменить пароль
+        li(class="profile__item row content-between items-center")
+          a(class="profile__item-link--special" href="") Выйти
+      button(class="profile__submit") Сохранить

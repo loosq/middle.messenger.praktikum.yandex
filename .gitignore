@@ -1,0 +1,21 @@
+#билд проекта
+/dist
+
+#файлы вёрстки
+#/src
+
+#файлы окружения
+/node_modules
+package-lock.json
+.parcel-cache
+.vscode
+.module-cache
+.DS_Store
+jspm_packages/
+.idea
+*.swp
+*.log
+atlassian-ide-plugin.xml
+.eslintcache
+node_modules/
+*.lock

@@ -1,0 +1,9 @@
+:root {
+  --white: #fff;
+  --black: #1e1e1e;
+  --accentColor: #3369f3;
+  --secondaryColor: #999;
+  --errorColor: #ff2f2f;
+  --mainFont: Roboto, sans-serif;
+  --messagesBg: #efefef;
+}

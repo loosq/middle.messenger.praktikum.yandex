@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    "pug"
+  ],
+  "env": {
+    "es6": true
+  }
+}
