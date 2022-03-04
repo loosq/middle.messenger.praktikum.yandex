@@ -1,0 +1,5 @@
+label(class="text-input" for=`${name}`)
+  span(class="text-input__title") #{label}
+  | !{input}
+  if !isValid
+    span(class="text-input__error") #{errorMessage}

@@ -1,0 +1,24 @@
+.controls-popup {
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: 0 0 6px rgb(0 0 0 / 14%);
+  right: 0;
+  bottom: -100%;
+  z-index: 1;
+}
+
+.controls-popup span {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 500;
+  margin-left: 15px;
+}
+
+.controls-popup li:not(:last-of-type) {
+  margin-bottom: 16px;
+}
+
+.controls-popup__icon--add-user {
+  transform: rotate(45deg);
+}
