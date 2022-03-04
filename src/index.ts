@@ -1,11 +1,10 @@
 import '../static/css/styles.css';
 import '/static/icons/sprite.svg';
 import {renderDOM} from './utils/renderDOM';
-import {Register} from "./pages/register/Register";
-import {Login} from "./pages/login/Login";
+import {Chat} from "./pages/chat/Chat";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const component = new Login()
+    const component = new Chat()
     renderDOM('#root', component);
 
 

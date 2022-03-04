@@ -1,4 +1,4 @@
-import Block from "../../../utils/Block";
+import Block from "../../../../utils/Block";
 import template from "./input.pug"
 
 export class Input extends Block {

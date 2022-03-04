@@ -1,7 +1,8 @@
 import Block from "../../utils/Block";
 import template from "./inputGroup.pug"
 import "./inputGroup.css"
-import {Input} from "./fragments/Input";
+import {Input} from "./fragments/input/Input";
+import {Error} from "./fragments/error/Error";
 
 export class InputGroup extends Block {
     isValid;
@@ -20,23 +21,28 @@ export class InputGroup extends Block {
         return new RegExp(validationType[type]).test(string);
     }
 
+    validationHandler = (value) => {
+        if (!value) return;
+
+        const isValid = this.validate(this.props.validateAs, value);
+        this.isValid = isValid;
+        this.children.error.setProps({isValid})
+    }
+
     componentDidMount(oldProps: {} = {}) {
 
         this.children.input = new Input({
             ...this.props,
             value: '',
             events: {
-                input: (e) => {
-                    const isValid= this.validate(this.props.validateAs, e.target.value);
-                    this.isValid = isValid;
-                    this.setProps({isValid})
-                },
-                blur: (e) => {
-                    const isValid= this.validate(this.props.validateAs, e.target.value);
-                    this.isValid = isValid;
-                    this.setProps({isValid})
-                }
+                input: (e) => this.validationHandler(e.target.value),
+                focus: (e) => this.validationHandler(e.target.value),
+                blur: (e) => this.validationHandler(e.target.value)
             }
+        });
+        this.children.error = new Error({
+            isValid: true,
+            errorMessage: this.props.errorMessage
         });
     }
 

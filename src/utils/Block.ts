@@ -191,7 +191,6 @@ export default abstract class Block {
 
         const htmlString = template(context)
         fragment.innerHTML = htmlString;
-        console.log(context)
 
         Object.entries(this.children).forEach(([key, child]) => {
             const isChildrenArray = Array.isArray(child) && child.every(v => v instanceof Block) as boolean;
@@ -203,12 +202,11 @@ export default abstract class Block {
                     const childById = child.find(ch => "id-"+ch.id === stub.dataset.id)
                     stub.replaceWith(childById.getContent());
 
-                    // console.log(childById)
-                    // if (childById.events) {
-                    //     Object.entries(childById.events).forEach(([event, handler]) => {
-                    //         childById.getContent().addEventListener(event, handler)
-                    //     })
-                    // }
+                    if (childById.events) {
+                        Object.entries(childById.events).forEach(([event, handler]) => {
+                            childById.getContent().addEventListener(event, handler)
+                        })
+                    }
                 });
                 return;
             }
