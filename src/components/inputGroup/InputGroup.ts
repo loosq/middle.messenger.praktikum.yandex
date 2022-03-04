@@ -31,16 +31,16 @@ export class InputGroup extends Block {
                     this.isValid = isValid;
                     this.setProps({isValid})
                 },
-                // blur: (e) => {
-                //     const isValid= this.validate(this.props.validateAs, e.target.value);
-                //     this.isValid = isValid;
-                //     this.setProps({isValid})
-                // }
+                blur: (e) => {
+                    const isValid= this.validate(this.props.validateAs, e.target.value);
+                    this.isValid = isValid;
+                    this.setProps({isValid})
+                }
             }
         });
     }
 
     render() {
-        return this.compile(template, {...this.props, isValid: this.isValid});
+        return this.compile(template, {...this.props});
     }
 }
