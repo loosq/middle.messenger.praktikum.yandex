@@ -6,7 +6,7 @@
     "node": "12"
   },
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "npm run build-dist && ts-node src/server.ts",
     "start-server-dev": "nodemon src/server.ts",
     "build-dev": "parcel src/index.html",
     "build-dist": "parcel build src/**/*.pug",
