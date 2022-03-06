@@ -8,6 +8,3 @@
 [build]
   command = "npm run build-dist"
   publish = "dist"
-[[redirects]]
-  from = "/*"
-  to = "/chat.html"
