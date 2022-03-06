@@ -3,30 +3,36 @@ import template from "./inputGroup.pug"
 import "./inputGroup.css"
 import {Input} from "./fragments/input/Input";
 import {Error} from "./fragments/error/Error";
+import validate from "../../utils/validation";
 
-export class InputGroup extends Block {
+interface InputGroupProps {
+    name: string,
+    label: string,
+    errorMessage?: string,
+    validateAs?: string,
+    setValidationStatus?: (arg1:string, arg2:boolean) => void,
+    children?: any[]
+}
+
+export class InputGroup extends Block<InputGroupProps> {
     isValid;
 
-    validate = (type, string) => {
-        console.log({type, string})
-        if (!type || !string) return;
-
-        const validationType = {
-            name: /^[a-zA-Z\-]+$/,
-            email: /^\s^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            string: /^\w[a-zA-Z@#0-9.]*$/,
-            phone: /^\s^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
-        };
-
-        return new RegExp(validationType[type]).test(string);
+    constructor(props: InputGroupProps) {
+        super(props);
     }
+
 
     validationHandler = (value) => {
         if (!value) return;
 
-        const isValid = this.validate(this.props.validateAs, value);
+        const {setValidationStatus, validateAs, name} = this.props;
+        const isValid = !!validate(validateAs, value);
         this.isValid = isValid;
-        this.children.error.setProps({isValid})
+        this.children.error.setProps({isValid});
+
+        if (setValidationStatus) {
+            setValidationStatus(name, isValid)
+        }
     }
 
     componentDidMount(oldProps: {} = {}) {
@@ -40,6 +46,7 @@ export class InputGroup extends Block {
                 blur: (e) => this.validationHandler(e.target.value)
             }
         });
+
         this.children.error = new Error({
             isValid: true,
             errorMessage: this.props.errorMessage

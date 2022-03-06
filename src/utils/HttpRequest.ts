@@ -1,4 +1,4 @@
-const METHODS = {
+const Methods = {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
@@ -22,23 +22,22 @@ interface Options {
     data?: object,
     headers?: object
 }
-
 class HTTPTransport {
     get = (url, options: Options) => {
 
-        return this.request(url, {...options, method: METHODS.GET}, options.timeout);
+        return this.request(url, {...options, method: Methods.GET}, options.timeout);
     };
 
     post = (url, options: Options) => {
-        return this.request(url, {...options, method: METHODS.POST}, options.timeout);
+        return this.request(url, {...options, method: Methods.POST}, options.timeout);
     };
 
     put = (url, options: Options) => {
-        return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
+        return this.request(url, {...options, method: Methods.PUT}, options.timeout);
     };
 
     delete = (url, options: Options) => {
-        return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
+        return this.request(url, {...options, method: Methods.DELETE}, options.timeout);
     };
 
     request = (url, options: Options, timeout = 5000) => {
@@ -51,7 +50,7 @@ class HTTPTransport {
             }
 
             const xhr = new XMLHttpRequest();
-            const isGet = method === METHODS.GET;
+            const isGet = method === Methods.GET;
 
             xhr.open(
                 method,

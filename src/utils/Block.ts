@@ -1,7 +1,7 @@
 import {EventBus} from './EventBus';
 import {nanoid} from "nanoid";
 
-export default abstract class Block {
+export default abstract class Block<TProps> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
@@ -11,9 +11,9 @@ export default abstract class Block {
 
     public id = nanoid(6);
     private _meta;
-    protected children: Record<string, Block>;
+    children: Record<string, any>;
     protected classNames: string[];
-    protected props: any;
+    protected props: TProps;
     private eventBus: () => EventBus;
     private _element;
 
@@ -35,7 +35,7 @@ export default abstract class Block {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    _registerEvents(eventBus) {
+    private _registerEvents(eventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -48,7 +48,7 @@ export default abstract class Block {
     }
     protected initChildren() {}
 
-    _componentDidMount() {
+    private _componentDidMount() {
         this.componentDidMount();
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
@@ -80,7 +80,7 @@ export default abstract class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps, newProps) {
+    private _componentDidUpdate(oldProps, newProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (!response) {
             return;
@@ -105,7 +105,7 @@ export default abstract class Block {
         return this._element;
     }
 
-    _removeEvents() {
+    private _removeEvents() {
         const events: Record<string, () => void> = (this.props as any).events;
 
         if (!events || !this._element) {
@@ -114,7 +114,7 @@ export default abstract class Block {
 
         Object.entries(events).forEach(([event, handler]) => this._element.removeEventListener(event, handler))
     }
-    _addEvents() {
+    private _addEvents() {
         const events: Record<string, () => void> = (this.props as any).events;
 
         if (!events || !this._element) {
@@ -126,7 +126,7 @@ export default abstract class Block {
         })
     }
 
-    _render() {
+    private _render() {
         const fragment = this.render();
         const newElement = fragment.firstElementChild as HTMLElement;
 
@@ -143,8 +143,10 @@ export default abstract class Block {
         return new DocumentFragment();
     }
 
-    _addClasses() {
+    private _addClasses() {
+        // @ts-ignore Возможно добавить в мету
         if (this.props.classList) {
+            // @ts-ignore
             this.element.classList = this.props.classList;
         }
     }
@@ -153,7 +155,7 @@ export default abstract class Block {
         return this.element;
     }
 
-    _makePropsProxy(props) {
+    private _makePropsProxy(props) {
         const self = this;
 
         return new Proxy(props, {
@@ -172,7 +174,7 @@ export default abstract class Block {
         });
     }
 
-    _createDocumentElement(tagName): HTMLElement {
+    private _createDocumentElement(tagName): HTMLElement {
         return document.createElement(tagName);
     }
 

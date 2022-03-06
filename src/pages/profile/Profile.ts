@@ -5,7 +5,7 @@ import userData from "./mocks/userData";
 import userActions from "./mocks/userActions";
 import {Button} from "../../components/button/Button";
 
-export class Profile extends Block {
+export class Profile extends Block<{}> {
 
     initChildren() {
         this.children.button = new Button({label: "Сохранить", classNames: ['profile__submit']})

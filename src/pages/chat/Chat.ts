@@ -10,7 +10,7 @@ import {ChatControls} from "./fragments/chatControls/ChatControls";
 import {ChatHeader} from "./fragments/chatHeader/ChatHeader";
 import {ChatOperations} from "./fragments/chatOperations/ChatOperations";
 
-export class Chat extends Block {
+export class Chat extends Block<{}> {
 
     initChildren() {
         this.children.chatPreview = new ChatPreview({chatPreviewData});

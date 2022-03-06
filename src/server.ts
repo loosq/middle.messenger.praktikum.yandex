@@ -15,4 +15,5 @@ app.use((err, req, res, next) => {
     next(err);
 });
 app.get(`/`, (req, res) => res.sendFile(`${distPath}/dist/pages/chat/chat.js`));
+app.get(`/chat`, (req, res) => res.sendFile(`${distPath}/dist/pages/chat/chat.js`));
 app.listen(port);

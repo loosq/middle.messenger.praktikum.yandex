@@ -50,16 +50,6 @@
   bottom: -14px;
 }
 
-.modal__submit-button {
-  margin-top: auto;
-  background: var(--accentColor);
-  padding: 10px;
-  color: var(--white);
-  margin-bottom: 14px;
-  font-size: 13px;
-  line-height: 15px;
-}
-
 .modal__link {
   color: var(--accentColor);
   font-size: 11px;

@@ -1,35 +1,32 @@
-interface Input {
-    name: string,
-    label: string,
-    errorMessage?: string,
-    validateAs: string
-}
-
 interface LoginConfig {
-    label: string;
-    inputs: Input[],
-    button: string,
-    link: string
+    title: string,
+    buttonLabel: string,
+    inputs: any,
+    link: string,
+    inputsValidationState: {},
+    classNames: string[]
 }
 
 const loginConfig: LoginConfig = {
-    label: "Вход",
+    title: "Вход",
+    buttonLabel: "Автаризоваться",
     inputs: [
         {
             name: "user_name",
             label: "Логин",
             errorMessage: "Не верный логин",
-            validateAs: 'string'
+            validateAs: 'login'
         },
         {
             name: "user_password",
             label: "Пароль",
             errorMessage: "Не верный пароль",
-            validateAs: 'string'
+            validateAs: 'password'
         }
     ],
-    button: "Автаризоваться",
-    link: "Нет аккаунта?"
+    link: "Нет аккаунта?",
+    inputsValidationState: {},
+    classNames: []
 }
 
 export default loginConfig;

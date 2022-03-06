@@ -1,19 +1,14 @@
-interface Input {
-    name: string,
-    label: string,
-    errorMessage?: string,
-    validateAs: string
-}
-
 interface RegisterConfig {
-    label: string;
-    inputs: Input[],
-    button: string,
-    link: string
+    title: string,
+    buttonLabel: string,
+    inputs: any,
+    link: string,
+    inputsValidationState: {},
+    classNames: string[]
 }
 
 const registerConfig: RegisterConfig = {
-    label: "Регистрация",
+    title: "Регистрация",
     inputs: [
         {
             name: "user_email",
@@ -25,7 +20,7 @@ const registerConfig: RegisterConfig = {
             name: "user_login",
             label: "Логин",
             errorMessage: "Введите логин",
-            validateAs: 'string'
+            validateAs: 'login'
         },
         {
             name: "user_name",
@@ -49,17 +44,19 @@ const registerConfig: RegisterConfig = {
             name: "user_password",
             label: "Пароль",
             errorMessage: "Введите пароль",
-            validateAs: 'string'
+            validateAs: 'password'
         },
         {
             name: "user_password_repeat",
             label: "Пароль (ещё раз)",
             errorMessage: "Введите пароль ещё раз",
-            validateAs: 'string'
+            validateAs: 'password'
         }
     ],
-    button: "Зарегистрироваться",
-    link: "Войти"
+    buttonLabel: "Зарегистрироваться",
+    link: "Войти",
+    inputsValidationState: {},
+    classNames: []
 }
 
 export default registerConfig;
