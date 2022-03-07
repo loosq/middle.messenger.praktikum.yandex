@@ -1,24 +1,13 @@
-.modal {
-  max-width: 340px;
-  width: 100%;
-  padding: 50px 30px 30px;
-  box-shadow: 0 0 6px rgb(0 0 0 / 14%);
-}
-
-.modal__title {
-  margin-bottom: 40px;
-}
-
-.modal-login {
-  min-height: 460px;
-}
-
 .text-input {
   display: block;
   margin-bottom: 20px;
   height: 36px;
   border-bottom: 1px solid var(--accentColor);
   position: relative;
+}
+
+.text-input:last-of-type {
+  margin-bottom: 64px;
 }
 
 .text-input__label:last-of-type {
@@ -48,10 +37,4 @@
   position: absolute;
   left: 0;
   bottom: -14px;
-}
-
-.modal__link {
-  color: var(--accentColor);
-  font-size: 11px;
-  line-height: 13px;
 }

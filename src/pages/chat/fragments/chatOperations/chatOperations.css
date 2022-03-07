@@ -1,0 +1,16 @@
+.operations-wrapper__profile {
+  margin-bottom: 22px;
+  color: var(--secondaryColor);
+}
+
+.operations-wrapper__profile svg {
+  margin-left: 5px;
+}
+
+.operations-wrapper__search {
+  background: var(--messagesBg);
+  height: 32px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  font-size: 16px;
+}
