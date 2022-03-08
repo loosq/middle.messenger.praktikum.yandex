@@ -5,4 +5,4 @@ form(class="column content-center items-center full-width" name="form")
       | !{inputGroup}
     | !{button}
     div(class="text-center full-width")
-      a(class="modal__link") #{link}
+      a(class="modal__link" data-href=`/${link.goTo}` href=`/${link.goTo}`) #{link.title}

@@ -3,27 +3,49 @@ import template from "./modal.pug"
 import "./modal.css";
 import {Button} from "../button/Button";
 import {InputGroup} from "../inputGroup/InputGroup";
+import withRouter from "../../utils/withRouter"
+import Router from "../../utils/Router";
 
 interface ModalProps {
     buttonLabel: string,
     title: string,
     inputs: [],
-    link: string,
+    link: object,
     inputsValidationState: {},
-    classNames: string[]
+    classNames: string[],
+    $router: Router;
+    events: object
 }
 
-export class Modal extends Block<ModalProps> {
+class Modal extends Block<ModalProps> {
+    events;
 
     constructor(props: ModalProps) {
         super(props);
-        this.props.inputsValidationState = {}
+        this.props = {
+            ...props,
+            inputsValidationState: {},
+            events: {
+                click: this.handleLinkClick
+            }
+        };
     }
 
     setValidationStatus = (name, status) => {
         this.props.inputsValidationState[name] = status;
         const isValid = Object.values(this.props.inputsValidationState).every(v => v) as boolean;
         this.children.button.setProps({isActive: isValid})
+    }
+
+    handleLinkClick = (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const {href} = e.target.dataset;
+        const {$router} = this.props;
+
+        if (href && $router) {
+            $router.go(href)
+        }
     }
 
     render() {
@@ -61,3 +83,5 @@ export class Modal extends Block<ModalProps> {
         return this.compile(template, {...this.props});
     }
 }
+
+export default withRouter(Modal);

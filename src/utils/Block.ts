@@ -126,6 +126,16 @@ export default abstract class Block<TProps> {
         })
     }
 
+    private _addChildEvents(child) {
+        if (!('events' in child.props)) return;
+
+        if (child.props.events) {
+            Object.entries(child.props.events).forEach(([event, handler]) => {
+                child.getContent().addEventListener(event, handler)
+            })
+        }
+    }
+
     private _render() {
         const fragment = this.render();
         const newElement = fragment.firstElementChild as HTMLElement;
@@ -204,11 +214,7 @@ export default abstract class Block<TProps> {
                     const childById = child.find(ch => "id-"+ch.id === stub.dataset.id)
                     stub.replaceWith(childById.getContent());
 
-                    if (childById.events) {
-                        Object.entries(childById.events).forEach(([event, handler]) => {
-                            childById.getContent().addEventListener(event, handler)
-                        })
-                    }
+                    this._addChildEvents(childById);
                 });
                 return;
             }
@@ -218,6 +224,7 @@ export default abstract class Block<TProps> {
             }
 
             stub.replaceWith(child.getContent()!);
+            this._addChildEvents(child);
 
             //add classes
             if (Array.isArray(child.classNames) && child.classNames.length) {
@@ -226,5 +233,13 @@ export default abstract class Block<TProps> {
         });
 
         return fragment.content;
+    }
+
+    show() {
+        this._element.style.display = 'block';
+    }
+
+    hide() {
+        this._element.style.display = null;
     }
 }

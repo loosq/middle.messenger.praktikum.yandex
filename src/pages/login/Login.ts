@@ -1,5 +1,5 @@
 import Block from "../../utils/Block";
-import {Modal} from "../../components/modal/Modal";
+import Modal from "../../components/modal/Modal";
 import template from "./login.pug";
 import loginConfig from "./config/loginConfig";
 

@@ -1,5 +1,5 @@
 import Block from "../../utils/Block";
-import {Modal} from "../../components/modal/Modal";
+import Modal from "../../components/modal/Modal";
 import template from "./register.pug";
 import registerConfig from "./config/registerConfig";
 
