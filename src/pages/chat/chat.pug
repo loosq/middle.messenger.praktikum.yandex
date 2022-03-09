@@ -7,6 +7,7 @@ div(class="row")
     div(class="current-chat__user row items-center absolute")
       | !{chatHeader}
       | !{chatControls}
+      a(class="chat-controls-icon" data-href="chat-controls")
     span(class="text-center current-chat__info-message") Выберите чат чтобы отправить сообщение
     span(class="current-chat__date text-center") 19 Июня
     each chat in chatData

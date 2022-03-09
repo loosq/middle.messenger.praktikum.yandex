@@ -1,8 +1,10 @@
-div(class="controls-popup absolute")
-  ul
-    each control, i in chatControls
-      li
-        a(class="row items-center")
-          svg(class=`controls-popup__icon ${i === 0 && 'controls-popup__icon--add-user'}` width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg")
-            use(href=`#${control.icon}`)
-          span #{control.text}
+div(class="123")
+  if isControlsVisible
+    div(class="controls-popup absolute")
+      ul
+        each control, i in controls
+          li
+            a(class="row items-center")
+              svg(class=`controls-popup__icon ${i === 0 && 'controls-popup__icon--add-user'}` width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg")
+                use(href=`#${control.icon}`)
+              span #{control.text}

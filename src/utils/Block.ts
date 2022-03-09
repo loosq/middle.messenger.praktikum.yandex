@@ -14,7 +14,7 @@ export default abstract class Block<TProps> {
     children: Record<string, any>;
     protected classNames: string[];
     protected props: TProps;
-    private eventBus: () => EventBus;
+    private eventBus = new EventBus();
     private _element;
 
     constructor(componentData: object = {}) {
@@ -29,10 +29,8 @@ export default abstract class Block<TProps> {
 
         this.props = this._makePropsProxy(props);
 
-        this.eventBus = () => eventBus;
-
-        this._registerEvents(eventBus);
-        eventBus.emit(Block.EVENTS.INIT);
+        this._registerEvents(this.eventBus);
+        this.eventBus.emit(Block.EVENTS.INIT);
     }
 
     private _registerEvents(eventBus) {
@@ -44,16 +42,25 @@ export default abstract class Block<TProps> {
 
     init() {
         this._addClasses();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
     protected initChildren() {}
 
-    private _componentDidMount() {
-        this.componentDidMount();
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    componentDidMount(oldProps = {}) {
     }
 
-    componentDidMount(oldProps = {}) {
+    private _componentDidMount() {
+        this.componentDidMount();
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+
+        const childrenArray = Object.values(this.children);
+        const childrenIsComponent = childrenArray.every(c => c instanceof Block);
+
+        if(childrenIsComponent) {
+            childrenArray.forEach(child => {
+                child.dispatchComponentDidMount();
+            });
+        }
     }
 
     getChildren(componentData: any) {
@@ -77,7 +84,7 @@ export default abstract class Block<TProps> {
     }
 
     dispatchComponentDidMount() {
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
     private _componentDidUpdate(oldProps, newProps) {
@@ -94,6 +101,7 @@ export default abstract class Block<TProps> {
     }
 
     setProps = nextProps => {
+
         if (!nextProps) {
             return;
         }
@@ -175,7 +183,8 @@ export default abstract class Block<TProps> {
             },
             set(target, prop, value) {
                 target[prop] = value;
-                self.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+                self.eventBus.emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+                console.log(Block.EVENTS.FLOW_CDU);
                 return true;
             },
             deleteProperty() {
@@ -240,6 +249,6 @@ export default abstract class Block<TProps> {
     }
 
     hide() {
-        this._element.style.display = null;
+        this._element.style.display = 'none';
     }
 }

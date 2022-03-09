@@ -2,14 +2,15 @@ import Block from "../../../../utils/Block";
 import template from "./chatControls.pug"
 import "./chatControls.css";
 
-interface ChatControlsElement {
+interface Control {
     text: string,
     icon: string
 }
 
 interface ChatControlsProps {
-    chatControls: ChatControlsElement[]
-}
+    isControlsVisible: boolean
+    controls: Control[],
+};
 
 export class ChatControls extends Block<ChatControlsProps> {
     constructor(props: ChatControlsProps) {

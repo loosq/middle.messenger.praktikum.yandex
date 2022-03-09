@@ -67,3 +67,12 @@
 .current-chat-message__incoming .current-chat-message__date {
   color: var(--accentColor);
 }
+
+.chat-controls-icon {
+  width: 14px;
+  height: 28px;
+  padding: 4px;
+  cursor: pointer;
+  margin-left: auto;
+  background: url("./assets/controls.svg") no-repeat center center;
+}
