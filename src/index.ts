@@ -9,7 +9,6 @@ import Router from "./utils/Router";
 
 document.addEventListener('DOMContentLoaded', () => {
     const linksContainer = document.getElementById('links') as HTMLElement;
-
     const router = new Router('#root');
 
     router
@@ -21,10 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .start();
 
     Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
-        link.addEventListener('click', event => {
-            // @ts-ignore
-            const {id} = event.target;
-            router.go(`/${id}`)
+        link.addEventListener('click', ({target}: Event & {target: {id:string}}) => {
+            router.go(`/${target?.id || ''}`)
         })
     });
 

@@ -19,7 +19,7 @@ function queryStringify(data) {
 interface Options {
     method: string,
     timeout?: number,
-    data?: object,
+    data?: Document | XMLHttpRequestBodyInit,
     headers?: object
 }
 class HTTPTransport {
@@ -76,7 +76,6 @@ class HTTPTransport {
             if (isGet || !data) {
                 xhr.send();
             } else {
-                // @ts-ignore
                 xhr.send(data);
             }
         });

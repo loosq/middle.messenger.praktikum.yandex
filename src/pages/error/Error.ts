@@ -19,7 +19,7 @@ class Error extends Block<{}> {
         e.preventDefault();
         e.stopImmediatePropagation();
         const {href} = e.target.dataset;
-        // @ts-ignore
+
         const {$router} = this.props;
 
         if (href && $router) {

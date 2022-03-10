@@ -35,10 +35,10 @@ export class Chat extends Block<ChatProps> {
     componentDidMount() {
         this.props.isControlsVisible = false;
         this.props.events = {
-            click: (e) => {
+            click: (e: Event & {target: {dataset: {href: string}}}) => {
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                const {href} = e.target.dataset;
+                const {href} = e?.target?.dataset;
 
                 if (href === 'chat-controls') {
                     this.handleControlsClick(this.props.isControlsVisible)

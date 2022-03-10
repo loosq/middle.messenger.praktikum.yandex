@@ -15,7 +15,6 @@ class GoBackButton extends Block<{}> {
     }
 
     handleBackButtonClick = () => {
-        // @ts-ignore
         const {$router} = this.props;
 
         if ($router) {

@@ -1,5 +1,6 @@
 import {EventBus} from './EventBus';
 import {nanoid} from "nanoid";
+import Router from "./Router";
 
 export default abstract class Block<TProps> {
     static EVENTS = {
@@ -13,24 +14,28 @@ export default abstract class Block<TProps> {
     private _meta;
     children: Record<string, any>;
     protected classNames: string[];
-    protected props: TProps;
+    protected props: TProps & {
+        classList?: string,
+        $router?: Router,
+        events?: {
+            [key: string]: (e: Event) => void
+        }
+    };
     private eventBus = new EventBus();
     private _element;
 
     constructor(componentData: object = {}) {
-        const eventBus = new EventBus();
         const {props, children, classNames} = this.getChildren(componentData);
         this.children = children;
         this.classNames = classNames;
-        this.initChildren();
         this._meta = {
             props
         };
-
         this.props = this._makePropsProxy(props);
 
         this._registerEvents(this.eventBus);
         this.eventBus.emit(Block.EVENTS.INIT);
+        this.initChildren();
     }
 
     private _registerEvents(eventBus) {
@@ -161,11 +166,12 @@ export default abstract class Block<TProps> {
         return new DocumentFragment();
     }
 
+
     private _addClasses() {
-        // @ts-ignore Возможно добавить в мету
-        if (this.props.classList) {
-            // @ts-ignore
-            this.element.classList = this.props.classList;
+        const {classList} = this.props;
+
+        if (classList) {
+            this.element.classList = classList;
         }
     }
 
@@ -184,7 +190,6 @@ export default abstract class Block<TProps> {
             set(target, prop, value) {
                 target[prop] = value;
                 self.eventBus.emit(Block.EVENTS.FLOW_CDU, {...target}, target);
-                console.log(Block.EVENTS.FLOW_CDU);
                 return true;
             },
             deleteProperty() {
