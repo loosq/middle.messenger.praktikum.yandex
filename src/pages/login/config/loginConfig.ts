@@ -3,7 +3,6 @@ interface LoginConfig {
     buttonLabel: string,
     inputs: any,
     link: object,
-    inputsValidationState: {},
     classNames: string[]
 }
 
@@ -28,7 +27,6 @@ const loginConfig: LoginConfig = {
         title: "Нет аккаунта?",
         goTo: 'register'
     },
-    inputsValidationState: {},
     classNames: []
 }
 

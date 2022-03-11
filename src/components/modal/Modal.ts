@@ -11,34 +11,32 @@ interface ModalProps {
     title: string,
     inputs: [],
     link: object,
-    inputsValidationState: {
-        [key: string]: boolean
-    },
     classNames: string[],
     $router?: Router,
     onSubmit: (e: Event) => void
 }
 
 class Modal extends Block<ModalProps> {
-    inputsValidationState: {
+    private readonly _inputsValidationState: {
         [key: string]: boolean
     };
-    events: {
+    private readonly _events: {
         [key: string]: (e: Event) => void
     }
-
     constructor(props: ModalProps) {
         super(props);
-        this.inputsValidationState = {};
-        this.events = {
+        this._inputsValidationState = {};
+        this._events = {
             submit: this.onSubmit
-        }
+        };
     }
 
     setValidationStatus = (name, status) => {
-        this.inputsValidationState[name] = status;
-        const isValid = Object.values(this.inputsValidationState).every(v => v) as boolean;
+        this._inputsValidationState[name] = status;
+        const isValid = Object.values(this._inputsValidationState).every(v => v) as boolean;
         this.children.button.setProps({isActive: isValid});
+        console.log(this.props)
+
     }
 
     handleLinkClick = (e) => {
@@ -59,8 +57,8 @@ class Modal extends Block<ModalProps> {
             isActive: false
         });
         this.children.inputGroups = this.props.inputs?.map(({label, name, errorMessage, validateAs}) => {
-            if (this.inputsValidationState) {
-                this.inputsValidationState[name] = false;
+            if (this._inputsValidationState) {
+                this._inputsValidationState[name] = false;
             }
 
             return new InputGroup({
@@ -71,7 +69,8 @@ class Modal extends Block<ModalProps> {
                 setValidationStatus: this.setValidationStatus
             })
         });
-        this.setProps({events: this.events})
+
+        this.setProps({events: this._events})
     }
 
     onSubmit = (e: Event) => {

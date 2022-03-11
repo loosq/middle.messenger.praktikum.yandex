@@ -3,7 +3,6 @@ interface RegisterConfig {
     buttonLabel: string,
     inputs: any,
     link: string,
-    inputsValidationState: {},
     classNames: string[]
 }
 
@@ -55,7 +54,6 @@ const registerConfig: RegisterConfig = {
     ],
     buttonLabel: "Зарегистрироваться",
     link: "Войти",
-    inputsValidationState: {},
     classNames: []
 }
 
