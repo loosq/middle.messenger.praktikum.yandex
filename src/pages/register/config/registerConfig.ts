@@ -11,43 +11,43 @@ const registerConfig: RegisterConfig = {
     title: "Регистрация",
     inputs: [
         {
-            name: "user_email",
+            name: "email",
             label: "Почта",
             errorMessage: "Введите почту",
             validateAs: 'email'
         },
         {
-            name: "user_login",
+            name: "login",
             label: "Логин",
             errorMessage: "Введите логин",
             validateAs: 'login'
         },
         {
-            name: "user_name",
+            name: "first_name",
             label: "Имя",
             errorMessage: "Введите имя",
             validateAs: 'name'
         },
         {
-            name: "user_surname",
+            name: "second_name",
             label: "Фамилия",
             errorMessage: "Введите фамилию",
             validateAs: 'name'
         },
         {
-            name: "user_phone",
+            name: "phone",
             label: "Телефон",
             errorMessage: "Не корректный формат телефона",
             validateAs: 'phone'
         },
         {
-            name: "user_password",
+            name: "password",
             label: "Пароль",
             errorMessage: "Введите пароль",
             validateAs: 'password'
         },
         {
-            name: "user_password_repeat",
+            name: "password_repeat",
             label: "Пароль (ещё раз)",
             errorMessage: "Введите пароль ещё раз",
             validateAs: 'password'

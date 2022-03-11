@@ -4,12 +4,12 @@ import template from "./login.pug";
 import loginConfig from "./config/loginConfig";
 
 export class Login extends Block<{}> {
-    constructor(props) {
-        super(props);
-    }
 
-   initChildren() {
-        this.children.modal = new Modal({...loginConfig});
+    initChildren() {
+        this.children.modal = new Modal({
+            ...loginConfig,
+            onSubmit: (e) => console.log(e)
+        });
     }
 
     render() {

@@ -17,18 +17,19 @@ function queryStringify(data) {
 }
 
 interface Options {
-    method: string,
+    method?: string,
     timeout?: number,
     data?: Document | XMLHttpRequestBodyInit,
     headers?: object
 }
-class HTTPTransport {
-    get = (url, options: Options) => {
+
+export default class HTTPTransport {
+    get = (url, options: Options): Promise<unknown> => {
 
         return this.request(url, {...options, method: Methods.GET}, options.timeout);
     };
 
-    post = (url, options: Options) => {
+    post = (url, options: Options): Promise<unknown> => {
         return this.request(url, {...options, method: Methods.POST}, options.timeout);
     };
 

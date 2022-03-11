@@ -17,11 +17,6 @@ interface InputGroupProps {
 export class InputGroup extends Block<InputGroupProps> {
     isValid;
 
-    constructor(props: InputGroupProps) {
-        super(props);
-    }
-
-
     validationHandler = (value) => {
         if (!value) return;
 
@@ -54,6 +49,7 @@ export class InputGroup extends Block<InputGroupProps> {
     }
 
     render() {
+        //console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }

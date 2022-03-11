@@ -204,7 +204,6 @@ export default abstract class Block<TProps> {
 
     compile(template: (context: any) => string, context: any = {}) {
         const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
-
         Object.entries(this.children).forEach(([key, child]) => {
             const childrenIsArray = Array.isArray(child) && child.every(v => v instanceof Block);
             if (childrenIsArray) {

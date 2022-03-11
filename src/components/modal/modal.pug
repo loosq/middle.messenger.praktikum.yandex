@@ -1,10 +1,10 @@
-form(class="column content-center items-center full-width" name="form")
+form(class="column content-center items-center full-width" name="form" enctype="multipart/form-data")
   div(class="modal modal-login radiused column")
     h2(class="modal__title text-center") #{title}
     if inputGroups && inputGroups.length
       each inputGroup in inputGroups
         | !{inputGroup}
       | !{button}
-      div(class="text-center full-width")
-        if link
+      if link.goTo || link.title
+        div(class="text-center full-width")
           a(class="modal__link" data-href=`/${link.goTo}` href=`/${link.goTo}`) #{link.title}

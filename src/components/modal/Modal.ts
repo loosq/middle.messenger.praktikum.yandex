@@ -15,17 +15,30 @@ interface ModalProps {
         [key: string]: boolean
     },
     classNames: string[],
-    $router: Router;
-    events: {
-        [key: string]: (e: Event) => void
-    }
+    $router?: Router,
+    onSubmit: (e: Event) => void
 }
 
 class Modal extends Block<ModalProps> {
+    inputsValidationState: {
+        [key: string]: boolean
+    };
+    events: {
+        [key: string]: (e: Event) => void
+    }
+
+    constructor(props: ModalProps) {
+        super(props);
+        this.inputsValidationState = {};
+        this.events = {
+            submit: this.onSubmit
+        }
+    }
+
     setValidationStatus = (name, status) => {
-        this.props.inputsValidationState[name] = status;
-        const isValid = Object.values(this.props.inputsValidationState).every(v => v) as boolean;
-        this.children.button.setProps({isActive: isValid})
+        this.inputsValidationState[name] = status;
+        const isValid = Object.values(this.inputsValidationState).every(v => v) as boolean;
+        this.children.button.setProps({isActive: isValid});
     }
 
     handleLinkClick = (e) => {
@@ -39,43 +52,16 @@ class Modal extends Block<ModalProps> {
         }
     }
 
-    componentDidMount(oldProps:ModalProps) {
-        this.props = {
-            ...this.props,
-            inputsValidationState: {},
-            events: {
-                click: this.handleLinkClick
-            }
-        };
-    }
-
-    get compiledValues() {
-        return {
-            ...this.props,
-            inputsValidationState: {},
-            events: {
-                click: this.handleLinkClick
-            }
-        }
-    }
-
-    initChildren() {
+    componentDidMount() {
         this.children.button = new Button({
             label: this.props.buttonLabel,
             classNames: ['modal__submit-button', 'radiused', 'text-center', 'full-width'],
-            events: {
-                click: () => {
-                    const isValid = Object.values(this.props.inputsValidationState).every(v => v) as boolean;
-                    if (isValid) {
-                        console.log('Теперь всё отлично, форма заполнена корректно!')
-                    } else {
-                        console.error('Форма заполнена не корректно');
-                    }
-                }
-            }
+            isActive: false
         });
         this.children.inputGroups = this.props.inputs?.map(({label, name, errorMessage, validateAs}) => {
-            this.props.inputsValidationState[name] = false;
+            if (this.inputsValidationState) {
+                this.inputsValidationState[name] = false;
+            }
 
             return new InputGroup({
                 label,
@@ -84,11 +70,18 @@ class Modal extends Block<ModalProps> {
                 validateAs,
                 setValidationStatus: this.setValidationStatus
             })
-        }) || [];
+        });
+        this.setProps({events: this.events})
+    }
+
+    onSubmit = (e: Event) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        this.props.onSubmit(e);
     }
 
     render() {
-        return this.compile(template, {...this.compiledValues});
+        return this.compile(template, {...this.props});
     }
 }
 

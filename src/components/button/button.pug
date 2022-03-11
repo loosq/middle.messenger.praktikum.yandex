@@ -1,4 +1,2 @@
-if isActive
-  button(type=`${type ? type : 'submit'}` class='button radiused text-center full-width') #{label}
-else
-  button(type=`${type ? type : 'submit'}` class='button radiused text-center full-width disabled') #{label}
+div(class=`${isActive ? 'active' : 'disabled'}`)
+  button(type='submit' class='button radiused text-center full-width') #{label}

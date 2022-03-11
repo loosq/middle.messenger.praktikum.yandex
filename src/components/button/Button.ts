@@ -5,16 +5,10 @@ import "./button.css"
 interface ButtonProps {
     label: string,
     type?: string
-    classNames?: string[],
-    isActive?: boolean,
-    events?: any
+    classNames?: string[]
 }
 
 export class Button extends Block<ButtonProps> {
-    constructor(props: ButtonProps) {
-        super(props);
-    }
-
     render() {
         return this.compile(template, {...this.props});
     }

@@ -24,19 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
             router.go(`/${target?.id || ''}`)
         })
     });
-
-
-    document.addEventListener("submit", (e) => {
-        e.preventDefault();
-        let res = {};
-        const form = e.target as HTMLElement;
-        if (form) {
-            const inputs = form.querySelectorAll('input');
-            [...inputs].forEach(input => res[input.name] = input.value);
-
-            console.log(res)
-        }
-    })
 })
 
 
