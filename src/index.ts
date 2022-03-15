@@ -1,7 +1,7 @@
 import '../static/css/styles.css';
 import '/static/icons/sprite.svg';
 import {Login} from "./pages/login/Login";
-import {Register} from "./pages/register/Register";
+import Register from "./pages/register/Register";
 import {Chat} from "./pages/chat/Chat";
 import {Profile} from "./pages/profile/Profile";
 import Error from "./pages/error/Error";
@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .use("/register", Register)
         .use("/error", Error)
         .start();
+
+    router.go('/login')
 
     Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
         link.addEventListener('click', ({target}: Event & {target: {id:string}}) => {

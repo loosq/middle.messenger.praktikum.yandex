@@ -4,13 +4,14 @@ div(class="profile column items-center content-center text-center full-width")
     div(class="profile__img-wrapper relative")
       span(class="profile__img-change absolute-centered") Поменять<br/>аватар
       img(class="profile__img" height="130" width="130" src="../../../static/images/avatar1.png" alt="Аватар пользователя")
-    h3(class="profile__title") Иван
+    h3(class="profile__title") #{userName}
+  if userData
     ul(class="profile__info")
       each dataUser in userData
         li(class="profile__item row content-between items-center")
           span #{dataUser.key}
           span #{dataUser.value}
-
+  if userActions
     ul(class="profile__info profile__info-controls")
         each dataAction, i in userActions
           li(class="profile__item row content-between items-center")

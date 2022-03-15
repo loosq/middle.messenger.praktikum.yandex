@@ -9,12 +9,26 @@ class Store extends EventBus {
 
     constructor() {
         super();
-        this.state = {}
+        this.state = {
+            userLogin: '',
+            userPassword: '',
+            modalError: '',
+            currentUser: '',
+            userName: '',
+            userEmail: '',
+            userSecondName: '',
+            userPhone: ''
+        }
     }
 
     public set(key: string, value: any) {
+        console.log('Setting store', {[key]: value})
         Object.assign(this.state, {[key]: value})
         this.emit(StoreEvents.Updated);
+    };
+
+    public getState() {
+        return this.state;
     };
 }
 

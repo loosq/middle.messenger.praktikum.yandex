@@ -11,13 +11,13 @@ const loginConfig: LoginConfig = {
     buttonLabel: "Автаризоваться",
     inputs: [
         {
-            name: "user_name",
+            name: "login",
             label: "Логин",
             errorMessage: "Не верный логин",
             validateAs: 'login'
         },
         {
-            name: "user_password",
+            name: "password",
             label: "Пароль",
             errorMessage: "Не верный пароль",
             validateAs: 'password'

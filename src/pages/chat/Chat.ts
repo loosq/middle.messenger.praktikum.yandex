@@ -9,6 +9,7 @@ import chatData from "./mocks/chatData";
 import {ChatControls} from "./fragments/chatControls/ChatControls";
 import {ChatHeader} from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
+import store from "../../utils/Store";
 
 interface ChatProps {
     isControlsVisible: boolean,
@@ -16,8 +17,10 @@ interface ChatProps {
 }
 
 export class Chat extends Block<ChatProps> {
+    _state;
     constructor(props) {
         super(props);
+        this._state = store.getState();
     }
 
     initChildren() {

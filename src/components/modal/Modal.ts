@@ -5,38 +5,60 @@ import {Button} from "../button/Button";
 import {InputGroup} from "../inputGroup/InputGroup";
 import withRouter from "../../utils/withRouter"
 import Router from "../../utils/Router";
+import {ServerError} from "../serverError/ServerError";
+import store, {StoreEvents} from "../../utils/Store";
 
 interface ModalProps {
     buttonLabel: string,
     title: string,
     inputs: [],
     link: object,
-    classNames: string[],
+    classNames?: string[],
     $router?: Router,
-    onSubmit: (e: Event) => void
+    onSubmit: (e: Event) => void,
+    serverErrorText?: string,
+    userData: {
+        [key: string]: string
+    }
 }
 
 class Modal extends Block<ModalProps> {
-    private readonly _inputsValidationState: {
+    private _isFormValid: Boolean;
+    private _inputsValidationState: {
         [key: string]: boolean
     };
-    private readonly _events: {
+    private _events: {
         [key: string]: (e: Event) => void
     }
+
     constructor(props: ModalProps) {
         super(props);
         this._inputsValidationState = {};
         this._events = {
             submit: this.onSubmit
         };
+        this._isFormValid = false;
+
+        store.on(StoreEvents.Updated, this.onChangeState);
+    }
+
+    onChangeState = () => {
+        const state = store.getState();
+
+        console.log('get update from modal', state)
+        if (state.modalError) {
+            this.children.serverError.setProps({label: state.modalError})
+        }
     }
 
     setValidationStatus = (name, status) => {
         this._inputsValidationState[name] = status;
         const isValid = Object.values(this._inputsValidationState).every(v => v) as boolean;
-        this.children.button.setProps({isActive: isValid});
-        console.log(this.props)
 
+        if (this._isFormValid !== isValid) {
+            this._isFormValid = isValid;
+            this.children.button.setProps({isActive: isValid});
+        }
     }
 
     handleLinkClick = (e) => {
@@ -60,17 +82,24 @@ class Modal extends Block<ModalProps> {
             if (this._inputsValidationState) {
                 this._inputsValidationState[name] = false;
             }
+            let value = '';
+            if (this.props.userData && name in this.props.userData && this.props.userData[name] && this._inputsValidationState) {
+                value = this.props.userData[name];
+                this._inputsValidationState[name] = true;
+                this.children.button.setProps({isActive: true});
+            }
 
             return new InputGroup({
                 label,
                 name,
                 errorMessage,
                 validateAs,
+                value,
                 setValidationStatus: this.setValidationStatus
             })
         });
-
-        this.setProps({events: this._events})
+        this.children.serverError = new ServerError({label: ''});
+        this.setProps({events: this._events});
     }
 
     onSubmit = (e: Event) => {

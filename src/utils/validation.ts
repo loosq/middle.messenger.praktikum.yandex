@@ -8,7 +8,7 @@ const validate = (type, string) => {
         password: /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/,
         email: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
         name: /^[A-ZА-Я][a-zа-я-]*$/,
-        phone: /^(\+)?\d{5,15}$/
+        phone: /^(\+)?\d{9,15}$/
     };
 
     return new RegExp(validationType[type]).test(string);

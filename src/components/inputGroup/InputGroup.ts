@@ -11,7 +11,8 @@ interface InputGroupProps {
     errorMessage?: string,
     validateAs?: string,
     setValidationStatus?: (arg1:string, arg2:boolean) => void,
-    children?: any[]
+    children?: any[],
+    value: string
 }
 
 export class InputGroup extends Block<InputGroupProps> {
@@ -34,7 +35,7 @@ export class InputGroup extends Block<InputGroupProps> {
 
         this.children.input = new Input({
             ...this.props,
-            value: '',
+            value: this.props.value || '',
             events: {
                 input: (e) => this.validationHandler(e.target.value),
                 focus: (e) => this.validationHandler(e.target.value),
@@ -49,7 +50,6 @@ export class InputGroup extends Block<InputGroupProps> {
     }
 
     render() {
-        //console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }

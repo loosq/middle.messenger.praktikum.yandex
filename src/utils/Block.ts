@@ -13,7 +13,7 @@ export default abstract class Block<TProps> {
     public id = nanoid(6);
     private _meta;
     children: Record<string, any>;
-    protected classNames: string[];
+    classNames: string[];
     protected props: TProps & {
         classList?: string,
         $router?: Router,
@@ -168,10 +168,11 @@ export default abstract class Block<TProps> {
 
 
     private _addClasses() {
-        const {classList} = this.props;
+        // @ts-ignore
+        const {classNames} = this.props;
 
-        if (classList) {
-            this.element.classList = classList;
+        if (classNames) {
+            this.element.classList.add(...classNames);
         }
     }
 
@@ -226,7 +227,6 @@ export default abstract class Block<TProps> {
                 stubs.forEach((stub: HTMLElement) => {
                     const childById = child.find(ch => "id-"+ch.id === stub.dataset.id)
                     stub.replaceWith(childById.getContent());
-
                     this._addChildEvents(childById);
                 });
                 return;
@@ -241,7 +241,7 @@ export default abstract class Block<TProps> {
 
             //add classes
             if (Array.isArray(child.classNames) && child.classNames.length) {
-                child.getContent()!.classList.add(...child.classNames);
+                child.getContent().classList.add(...child.classNames);
             }
         });
 
