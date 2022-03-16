@@ -1,29 +1,62 @@
 import {EventBus} from "./EventBus";
 
+interface User {
+    current: string | number,
+    login: string,
+    password: string,
+    name: string,
+    email: string,
+    secondName: string,
+    phone: string
+}
+
+interface Error {
+    modalForm: ''
+}
+
+interface State {
+    user: User,
+    error: Error
+}
+
 export enum StoreEvents {
     Updated = 'updated',
 }
 
 class Store extends EventBus {
-    state;
+    state: State;
 
     constructor() {
         super();
         this.state = {
-            userLogin: '',
-            userPassword: '',
-            modalError: '',
-            currentUser: '',
-            userName: '',
-            userEmail: '',
-            userSecondName: '',
-            userPhone: ''
+            user: {
+                current: '',
+                login: '',
+                password: '',
+                name: '',
+                email: '',
+                secondName: '',
+                phone: ''
+            },
+            error: {
+                modalForm: ''
+            }
         }
     }
 
     public set(key: string, value: any) {
-        console.log('Setting store', {[key]: value})
-        Object.assign(this.state, {[key]: value})
+        let valueToMerge;
+
+        // key поддерживает запись только 1 уровня вложенности
+        if (key.includes('/')) {
+            const keySplit = key.split('/');
+            valueToMerge = {[keySplit[0]]: {[keySplit[1]]: value}}
+        } else {
+            valueToMerge = {[key]: value};
+        }
+
+        console.log('Setting store', valueToMerge)
+        Object.assign(this.state, valueToMerge);
         this.emit(StoreEvents.Updated);
     };
 

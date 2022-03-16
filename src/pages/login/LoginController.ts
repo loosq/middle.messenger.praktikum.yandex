@@ -1,6 +1,6 @@
 import store from '../../utils/Store';
 import Router from "../../utils/Router";
-import UserApi from "../../api/user/user";
+import UserApi from "../../api/user/User";
 
 export default class LoginController {
     private _router;

@@ -2,15 +2,15 @@ import Block from "../../utils/Block";
 import withRouter from "../../utils/withRouter";
 import Modal from "../../components/modal/Modal";
 import template from "./register.pug";
-import RegisterController from "./RegisterController";
 import registerConfig from "./config/registerConfig";
+import UserController from "../../controllers/UserController";
 
 class Register extends Block<{}> {
-    controller: RegisterController;
+    UserController: UserController;
 
     constructor() {
         super();
-        this.controller = new RegisterController();
+        this.UserController = new UserController();
     }
 
     initChildren() {
@@ -25,8 +25,8 @@ class Register extends Block<{}> {
                     if (Object.values(formData).some(v => !v)){
                         throw new Error('Some values are missing!')
                     }
-                    const data = JSON.stringify(formData);
-                    this.controller.registerUser(data);
+                    console.log(formData)
+                    this.UserController.register(formData);
                 }
             }
         });

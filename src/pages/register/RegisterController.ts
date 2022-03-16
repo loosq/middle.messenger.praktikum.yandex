@@ -1,4 +1,4 @@
-import UserApi from "../../api/user/user"
+import UserApi from "../../api/user/User"
 import store from '../../utils/Store';
 import Router from "../../utils/Router";
 

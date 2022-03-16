@@ -1,9 +1,9 @@
 import HTTPTransport from "../utils/HttpTransport";
 
-export default class BaseAPI {
+export default abstract class BaseAPI {
     protected http: HTTPTransport;
 
-    constructor(endpoint) {
+    constructor(endpoint:string = '') {
         this.http = new HTTPTransport(endpoint);
     }
 
@@ -11,15 +11,15 @@ export default class BaseAPI {
         throw new Error('Not implemented');
     }
 
-    read(identifier?: string): Promise<unknown> {
+    read(data: unknown): Promise<unknown> {
         throw new Error('Not implemented');
     }
 
-    update(identifier: string): Promise<unknown> {
+    update(data: unknown): Promise<unknown> {
         throw new Error('Not implemented');
     }
 
-    delete(identifier: string): Promise<unknown> {
+    delete(data?: unknown): Promise<unknown> {
         throw new Error('Not implemented');
     }
 }

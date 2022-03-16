@@ -1,3 +1,5 @@
+import {log} from "util";
+
 const Methods = {
     GET: 'GET',
     POST: 'POST',
@@ -29,7 +31,7 @@ export default class HTTPTransport {
     static API_URL = 'https://ya-praktikum.tech/api/v2';
     protected endpoint: string;
 
-    constructor(endpoint:string) {
+    constructor(endpoint:string = '') {
         this.endpoint = `${HTTPTransport.API_URL}${endpoint}`
     }
 
@@ -65,6 +67,10 @@ export default class HTTPTransport {
 
     private request<Response>(url: string, options: Options = {method: Methods.GET}, timeout: number = 5000): Promise<Response> {
         const {headers = {}, method, data} = options;
+        const defaultHeaders = {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+        };
 
         return new Promise((resolve, reject) => {
             if (!method) {
@@ -82,8 +88,8 @@ export default class HTTPTransport {
                     : url,
             );
 
-            Object.keys(headers).forEach(key => {
-                xhr.setRequestHeader(key, headers[key]);
+            Object.entries({...defaultHeaders, ...headers}).forEach(([key, value]) => {
+                xhr.setRequestHeader(key, value);
             });
 
             xhr.onreadystatechange = () => {
