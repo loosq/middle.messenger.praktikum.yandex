@@ -14,6 +14,17 @@ export interface userDataLogin {
     password: string
 }
 
+export interface userPersonalData {
+    id: string | number,
+    first_name: string,
+    second_name: string,
+    display_name: string,
+    login: string,
+    email: string,
+    phone: string | number,
+    avatar: string
+}
+
 export default class UserAPI extends BaseAPI {
     create(data: userDataCreate): Promise<unknown> {
 

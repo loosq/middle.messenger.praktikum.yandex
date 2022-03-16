@@ -1,6 +1,6 @@
 import Route from "./Route";
 
-export default class Router {
+class Router {
     routes;
     history;
     private _currentRoute;
@@ -66,3 +66,5 @@ export default class Router {
         return this.routes.find(route => route.match(pathname));
     }
 }
+
+export default new Router();
