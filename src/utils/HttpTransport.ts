@@ -1,5 +1,3 @@
-import {log} from "util";
-
 const Methods = {
     GET: 'GET',
     POST: 'POST',
@@ -43,7 +41,7 @@ export default class HTTPTransport {
         return this.request<Response>(this.endpoint + path, {
             method: Methods.POST,
             data
-        });
+        })
     };
 
     public put<Response = void>(path = '/', data: unknown): Promise<Response> {
@@ -80,6 +78,7 @@ export default class HTTPTransport {
 
             const xhr = new XMLHttpRequest();
             const isGet = method === Methods.GET;
+            xhr.withCredentials = true;
 
             xhr.open(
                 method,
@@ -88,15 +87,20 @@ export default class HTTPTransport {
                     : url,
             );
 
-            Object.entries({...defaultHeaders, ...headers}).forEach(([key, value]) => {
-                xhr.setRequestHeader(key, value);
-            });
+            // Object.entries({...defaultHeaders, ...headers}).forEach(([key, value]) => {
+            //     xhr.setRequestHeader(key, value);
+            // });
+
+            xhr.setRequestHeader("accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onreadystatechange = () => {
-                if (xhr.status < 400) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.response);
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status < 400) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(xhr.response);
+                    }
                 }
             };
 

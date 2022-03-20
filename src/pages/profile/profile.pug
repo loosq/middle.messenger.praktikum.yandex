@@ -13,7 +13,7 @@ div(class="profile column items-center content-center text-center full-width")
           span #{dataUser.value}
   if userActions
     ul(class="profile__info profile__info-controls")
-        each dataAction, i in userActions
+        each userAction, i in userActions
           li(class="profile__item row content-between items-center")
-             a(class=`${i === userActions.length - 1 ? 'profile__item-link--special' : 'profile__item-link'}` href="#") #{dataAction}
+             a(class=`${i === userActions.length - 1 ? 'profile__item-link--special' : 'profile__item-link'}` data-href=`/${userAction.action}`) #{userAction.key}
     | !{button}

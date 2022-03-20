@@ -1,7 +1,7 @@
 import {EventBus} from "./EventBus";
 
 interface User {
-    current: string | number,
+    id: string | number,
     login: string,
     password: string,
     name: string,
@@ -30,7 +30,7 @@ class Store extends EventBus {
         super();
         this.state = {
             user: {
-                current: '',
+                id: '',
                 login: '',
                 password: '',
                 name: '',
@@ -50,13 +50,12 @@ class Store extends EventBus {
         // key поддерживает запись только 1 уровня вложенности
         if (key.includes('/')) {
             const keySplit = key.split('/');
-            valueToMerge = {[keySplit[0]]: {[keySplit[1]]: value}}
+            Object.assign(this.state[keySplit[0]], {[keySplit[1]]: value});
         } else {
             valueToMerge = {[key]: value};
+            Object.assign(this.state, valueToMerge);
         }
-
-        console.log('Setting store', valueToMerge)
-        Object.assign(this.state, valueToMerge);
+        console.log('Setting store', this.state)
         this.emit(StoreEvents.Updated);
     };
 

@@ -14,7 +14,7 @@ interface ModalProps {
     inputs: [],
     link: object,
     classNames?: string[],
-    $router?: Router,
+    $router?: typeof Router,
     onSubmit: (e: Event) => void,
     serverErrorText?: string,
     userData: {
@@ -35,7 +35,8 @@ class Modal extends Block<ModalProps> {
         super(props);
         this._inputsValidationState = {};
         this._events = {
-            submit: this.onSubmit
+            submit: this.onSubmit,
+            click: this.handleLinkClick
         };
         this._isFormValid = false;
 
@@ -44,10 +45,9 @@ class Modal extends Block<ModalProps> {
 
     onChangeState = () => {
         const state = store.getState();
-
-        console.log('get update from modal', state)
-        if (state.modalError) {
-            this.children.serverError.setProps({label: state.modalError})
+        const {modalForm} = state.error;
+        if (modalForm) {
+            this.children.serverError.setProps({label: modalForm})
         }
     }
 
@@ -62,12 +62,13 @@ class Modal extends Block<ModalProps> {
     }
 
     handleLinkClick = (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
         const {href} = e.target.dataset;
         const {$router} = this.props;
 
         if (href && $router) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
             $router.go(href)
         }
     }

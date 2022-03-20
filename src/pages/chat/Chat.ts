@@ -10,6 +10,7 @@ import {ChatControls} from "./fragments/chatControls/ChatControls";
 import {ChatHeader} from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
 import store from "../../utils/Store";
+import UserController from "../../controllers/UserController";
 
 interface ChatProps {
     isControlsVisible: boolean,
@@ -35,21 +36,22 @@ export class Chat extends Block<ChatProps> {
         this.children.chatControls.setProps({isControlsVisible: !isVisible})
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.isControlsVisible = false;
         this.props.events = {
-            click: (e: Event & {target: {dataset: {href: string}}}) => {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                const {href} = e?.target?.dataset;
+            click: this.handleClick
+        }
+    }
 
-                if (href === 'chat-controls') {
-                    this.handleControlsClick(this.props.isControlsVisible)
-                } else {
-                    this.handleControlsClick(true)
-                }
-            }
+    handleClick = (e: Event & {target: {dataset: {href: string}}}) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const {href} = e?.target?.dataset;
 
+        if (href === 'chat-controls') {
+            this.handleControlsClick(this.props.isControlsVisible)
+        } else {
+            this.handleControlsClick(true)
         }
     }
 

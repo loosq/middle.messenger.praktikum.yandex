@@ -4,29 +4,26 @@ import Modal from "../../components/modal/Modal";
 import template from "./register.pug";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
+import {UserDataCreate} from "../../api/user/User";
 
 class Register extends Block<{}> {
-    UserController: UserController;
-
-    constructor() {
-        super();
-        this.UserController = new UserController();
-    }
-
     initChildren() {
         this.children.modal = new Modal({
             ...registerConfig,
-            onSubmit: (e: Event) => {
+            onSubmit: async (e: Event) => {
                 if (e.target) {
                     // @ts-ignore
-                    const formData = Object.fromEntries(new FormData(e.target));
-                    delete formData.password_repeat
+                    const formData = Object.fromEntries(new FormData(e.target)) as UserDataCreate;
 
                     if (Object.values(formData).some(v => !v)){
                         throw new Error('Some values are missing!')
                     }
-                    console.log(formData)
-                    this.UserController.register(formData);
+
+                    try {
+                        await UserController.register(formData as UserDataCreate);
+                    } catch (e) {
+                        console.log(e)
+                    }
                 }
             }
         });

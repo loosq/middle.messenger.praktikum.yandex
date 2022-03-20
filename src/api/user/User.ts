@@ -1,6 +1,16 @@
 import BaseAPI from '../api';
 
-export interface userDataCreate {
+export interface UserDataCreate {
+    first_name: string,
+    second_name: string,
+    login: string,
+    email: string,
+    password: string,
+    phone: string,
+    password_repeat: string
+}
+
+export interface UserDataSingIn {
     first_name: string,
     second_name: string,
     login: string,
@@ -9,12 +19,12 @@ export interface userDataCreate {
     phone: string
 }
 
-export interface userDataLogin {
+export interface UserDataLogin {
     login: string,
     password: string
 }
 
-export interface userPersonalData {
+export interface UserPersonalData {
     id: string | number,
     first_name: string,
     second_name: string,
@@ -25,32 +35,30 @@ export interface userPersonalData {
     avatar: string
 }
 
-export default class UserAPI extends BaseAPI {
-    create(data: userDataCreate): Promise<unknown> {
-
-        return this.http
-            .post('/auth/signup', {...data})
-            .then((res) => res);
+class UserAPI extends BaseAPI {
+    constructor() {
+        super('');
     }
 
-    login(data: userDataLogin): Promise<unknown> {
+    create(data: UserDataSingIn): Promise<unknown> {
+        return this.http.post('/auth/signup', data);
+    }
 
-        return this.http
-            .post('/auth/signin', {...data})
-            .then((res) => res);
+    login(data: UserDataLogin): Promise<unknown> {
+        return this.http.post('/auth/signin', data)
     }
 
     read(): Promise<unknown> {
-
-        return this.http
-            .post('/auth/user')
-            .then((res) => res);
+        return this.http.get('/auth/user');
     }
 
     delete(): Promise<unknown> {
+        return this.http.post('/auth/logout');
+    }
 
-        return this.http
-            .post('/auth/logout')
-            .then((res) => res);
+    update(identifier: string, data: unknown): Promise<unknown> {
+        return Promise.resolve(undefined);
     }
 }
+
+export default new UserAPI();

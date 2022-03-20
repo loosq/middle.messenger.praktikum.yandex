@@ -16,13 +16,13 @@ export default abstract class Block<TProps> {
     classNames: string[];
     protected props: TProps & {
         classList?: string,
-        $router?: Router,
+        $router?: typeof Router,
         events?: {
             [key: string]: (e: Event) => void
         }
     };
     private eventBus = new EventBus();
-    private _element;
+    private _element: HTMLElement;
 
     constructor(componentData: object = {}) {
         const {props, children, classNames} = this.getChildren(componentData);
@@ -249,10 +249,12 @@ export default abstract class Block<TProps> {
     }
 
     show() {
-        this._element.style.display = 'block';
+        // @ts-ignore
+        this._element?.style?.display = 'block';
     }
 
     hide() {
-        this._element.style.display = 'none';
+        // @ts-ignore
+        this._element?.style?.display = 'none';
     }
 }

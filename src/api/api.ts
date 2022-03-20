@@ -3,23 +3,15 @@ import HTTPTransport from "../utils/HttpTransport";
 export default abstract class BaseAPI {
     protected http: HTTPTransport;
 
-    constructor(endpoint:string = '') {
+    constructor(endpoint:string) {
         this.http = new HTTPTransport(endpoint);
     }
 
-    create(data: unknown): Promise<unknown> {
-        throw new Error('Not implemented');
-    }
+    public abstract create?(data: unknown): Promise<unknown>;
 
-    read(data: unknown): Promise<unknown> {
-        throw new Error('Not implemented');
-    }
+    public abstract read?(identifier?: string): Promise<unknown>;
 
-    update(data: unknown): Promise<unknown> {
-        throw new Error('Not implemented');
-    }
+    public abstract update?(identifier: string, data: unknown): Promise<unknown>;
 
-    delete(data?: unknown): Promise<unknown> {
-        throw new Error('Not implemented');
-    }
+    public abstract delete?(identifier: string): Promise<unknown>;
 }

@@ -1,29 +1,41 @@
 import '../static/css/styles.css';
 import '/static/icons/sprite.svg';
-import {Login} from "./pages/login/Login";
+import Login from "./pages/login/Login";
+import Logout from "./pages/logout/Logout";
 import Register from "./pages/register/Register";
 import {Chat} from "./pages/chat/Chat";
 import {Profile} from "./pages/profile/Profile";
 import Error from "./pages/error/Error";
 import Router from "./utils/Router";
+import UserController from "./controllers/UserController";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const linksContainer = document.getElementById('links') as HTMLElement;
-    const router = new Router('#root');
 
-    router
+    Router
         .use("/chat", Chat)
         .use("/profile", Profile)
         .use("/login", Login)
         .use("/register", Register)
         .use("/error", Error)
+        .use("/logout", Logout)
         .start();
 
-    router.go('/login')
+
+    try {
+        const isLoggedIn = await UserController.checkUserData();
+
+        if (isLoggedIn) {
+            Router.go('/chat');
+        }
+    } catch (e) {
+        console.error(e);
+        Router.go('/login');
+    }
 
     Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
-        link.addEventListener('click', ({target}: Event & {target: {id:string}}) => {
-            router.go(`/${target?.id || ''}`)
+        link.addEventListener('click', ({target}: Event & { target: { id: string } }) => {
+            Router.go(`/${target?.id || ''}`)
         })
     });
 })

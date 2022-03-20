@@ -1,46 +1,82 @@
 import Block from "../../utils/Block";
 import template from "./profile.pug"
 import "./profile.css";
-import userActions from "./mocks/userActions";
 import {Button} from "../../components/button/Button";
 import GoBackButton from "./fragments/goBackButton/GoBackButton";
 import store from "../../utils/Store";
 
 export class Profile extends Block<{}> {
-
+    constructor() {
+        super();
+        this.props = {
+            events: {
+                click: (e) => console.log(e)
+            }
+        }
+    }
     initChildren() {
         this.children.button = new Button({
             label: "Сохранить",
-            classNames: ['profile__submit']
+            classNames: ['profile__submit'],
+            events: {
+                click: (e) => console.log(e)
+            },
+            isActive: true
         })
         this.children.goBackButton = new GoBackButton({});
     }
 
+    handleClick = (e) => {
+        const {href} = e.target.dataset;
+        const {$router} = this.props;
+
+        if (href && $router) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            $router.go(href)
+        }
+    };
+
     componentDidMount() {
-        const {userLogin, userName, userEmail, userSecondName, userPhone} = store.getState();
+        const {user: {login, name, secondName, phone, email}} = store.getState();
         const userData = [
             {
                 key: 'Почта',
-                value: userEmail
+                value: email
             },
             {
                 key: 'Логин',
-                value: userLogin
+                value: login
             },
             {
                 key: 'Имя',
-                value: userName
+                value: name
             },
             {
                 key: 'Фамилия',
-                value: userSecondName
+                value: secondName
             },
             {
                 key: 'Телефон',
-                value: userPhone
+                value: phone
             }];
+        const userActions = [
+            {
+                key: 'Изменить данные',
+                action: 'changeData'
+            },
+            {
+                key: 'Изменить пароль',
+                action: 'changePassword'
+            },
+            {
+                key: 'Выйти',
+                action: 'changePassword'
+            }
+        ]
 
-        this.setProps({userName, userData, userActions})
+        this.setProps({name, userData, userActions})
     }
 
     render() {

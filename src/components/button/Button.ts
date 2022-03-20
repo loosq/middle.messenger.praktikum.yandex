@@ -4,13 +4,13 @@ import "./button.css"
 
 interface ButtonProps {
     label: string,
-    type?: string
+    type?: string,
+    isActive?: boolean,
     classNames?: string[]
 }
 
 export class Button extends Block<ButtonProps> {
     render() {
-        console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }
