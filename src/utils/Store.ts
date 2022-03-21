@@ -7,11 +7,13 @@ interface User {
     name: string,
     email: string,
     secondName: string,
-    phone: string
+    phone: string,
+    displayName: string
 }
 
 interface Error {
-    modalForm: ''
+    modalForm: string,
+    profileForm: string
 }
 
 interface State {
@@ -36,10 +38,12 @@ class Store extends EventBus {
                 name: '',
                 email: '',
                 secondName: '',
-                phone: ''
+                phone: '',
+                displayName: ''
             },
             error: {
-                modalForm: ''
+                modalForm: '',
+                profileForm: ''
             }
         }
     }

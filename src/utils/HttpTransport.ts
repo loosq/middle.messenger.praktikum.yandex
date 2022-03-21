@@ -87,12 +87,9 @@ export default class HTTPTransport {
                     : url,
             );
 
-            // Object.entries({...defaultHeaders, ...headers}).forEach(([key, value]) => {
-            //     xhr.setRequestHeader(key, value);
-            // });
-
-            xhr.setRequestHeader("accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
+            Object.entries({...defaultHeaders, ...headers}).forEach(([key, value]) => {
+                xhr.setRequestHeader(key, value);
+            });
 
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === XMLHttpRequest.DONE) {

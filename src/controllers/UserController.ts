@@ -31,12 +31,13 @@ class UserController {
 
         const response = JSON.parse(res);
         if (response.id) {
-            Store.set('user/login', data.login);
             Store.set('user/id', response.id);
             Store.set('user/name', data.first_name);
             Store.set('user/secondName', data.second_name);
+            Store.set('user/displayName', `${data.first_name} ${data.second_name}`);
             Store.set('user/email', data.email);
             Store.set('user/phone', data.phone);
+            Store.set('user/login', data.login);
             Store.set('user/password', data.password);
             Store.set('error/modalForm', '');
             Router.go('/login');
@@ -56,17 +57,22 @@ class UserController {
             console.error(e);
             return false;
         }
-
-        const {id, first_name, second_name, avatar, login, phone, email} = JSON.parse(response);
+        console.log(JSON.parse(response))
+        const {id, first_name, second_name, avatar, login, phone, email, display_name} = JSON.parse(response);
         Store.set('user/login', login);
         Store.set('user/id', id);
         Store.set('user/name', first_name);
+        Store.set('user/displayName', display_name);
         Store.set('user/secondName', second_name);
         Store.set('user/email', email);
         Store.set('user/phone', phone);
         Store.set('user/avatar', avatar);
 
         return true;
+    }
+
+    async updateData(data) {
+        return await this.api.update(data);
     }
 }
 

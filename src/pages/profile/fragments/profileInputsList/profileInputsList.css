@@ -1,0 +1,26 @@
+.profile__info {
+  width: 510px;
+  margin-bottom: 56px;
+}
+
+.profile__item {
+  height: 32px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.profile__info-controls li:last-child {
+  border-bottom-color: transparent;
+}
+
+.profile__item input {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--secondaryColor);
+  text-align: right;
+  pointer-events: none;
+}
+
+.profile__info--isEdit input {
+  pointer-events: all;
+}

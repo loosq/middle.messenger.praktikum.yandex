@@ -36,6 +36,7 @@ class Login extends Block<{}> {
 
                     if (res === 'OK') {
                         Store.set('error/modalForm', '');
+                        await UserController.checkUserData();
                         this.props.$router?.go('/chat')
                     }
                 }

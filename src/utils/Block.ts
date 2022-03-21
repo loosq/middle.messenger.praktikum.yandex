@@ -106,7 +106,6 @@ export default abstract class Block<TProps> {
     }
 
     setProps = nextProps => {
-
         if (!nextProps) {
             return;
         }

@@ -35,6 +35,15 @@ export interface UserPersonalData {
     avatar: string
 }
 
+export interface UserDataUpdate {
+    first_name: string,
+    second_name: string,
+    display_name: string,
+    login: string,
+    email: string,
+    phone: string
+}
+
 class UserAPI extends BaseAPI {
     constructor() {
         super('');
@@ -56,8 +65,8 @@ class UserAPI extends BaseAPI {
         return this.http.post('/auth/logout');
     }
 
-    update(identifier: string, data: unknown): Promise<unknown> {
-        return Promise.resolve(undefined);
+    update(data: UserDataUpdate): Promise<unknown> {
+        return this.http.put('/user/profile', data);
     }
 }
 

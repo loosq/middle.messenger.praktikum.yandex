@@ -47,20 +47,6 @@
   margin-bottom: 52px;
 }
 
-.profile__info {
-  width: 510px;
-  margin-bottom: 56px;
-}
-
-.profile__item {
-  height: 32px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.profile__info-controls li:last-child {
-  border-bottom-color: transparent;
-}
-
 .profile__item-link {
   color: var(--accentColor);
 }
@@ -76,10 +62,6 @@
   color: var(--black);
 }
 
-.profile__item span:last-child {
-  color: var(--secondaryColor);
-}
-
 .profile__submit {
   max-width: 280px;
   padding: 12px;
@@ -88,4 +70,8 @@
   text-align: center;
   border-radius: 8px;
   color: var(--white);
+}
+
+.profile-error {
+  color: var(--errorColor);
 }
