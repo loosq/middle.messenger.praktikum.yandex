@@ -44,6 +44,10 @@ export interface UserDataUpdate {
     phone: string
 }
 
+export interface UserPasswordUpdate {
+    [key: string]: FormDataEntryValue
+}
+
 class UserAPI extends BaseAPI {
     constructor() {
         super('');
@@ -66,7 +70,15 @@ class UserAPI extends BaseAPI {
     }
 
     update(data: UserDataUpdate): Promise<unknown> {
-        return this.http.put('/user/profile', data);
+        return this.http.put('/user/profile', {data});
+    }
+
+    updatePass(data: UserPasswordUpdate): Promise<unknown> {
+        return this.http.put('/user/password', data);
+    }
+
+    updateAvatar(data) {
+        return this.http.put('/user/profile/avatar', data);
     }
 }
 

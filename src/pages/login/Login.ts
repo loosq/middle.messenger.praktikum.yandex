@@ -21,7 +21,8 @@ class Login extends Block<{}> {
                     const formData = Object.fromEntries(new FormData(e.target)) as UserDataLogin;
 
                     if (Object.values(formData).some(v => !v)) {
-                        throw new Error('Some values are missing!')
+                        Store.set('error/modalForm', 'Some values are missing!');
+                        return;
                     }
 
                     try {

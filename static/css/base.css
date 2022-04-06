@@ -118,3 +118,7 @@ ul {
 .z10 {
   z-index: 10;
 }
+
+.hide {
+  display: none;
+}

@@ -8,7 +8,8 @@ interface User {
     email: string,
     secondName: string,
     phone: string,
-    displayName: string
+    displayName: string,
+    avatar: string
 }
 
 interface Error {
@@ -39,7 +40,8 @@ class Store extends EventBus {
                 email: '',
                 secondName: '',
                 phone: '',
-                displayName: ''
+                displayName: '',
+                avatar: ''
             },
             error: {
                 modalForm: '',

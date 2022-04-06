@@ -24,10 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         const isLoggedIn = await UserController.checkUserData();
-
-        if (isLoggedIn) {
-            Router.go('/chat');
-        }
+        Router.go(isLoggedIn ? '/chat' : '/login');
     } catch (e) {
         console.error(e);
         Router.go('/login');

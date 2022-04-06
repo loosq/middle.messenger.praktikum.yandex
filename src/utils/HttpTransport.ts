@@ -18,7 +18,7 @@ function queryStringify(data) {
 }
 
 interface Options {
-    method: string,
+    method?: string,
     headers?: {
         [key: string]: string
     },
@@ -44,10 +44,10 @@ export default class HTTPTransport {
         })
     };
 
-    public put<Response = void>(path = '/', data: unknown): Promise<Response> {
+    public put<Response = void>(path = '/', options: Options): Promise<Response> {
         return this.request<Response>(this.endpoint + path, {
             method: Methods.PUT,
-            data
+            ...options
         });
     };
 

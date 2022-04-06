@@ -5,7 +5,7 @@ form(class="column content-center items-center full-width" name="form" enctype="
       each inputGroup in inputGroups
         | !{inputGroup}
       | !{button}
-      if link.goTo || link.title
+      if link && (link.goTo || link.title)
         div(class="text-center full-width")
           a(class="modal__link" data-href=`/${link.goTo}` href=`/${link.goTo}`) #{link.title}
     | !{serverError}
