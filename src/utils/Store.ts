@@ -9,7 +9,8 @@ interface User {
     secondName: string,
     phone: string,
     displayName: string,
-    avatar: string
+    avatar: string,
+    searchedUsers?: string[]
 }
 
 interface Error {
@@ -41,7 +42,8 @@ class Store extends EventBus {
                 secondName: '',
                 phone: '',
                 displayName: '',
-                avatar: ''
+                avatar: '',
+                searchedUsers: []
             },
             error: {
                 modalForm: '',
@@ -53,7 +55,6 @@ class Store extends EventBus {
     public set(key: string, value: any) {
         let valueToMerge;
 
-        // key поддерживает запись только 1 уровня вложенности
         if (key.includes('/')) {
             const keySplit = key.split('/');
             Object.assign(this.state[keySplit[0]], {[keySplit[1]]: value});

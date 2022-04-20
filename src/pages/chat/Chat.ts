@@ -1,4 +1,4 @@
-import Block from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/Block";
 import template from "./chat.pug"
 import "./chat.css";
 import {ChatPreview} from "./fragments/chatPreview/ChatPreview";
@@ -11,10 +11,11 @@ import {ChatHeader} from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
 import store from "../../utils/Store";
 import UserController from "../../controllers/UserController";
+import { AddUser } from "../../components/addUser/AddUser";
 
-interface ChatProps {
+interface ChatProps extends BlockProps {
     isControlsVisible: boolean,
-    events?: object
+    isAddUserVisible: boolean
 }
 
 export class Chat extends Block<ChatProps> {
@@ -30,6 +31,7 @@ export class Chat extends Block<ChatProps> {
         this.children.chatControls = new ChatControls({...chatControls});
         this.children.chatHeader = new ChatHeader();
         this.children.chatOperations = new ChatOperations({});
+        this.children.addUser = new AddUser({isAddUserVisible: false});
     }
 
     handleControlsClick = (isVisible) => {
@@ -46,12 +48,23 @@ export class Chat extends Block<ChatProps> {
     handleClick = (e: Event & {target: {dataset: {href: string}}}) => {
         e.preventDefault();
         e.stopImmediatePropagation();
-        const {href} = e?.target?.dataset;
+        const {href} = e.target.dataset;
 
-        if (href === 'chat-controls') {
-            this.handleControlsClick(this.props.isControlsVisible)
-        } else {
-            this.handleControlsClick(true)
+        switch (href) {
+            case 'chat-controls':
+                this.handleControlsClick(this.props.isControlsVisible)
+                break;
+            case 'add-user':
+                this.children.addUser.setProps({isAddUserVisible: true});
+                this.children.chatControls.setProps({isControlsVisible: false});
+                console.log(this.children.addUser);
+                break;
+            case 'add-user-close-button':
+                this.children.addUser.setProps({isAddUserVisible: false});
+                break;
+            default: 
+                console.log(href);
+                this.handleControlsClick(true)
         }
     }
 

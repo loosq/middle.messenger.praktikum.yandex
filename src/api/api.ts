@@ -3,7 +3,7 @@ import HTTPTransport from "../utils/HttpTransport";
 export default abstract class BaseAPI {
     protected http: HTTPTransport;
 
-    constructor(endpoint:string) {
+    constructor(endpoint:string = '') {
         this.http = new HTTPTransport(endpoint);
     }
 

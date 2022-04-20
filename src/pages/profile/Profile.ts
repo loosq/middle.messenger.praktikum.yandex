@@ -1,4 +1,4 @@
-import Block from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/Block";
 import template from "./profile.pug"
 import "./profile.css";
 import {Button} from "../../components/button/Button";
@@ -7,18 +7,13 @@ import GoBackButton from "./fragments/goBackButton/GoBackButton";
 import Store, {StoreEvents} from "../../utils/Store";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
-import {UserDataCreate} from "../../api/user/User";
 import UserController from "../../controllers/UserController";
 import ProfileError from "./fragments/profileError/ProfileError";
 import ChangePassModal from "./fragments/changePassModal/ChangePassModal";
 import Avatar from "./fragments/avatar/Avatar";
 
-interface ProfileProps {
-    isEdit?: boolean,
-    events?: {
-        [key: string]: (e: Event) => void
-    },
-    input?: HTMLInputElement | null
+interface ProfileProps extends BlockProps {
+    isEdit?: boolean
 }
 
 class Profile extends Block<ProfileProps> {
@@ -66,7 +61,7 @@ class Profile extends Block<ProfileProps> {
                         const avatar = form.get('avatar');
                         if (avatar) {
                             try {
-                                await UserController.changeAvatar({data: avatar});
+                                await UserController.changeAvatar({avatar});
                             } catch (e) {
                                 Store.set('error/profileForm', e.message);
                                 this.children.button.setProps({isActive: false});
@@ -104,7 +99,7 @@ class Profile extends Block<ProfileProps> {
                     }
                 },
                 change: async (e: Event & {target: {files: Blob[]}}) => {
-                    if (e.target.files.length > 0) {
+                    if (e.target.files && e.target.files.length > 0) {
                         const file = e.target.files[0];
                         const src = URL.createObjectURL(file);
                         const preview = this.getContent()?.querySelector(".profile__img");

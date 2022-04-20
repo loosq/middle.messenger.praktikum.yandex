@@ -9,6 +9,7 @@
 }
 
 .controls-popup span {
+  pointer-events: none;
   font-size: 12px;
   line-height: 14px;
   font-weight: 500;

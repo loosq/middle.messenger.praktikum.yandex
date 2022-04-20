@@ -1,4 +1,4 @@
-import UserAPI, {UserDataCreate, UserDataLogin, UserPasswordUpdate} from "../api/user/User";
+import UserAPI, { UserDataCreate, UserDataLogin, UserPasswordUpdate } from "../api/user/User";
 import Store from "../utils/Store";
 import Router from "../utils/Router";
 
@@ -19,7 +19,7 @@ class UserController {
             return;
         }
 
-        const {password_repeat, ...userDataCreate} = data;
+        const { password_repeat, ...userDataCreate } = data;
 
         try {
             res = await this.api.create(userDataCreate);
@@ -52,7 +52,10 @@ class UserController {
     async checkUserData() {
         try {
             const response = await this.api.read();
-            const {id, first_name, second_name, avatar, login, phone, email, display_name} = JSON.parse(response);
+
+            if (!response.reason) return;
+
+            const { id, first_name, second_name, avatar, login, phone, email, display_name } = JSON.parse(response);
             Store.set('user/login', login);
             Store.set('user/id', id);
             Store.set('user/name', first_name);
@@ -77,8 +80,22 @@ class UserController {
         return await this.api.updatePass(data);
     }
 
-    async changeAvatar({data}) {
-        return await this.api.updateAvatar({data});
+    async changeAvatar(avatar) {
+        console.log(avatar)
+        return await this.api.updateAvatar(avatar);
+    }
+
+    async findUsers(login) {
+        if (typeof login !== 'string' || login === '') {
+            Store.set('user/searchedUsers', []);
+            return;
+        }
+        const response = await this.api.findUsers(login);
+        if (!response.reason) {
+            Store.set('user/searchedUsers', JSON.parse(response));
+        } else {
+            Store.set('user/searchedUsers', []);
+        }
     }
 }
 
