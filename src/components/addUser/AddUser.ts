@@ -11,8 +11,8 @@ interface AddUserProps extends BlockProps {
 }
 
 export class AddUser extends Block<AddUserProps> {
-    constructor() {
-        super()
+    constructor(props: AddUserProps) {
+        super(props)
         this.onChangeState = this.onChangeState.bind(this);
         Store.on(StoreEvents.Updated, this.onChangeState);
     }
@@ -39,7 +39,6 @@ export class AddUser extends Block<AddUserProps> {
     }
 
     onChangeState() {
-        console.log('onChangeState');
         const usersList = Store.getState().user.searchedUsers;
         this.children.usersList.setProps({usersList})
     }

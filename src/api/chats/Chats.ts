@@ -11,22 +11,28 @@ export interface AddNewUserToChat {
 
 class ChatsAPI extends BaseAPI {
     constructor() {
-        super('chats');
+        super('/chats');
     }
 
     create(data: NewChat): Promise<unknown> {
         return this.http.post('/', {data});
     }
 
+    async read(): Promise<unknown> {
+        return this.http.get('/');
+    }
+
     addUser(data: AddNewUserToChat): Promise<unknown> {
         return this.http.put('/users', {data});
     }
 
-    async delete(): Promise<any> {}
+    getChatToken(chatId): Promise<unknown> {
+        return this.http.post(`/token/${chatId}`);
+    }
 
-    async read(): Promise<any> {}
 
     async update(): Promise<any> {}
+    async delete(): Promise<any> {}
 }
 
 export default new ChatsAPI();

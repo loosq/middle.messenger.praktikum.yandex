@@ -52,19 +52,18 @@ class UserController {
     async checkUserData() {
         try {
             const response = await this.api.read();
-
-            if (!response.reason) return;
-
-            const { id, first_name, second_name, avatar, login, phone, email, display_name } = JSON.parse(response);
-            Store.set('user/login', login);
-            Store.set('user/id', id);
-            Store.set('user/name', first_name);
-            Store.set('user/displayName', display_name);
-            Store.set('user/secondName', second_name);
-            Store.set('user/email', email);
-            Store.set('user/phone', phone);
-            Store.set('user/avatar', avatar);
-
+            
+            if (!response.reason) {
+                const { id, first_name, second_name, avatar, login, phone, email, display_name } = JSON.parse(response);
+                Store.set('user/login', login);
+                Store.set('user/id', id);
+                Store.set('user/name', first_name);
+                Store.set('user/displayName', display_name);
+                Store.set('user/secondName', second_name);
+                Store.set('user/email', email);
+                Store.set('user/phone', phone);
+                Store.set('user/avatar', avatar);
+            };
             return true;
         } catch (e) {
             console.error(e);

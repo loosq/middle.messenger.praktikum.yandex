@@ -10,7 +10,8 @@ interface User {
     phone: string,
     displayName: string,
     avatar: string,
-    searchedUsers?: string[]
+    searchedUsers?: string[],
+    chats?: []
 }
 
 interface Error {
@@ -43,7 +44,8 @@ class Store extends EventBus {
                 phone: '',
                 displayName: '',
                 avatar: '',
-                searchedUsers: []
+                searchedUsers: [],
+                chats: []
             },
             error: {
                 modalForm: '',

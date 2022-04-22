@@ -20,7 +20,6 @@ interface UsersListProps extends BlockProps{
 export class UsersList extends Block<UsersListProps> {
     
     render() {
-        console.log(this.props);
         return this.compile(template, {...this.props});
     }
 }

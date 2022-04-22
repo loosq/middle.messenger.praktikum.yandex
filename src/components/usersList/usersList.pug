@@ -3,5 +3,5 @@ div(class="full-width")
     ul(class="full-width")
         each user in usersList
             li 
-                a(class="userList-link" data-href=`add-user-to-chat-${user.id}` data-user-id=`${user.id}`)
+                a(class="userList-link" data-href='add-user-to-chat' data-new-chat-user-id=`${user.id}`)
                     span #{user.login}
