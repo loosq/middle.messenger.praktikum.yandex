@@ -77,8 +77,8 @@ class UserController {
         return await this.api.updatePass(data);
     }
 
-    async changeAvatar({data}) {
-        return await this.api.updateAvatar({data});
+    async changeAvatar(data) {
+        return await this.api.updateAvatar(data);
     }
 }
 

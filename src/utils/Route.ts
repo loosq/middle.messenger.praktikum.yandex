@@ -1,5 +1,4 @@
 import {renderDOM} from "./renderDOM"
-import isEqual from "./lodash";
 import Block from "./Block"
 
 export default class Route {
@@ -29,7 +28,7 @@ export default class Route {
     }
 
     match(pathname): boolean {
-        return isEqual(pathname, this._pathname);
+        return pathname === this._pathname;
     }
 
     render(): void {

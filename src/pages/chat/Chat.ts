@@ -19,6 +19,7 @@ interface ChatProps {
 
 export class Chat extends Block<ChatProps> {
     _state;
+
     constructor(props) {
         super(props);
         this._state = store.getState();
@@ -43,15 +44,21 @@ export class Chat extends Block<ChatProps> {
         }
     }
 
-    handleClick = (e: Event & {target: {dataset: {href: string}}}) => {
+    handleClick = (e: Event & { target: { dataset: { href: string } } }) => {
         e.preventDefault();
         e.stopImmediatePropagation();
         const {href} = e?.target?.dataset;
 
-        if (href === 'chat-controls') {
-            this.handleControlsClick(this.props.isControlsVisible)
-        } else {
-            this.handleControlsClick(true)
+        switch (href) {
+            case 'chat-controls':
+                this.handleControlsClick(this.props.isControlsVisible);
+                break;
+
+            case 'chat-init':
+                console.log('chat-init');
+                break;
+            default:
+                this.handleControlsClick(true)
         }
     }
 

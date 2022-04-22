@@ -22,7 +22,8 @@ interface Options {
     headers?: {
         [key: string]: string
     },
-    data?: unknown
+    data?: unknown,
+    avatar?: unknown
 }
 
 export default class HTTPTransport {
@@ -45,9 +46,10 @@ export default class HTTPTransport {
     };
 
     public put<Response = void>(path = '/', options: Options): Promise<Response> {
+        console.log(options)
         return this.request<Response>(this.endpoint + path, {
             method: Methods.PUT,
-            ...options
+            data: {...options}
         });
     };
 

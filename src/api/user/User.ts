@@ -77,8 +77,8 @@ class UserAPI extends BaseAPI {
         return this.http.put('/user/password', data);
     }
 
-    updateAvatar(data) {
-        return this.http.put('/user/profile/avatar', data);
+    updateAvatar(avatar) {
+        return this.http.put('/user/profile/avatar', {avatar});
     }
 }
 

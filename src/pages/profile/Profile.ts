@@ -66,7 +66,7 @@ class Profile extends Block<ProfileProps> {
                         const avatar = form.get('avatar');
                         if (avatar) {
                             try {
-                                await UserController.changeAvatar({data: avatar});
+                                await UserController.changeAvatar(avatar);
                             } catch (e) {
                                 Store.set('error/profileForm', e.message);
                                 this.children.button.setProps({isActive: false});

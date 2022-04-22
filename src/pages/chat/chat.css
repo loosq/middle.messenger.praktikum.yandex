@@ -1,78 +1,89 @@
 .chats-wrapper {
-  width: 310px;
-  background: #fbfbfb;
-  border-right: 1px solid #eaeaea;
-  height: 100%;
-  align-self: flex-start;
+    width: 310px;
+    background: #fbfbfb;
+    border-right: 1px solid #eaeaea;
+    height: 100%;
+    align-self: flex-start;
 }
 
 .operations-wrapper {
-  padding: 20px 10px;
+    padding: 20px 10px;
 }
 
 .current-chat {
-  padding: 0 20px;
-  flex-grow: 1;
+    padding: 0 20px;
+    flex-grow: 1;
 }
 
 .current-chat__info-message {
-  color: var(--secondaryColor);
+    color: var(--secondaryColor);
 }
 
 .current-chat__date {
-  color: var(--secondaryColor);
+    color: var(--secondaryColor);
 }
 
 .current-chat__user {
-  position: absolute;
-  top: 0;
-  left: 20px;
-  width: calc(100% - 40px);
-  padding: 10px 0;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: calc(100% - 40px);
+    padding: 10px 0;
 }
 
 .current-chat__user::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 100%;
-  background: #eaeaea;
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: #eaeaea;
 }
 
 .current-chat-message {
-  max-width: 50%;
-  font-size: 12px;
-  line-height: 14px;
-  background: #f8f8f8;
-  padding: 11px;
-  border-radius: 0 12px 12px;
-  font-weight: 500;
-  color: var(--black);
+    max-width: 50%;
+    font-size: 12px;
+    line-height: 14px;
+    background: #f8f8f8;
+    padding: 11px;
+    border-radius: 0 12px 12px;
+    font-weight: 500;
+    color: var(--black);
 }
 
 .current-chat-message__date {
-  right: 11px;
-  bottom: 11px;
+    right: 11px;
+    bottom: 11px;
 }
 
 .current-chat-message__incoming {
-  background: #e4edfd;
-  border-radius: 12px 0 12px 12px;
-  margin-left: auto;
-  padding: 11px 63px 11px 11px;
+    background: #e4edfd;
+    border-radius: 12px 0 12px 12px;
+    margin-left: auto;
+    padding: 11px 63px 11px 11px;
 }
 
 .current-chat-message__incoming .current-chat-message__date {
-  color: var(--accentColor);
+    color: var(--accentColor);
 }
 
 .chat-controls-icon {
-  width: 14px;
-  height: 28px;
-  padding: 4px;
-  cursor: pointer;
-  margin-left: auto;
-  background: url("./assets/controls.svg") no-repeat center center;
+    width: 14px;
+    height: 28px;
+    padding: 4px;
+    cursor: pointer;
+    margin-left: auto;
+    background: url("./assets/controls.svg") no-repeat center center;
+}
+
+.init-chat-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: no-repeat center/50% url("./assets/pencil.svg"), var(--accentColor);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
 }
