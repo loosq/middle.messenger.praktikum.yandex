@@ -1,7 +1,14 @@
-div(class="chat-preview row relative")
-  img(class="chat-preview__img" src=`/static/images/${chatPreviewData.avatar}` alt="Аватар пользователя")
-  div(class="column items-start")
-    span(class="chat-preview__name") #{chatPreviewData.name}
-    span(class="chat-preview__body") #{chatPreviewData.chat}
-  span(class="chat-preview__time absolute") #{chatPreviewData.time}
-  span(class="chat-preview__count absolute text-center") #{chatPreviewData.count}
+div
+  each chatPreview in chatPreviewData
+    div(class="chat-preview row relative" data-chat-id=`${chatPreview.id}` data-href='chat-preview')
+      img(class="chat-preview__img" src=`/static/images${chatPreview.avatar}`)
+      div(class="column items-start")
+      div(class="column")
+        if chatPreview.last_message && chatPreview.last_message.user.first_name
+          span(class="chat-preview__name") #{chatPreview.last_message.user.first_name}
+        if chatPreview.last_message && chatPreview.last_message.content
+          span(class="chat-preview__body") #{chatPreview.last_message.content}
+      if chatPreview.last_message && chatPreview.last_message.time
+        span(class="chat-preview__time absolute") !{moment(chatPreview.last_message.time).fromNow()}
+    if chatPreview.unread_count > 0
+      span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}

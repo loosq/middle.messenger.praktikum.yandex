@@ -8,7 +8,8 @@
     "declaration": false,
     "module": "commonjs",
     "strictNullChecks": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "esModuleInterop": true
   },
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

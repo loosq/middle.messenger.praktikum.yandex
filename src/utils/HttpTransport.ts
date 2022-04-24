@@ -38,10 +38,10 @@ export default class HTTPTransport {
         return this.request<Response>(this.endpoint + path);
     };
 
-    public post<Response = void>(path = '/', data?: unknown): Promise<Response> {
+    public post<Response = void>(path = '/', options?: Options): Promise<Response> {
         return this.request<Response>(this.endpoint + path, {
             method: Methods.POST,
-            data
+            ...options
         })
     };
 
@@ -53,10 +53,10 @@ export default class HTTPTransport {
         });
     };
 
-    public patch<Response = void>(path = '/', data: unknown): Promise<Response> {
+    public patch<Response = void>(path = '/', options: Options): Promise<Response> {
         return this.request<Response>(this.endpoint + path, {
             method: Methods.PATCH,
-            data
+            ...options
         });
     };
 
@@ -69,7 +69,7 @@ export default class HTTPTransport {
         const {headers = {}, method, data} = options;
         const defaultHeaders = {
             "accept": "application/json",
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         };
 
         return new Promise((resolve, reject) => {

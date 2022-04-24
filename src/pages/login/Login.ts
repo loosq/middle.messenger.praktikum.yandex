@@ -3,7 +3,7 @@ import Modal from "../../components/modal/Modal";
 import template from "./login.pug";
 import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
-import {UserDataLogin} from "../../api/user/User";
+import {UserDataLogin} from "../../api/user/types";
 import Store from "../../utils/Store";
 import withRouter from "../../utils/withRouter";
 

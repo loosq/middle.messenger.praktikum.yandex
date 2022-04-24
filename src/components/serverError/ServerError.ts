@@ -1,8 +1,8 @@
-import Block from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/Block";
 import template from "./serverError.pug"
 import "./serverError.css"
 
-interface ServerErrorProps {
+interface ServerErrorProps extends BlockProps {
     label: string
 }
 

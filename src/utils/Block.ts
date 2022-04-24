@@ -2,7 +2,15 @@ import {EventBus} from './EventBus';
 import {nanoid} from "nanoid";
 import Router from "./Router";
 
-export default abstract class Block<TProps> {
+export interface BlockProps {
+    classList?: string[],
+    $router?: typeof Router,
+    events?: {
+        [key: string]: (e: Event) => void
+    }
+}
+
+export default abstract class Block<TProps extends BlockProps> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
@@ -14,13 +22,7 @@ export default abstract class Block<TProps> {
     private _meta;
     children: Record<string, any>;
     classNames: string[];
-    protected props: TProps & {
-        classList?: string,
-        $router?: typeof Router,
-        events?: {
-            [key: string]: (e: Event) => void
-        }
-    };
+    protected props: TProps;
     private eventBus = new EventBus();
     private _element: HTMLElement;
 

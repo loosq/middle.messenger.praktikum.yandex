@@ -1,17 +1,13 @@
-import Block from "../../../../utils/Block";
+import Block, { BlockProps } from "../../../../utils/Block";
 import template from "./input.pug"
 
-interface InputProps {
+interface InputProps extends BlockProps {
     name: string,
-    value?: string,
-    events?: object
+    value?: string
 }
 
 export class Input extends Block<InputProps> {
-    constructor(props: InputProps) {
-        super(props);
-    }
-
+    
     render() {
         return this.compile(template, {...this.props});
     }
