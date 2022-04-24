@@ -22,6 +22,7 @@
 
 .message-input__submit {
   margin-left: auto;
+  pointer-events: none;
 }
 
 .message-input__text {

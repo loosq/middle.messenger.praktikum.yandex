@@ -19,9 +19,20 @@ interface Error {
     profileForm: string
 }
 
+interface Chats {
+    chats?: {[key: string]: WebSocket}
+}
+
+interface ChatsMessages {
+    chatsMessages?: {[key: string]: []}
+}
+
 interface State {
     user: User,
-    error: Error
+    error: Error,
+    chats: Chats,
+    chatsMessages: ChatsMessages,
+    isMessagesLoading: boolean
 }
 
 export enum StoreEvents {
@@ -50,7 +61,10 @@ class Store extends EventBus {
             error: {
                 modalForm: '',
                 profileForm: ''
-            }
+            },
+            chats: {},
+            chatsMessages: {},
+            isMessagesLoading: false
         }
     }
 

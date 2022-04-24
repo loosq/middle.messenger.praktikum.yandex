@@ -1,13 +1,12 @@
-import Block from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./changePassModal.pug";
 import Modal from "../../../../components/modal/Modal";
-import {UserPasswordUpdate} from "../../../../api/user/User";
 import Store from "../../../../utils/Store";
 import UserController from "../../../../controllers/UserController";
 import changePassModalConfig from "./config/changePassModalConfig";
 import "./changePassModal.css";
 
-interface ChangePassModalProps {
+interface ChangePassModalProps extends BlockProps{
     children: Record<string, any>,
     isPassModalVisible: boolean
 }

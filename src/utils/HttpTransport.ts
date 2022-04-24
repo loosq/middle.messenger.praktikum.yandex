@@ -60,8 +60,13 @@ export default class HTTPTransport {
         });
     };
 
-    public delete<Response>(path = '/'): Promise<Response> {
-        return this.request<Response>(this.endpoint + path, {method: Methods.DELETE});
+    public delete<Response>(path = '/', options: Options): Promise<Response> {
+        return this.request<Response>(this.endpoint + path,
+            {
+                method: Methods.DELETE,
+                ...options
+            }
+        );
     };
 
 

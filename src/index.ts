@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         .use("/logout", Logout)
         .start();
 
-
     try {
         const isLoggedIn = await UserController.checkUserData();
         Router.go(isLoggedIn ? '/chat' : '/login');

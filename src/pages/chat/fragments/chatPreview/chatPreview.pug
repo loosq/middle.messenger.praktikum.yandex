@@ -1,14 +1,13 @@
 div
   each chatPreview in chatPreviewData
-    div(class="chat-preview row relative" data-chat-id=`${chatPreview.id}` data-href='chat-preview')
-      img(class="chat-preview__img" src=`/static/images${chatPreview.avatar}`)
+    a(class=`chat-preview row relative ${chatPreview.isChosen ? 'chat-preview--isChosen' : ''}` data-chat-id=`${chatPreview.id}` data-href='chat-preview')
+      object(class="chat-preview__img" type="image/png" src=`/static/images${chatPreview.avatar}`)
       div(class="column items-start")
-      div(class="column")
-        if chatPreview.last_message && chatPreview.last_message.user.first_name
-          span(class="chat-preview__name") #{chatPreview.last_message.user.first_name}
+        if chatPreview.last_message && chatPreview.last_message.user.login
+          span(class="chat-preview__name") #{chatPreview.last_message.user.login}
         if chatPreview.last_message && chatPreview.last_message.content
           span(class="chat-preview__body") #{chatPreview.last_message.content}
       if chatPreview.last_message && chatPreview.last_message.time
         span(class="chat-preview__time absolute") !{moment(chatPreview.last_message.time).fromNow()}
-    if chatPreview.unread_count > 0
-      span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}
+      if chatPreview.unread_count > 0
+        span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}

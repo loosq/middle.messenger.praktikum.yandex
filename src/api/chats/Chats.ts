@@ -30,9 +30,12 @@ class ChatsAPI extends BaseAPI {
         return this.http.post(`/token/${chatId}`);
     }
 
+    async delete(chatId): Promise<unknown> {
+        return this.http.delete(
+            '/', {data: {chatId}});
+    }
 
     async update(): Promise<any> {}
-    async delete(): Promise<any> {}
 }
 
 export default new ChatsAPI();

@@ -1,60 +1,79 @@
 import ChatsAPI, {NewChat, AddNewUserToChat} from "../api/chats/Chats";
-import Store from "../utils/Store";
-import Router from "../utils/Router";
-
+import Store, {StoreEvents} from "../utils/Store";
+import {WS, WSEvents} from "../utils/WS";
 const {WS_CHATS_URL} = require('./../constants');
 
-interface NewChatData extends NewChat, AddNewUserToChat {};
 
 class ChatsController {
     api;
+    state;
 
     constructor() {
         this.api = ChatsAPI;
+        this.state = Store.getState();
+
+        Store.on(StoreEvents.Updated, () => {
+            this.state = Store.getState();
+        });
     }
+
+    handleNewMessage(data) {
+        console.log('Incoming message', data);
+        if (!data.chatId || !data.message) return;
+
+        const {chatId, message} = data;
+        if (!Array.isArray(Store.getState().chatsMessages[chatId])) {
+            Store.set(`chatsMessages/${chatId}`, []);
+        }
+        if (Array.isArray(message)) {
+            Store.set(`chatsMessages/${chatId}`, [...message.reverse()]);
+            Store.set('isMessagesLoading', false);
+            return;
+        }
+
+        if (data.message.type === 'message' && data.chatId) {
+            const messages = Store.getState().chatsMessages[data.chatId];
+            Store.set(`chatsMessages/${data.chatId}`, [...messages, data.message]);
+            console.log(Store.getState().chatsMessages[data.chatId])
+        }
+    }
+
     async setNewChat(data) {
         const newChatId = await this.api.create({title: data.title});
         if (!newChatId.reason) {
             try {
                 const newChatResp = JSON.parse(newChatId);
                 const chatId = newChatResp.id;
-                console.log('data.users', data.users, 'chatId', chatId);
-                
                 await this.api.addUser({users: data.users, chatId});
-                const chatTokenResponse = await this.api.getChatToken(chatId);
-                const {token} = JSON.parse(chatTokenResponse);
-                const socket = new WebSocket(`${WS_CHATS_URL}/${data.users[0]}/${chatId}/${token}`); 
-                socket.addEventListener('open', () => {
-                    console.log('Соединение установлено');
-                  
-                    socket.send(JSON.stringify({
-                      content: 'Моё первое сообщение миру!',
-                      type: 'message',
-                    }));
-                  });
-                  
-                  socket.addEventListener('close', event => {
-                    if (event.wasClean) {
-                      console.log('Соединение закрыто чисто');
-                    } else {
-                      console.log('Обрыв соединения');
-                    }
-                  
-                    console.log(`Код: ${event.code} | Причина: ${event.reason}`);
-                  });
-                  
-                  socket.addEventListener('message', event => {
-                    console.log('Получены данные', event.data);
-                  });
-                  
-                  socket.addEventListener('error', (event: Event & {message: string}) => {
-                    console.log('Ошибка', event.message);
-                  }); 
-
-            } catch(e) {
+                this.setUserChat(chatId);
+            } catch (e) {
                 console.error(e.message)
             }
         }
+    }
+
+    async deleteChat(chatId) {
+        await this.api.delete(chatId);
+    }
+
+    async setUserChat(chatId) {
+        const chatTokenResponse = await this.api.getChatToken(chatId);
+        const {token} = JSON.parse(chatTokenResponse);
+
+        if (chatId && token && this.state?.user?.id && !(chatId in this.state.chats)) {
+            const socketUrl = `${WS_CHATS_URL}/${this.state.user.id}/${chatId}/${token}`;
+            const chatSocket = new WS(socketUrl, chatId);
+            chatSocket.on(WSEvents.message, this.handleNewMessage);
+            Store.set(`chats/${chatId}`, chatSocket);
+        }
+    }
+
+    async sendMessage(text, chatId) {
+        this.state.chats[chatId].sendMessage(text);
+    }
+
+    async setUserMessages(chatId) {
+        this.state.chats[chatId].getLastMessages();
     }
 
     async getUserChats() {

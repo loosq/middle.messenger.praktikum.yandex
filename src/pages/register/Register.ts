@@ -4,7 +4,7 @@ import Modal from "../../components/modal/Modal";
 import template from "./register.pug";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
-import {UserDataCreate} from "../../api/user/User";
+import {UserDataCreate} from "../../api/user/types";
 
 class Register extends Block<{}> {
     initChildren() {

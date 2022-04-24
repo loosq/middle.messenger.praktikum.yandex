@@ -1,5 +1,4 @@
 .chats-wrapper {
-    width: 310px;
     background: #fbfbfb;
     border-right: 1px solid #eaeaea;
     height: 100%;
@@ -15,57 +14,23 @@
     flex-grow: 1;
 }
 
+.current-chat--loading {
+    pointer-events: none;
+    opacity: .3;
+}
+
 .current-chat__info-message {
     color: var(--secondaryColor);
 }
 
+.current-chat__info-messageCentered {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .current-chat__date {
     color: var(--secondaryColor);
-}
-
-.current-chat__user {
-    position: absolute;
-    top: 0;
-    left: 20px;
-    width: calc(100% - 40px);
-    padding: 10px 0;
-}
-
-.current-chat__user::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 1px;
-    width: 100%;
-    background: #eaeaea;
-}
-
-.current-chat-message {
-    max-width: 50%;
-    font-size: 12px;
-    line-height: 14px;
-    background: #f8f8f8;
-    padding: 11px;
-    border-radius: 0 12px 12px;
-    font-weight: 500;
-    color: var(--black);
-}
-
-.current-chat-message__date {
-    right: 11px;
-    bottom: 11px;
-}
-
-.current-chat-message__incoming {
-    background: #e4edfd;
-    border-radius: 12px 0 12px 12px;
-    margin-left: auto;
-    padding: 11px 63px 11px 11px;
-}
-
-.current-chat-message__incoming .current-chat-message__date {
-    color: var(--accentColor);
 }
 
 .chat-controls-icon {
