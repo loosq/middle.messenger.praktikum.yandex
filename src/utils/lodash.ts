@@ -81,4 +81,8 @@ const isEqual = (a: Indexed, b: Indexed) => {
     });
 };
 
-export {isEqual, trim, merge, set};
+const randomIntInRange = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+export {isEqual, trim, merge, set, randomIntInRange};

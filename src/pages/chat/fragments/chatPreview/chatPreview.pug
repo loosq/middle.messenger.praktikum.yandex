@@ -1,13 +1,14 @@
 div
-  each chatPreview in chatPreviewData
-    a(class=`chat-preview row relative ${chatPreview.isChosen ? 'chat-preview--isChosen' : ''}` data-chat-id=`${chatPreview.id}` data-href='chat-preview')
-      object(class="chat-preview__img" type="image/png" src=`/static/images${chatPreview.avatar}`)
-      div(class="column items-start")
-        if chatPreview.last_message && chatPreview.last_message.user.login
-          span(class="chat-preview__name") #{chatPreview.last_message.user.login}
-        if chatPreview.last_message && chatPreview.last_message.content
-          span(class="chat-preview__body") #{chatPreview.last_message.content}
-      if chatPreview.last_message && chatPreview.last_message.time
-        span(class="chat-preview__time absolute") !{moment(chatPreview.last_message.time).fromNow()}
-      if chatPreview.unread_count > 0
-        span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}
+  if chatPreviewsData && chatPreviewsData.length
+    each chatPreview in chatPreviewsData
+      a(class=`chat-preview row relative ${chatPreview.id == openedChat ? 'chat-preview--isChosen' : ''}` data-chat-id=`${chatPreview.id}` data-href='chat-preview')
+        object(class="chat-preview__img" type="image/png" data=`${resourcesUrl}${chatPreview.last_message ? chatPreview.last_message.user.avatar : ''}`)
+        div(class="column items-start")
+          if chatPreview.last_message && chatPreview.last_message.user.login
+            span(class="chat-preview__name") #{chatPreview.last_message.user.login}
+          if chatPreview.last_message && chatPreview.last_message.content
+            span(class="chat-preview__body") #{chatPreview.last_message.content}
+        if chatPreview.last_message && chatPreview.last_message.time
+          span(class="chat-preview__time absolute") !{moment(chatPreview.last_message.time).fromNow()}
+        if chatPreview.unread_count > 0
+          span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}

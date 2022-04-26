@@ -28,7 +28,7 @@ class UserAPI extends BaseAPI {
     }
 
     updateAvatar(data) {
-        return this.http.put('/user/profile/avatar', { data });
+        return this.http.put('/user/profile/avatar', data);
     }
 
     findUsers(login: FindUsers) {

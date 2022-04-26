@@ -64,12 +64,12 @@ class Modal extends Block<ModalProps> {
     handleLinkClick = (e) => {
         const {href} = e.target.dataset;
         const {$router} = this.props;
-
+        
         if (href && $router) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            $router.go(href)
+            $router.go(href);
         }
     }
 

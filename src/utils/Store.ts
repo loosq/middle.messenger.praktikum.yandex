@@ -19,9 +19,29 @@ interface Error {
     profileForm: string
 }
 
-interface Chats {
-    chats?: {[key: string]: WebSocket}
+interface ChatPreviewDefault {
+    id: number | string,
+    title: string,
+    avatar: string,
+    unread_count: number,
+    last_message: {
+        user: {
+            first_name: string,
+            second_name: string,
+            avatar: string,
+            email: string,
+            login: string,
+            phone: string
+        },
+        time: string,
+        content: string
+    }
 }
+
+interface ChatPreview extends ChatPreviewDefault {
+    isChosen?: boolean
+}
+
 
 interface ChatsMessages {
     chatsMessages?: {[key: string]: []}
@@ -30,9 +50,10 @@ interface ChatsMessages {
 interface State {
     user: User,
     error: Error,
-    chats: Chats,
+    chatPreviews: ChatPreview[],
     chatsMessages: ChatsMessages,
-    isMessagesLoading: boolean
+    isMessagesLoading: boolean,
+    openedChat: string
 }
 
 export enum StoreEvents {
@@ -62,9 +83,38 @@ class Store extends EventBus {
                 modalForm: '',
                 profileForm: ''
             },
-            chats: {},
+            chatPreviews: [],
             chatsMessages: {},
-            isMessagesLoading: false
+            isMessagesLoading: false,
+            openedChat: ""
+        }
+    }
+
+    // Мутации, возможно вынести в отдельный файл
+    addChatPreview(chatPreview) {
+        const chatPreviews = this.state['chatPreviews'];
+        const hasChatPreview = chatPreviews.find(({id}) => id === chatPreview.id);
+        if (!hasChatPreview) {
+            chatPreviews.push(chatPreview);
+            this.emit(StoreEvents.Updated);
+        }
+    }
+
+    deleteChatPreview(chatPreviewId) {
+        const hasChatPreview = this.state['chatPreviews'].find(({id}) => id == chatPreviewId);
+
+        if (hasChatPreview) {
+            delete this.state.chatsMessages[chatPreviewId];
+            this.state['chatPreviews'] = this.state['chatPreviews'].filter(({id}) => id !== chatPreviewId);
+            this.emit(StoreEvents.Updated);
+        }
+    }
+
+    addMessageToChat(message, chatId) {
+        const chat = this.state['chatsMessages'][chatId];
+        if (Array.isArray(chat)) {
+            chat.push(message);
+            this.emit(StoreEvents.Updated);
         }
     }
 

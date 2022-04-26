@@ -15,7 +15,10 @@ const changePassModalConfig = {
             validateAs: 'password'
         }
     ],
-    link: null
+    link: {
+        title: "Закрыть окно",
+        goTo: ''
+    }
 }
 
 export default changePassModalConfig;

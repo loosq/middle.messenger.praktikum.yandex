@@ -81,7 +81,6 @@ class UserController {
     }
 
     async changeAvatar(avatar) {
-        console.log(avatar)
         return await this.api.updateAvatar(avatar);
     }
 

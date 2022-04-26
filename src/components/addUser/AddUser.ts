@@ -21,6 +21,7 @@ export class AddUser extends Block<AddUserProps> {
         this.children.input = new Input({
             value: '',
             name: 'add-user-input',
+            placeholder: 'Введите логи пользователя',
             classList: ['add-user-input'],
             events: {
                 input: this.handleInputChange,

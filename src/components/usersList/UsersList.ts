@@ -1,6 +1,6 @@
 import Block, { BlockProps } from "../../utils/Block";
-import "./usersList.css"
-import template from "./usersList.pug"
+import "./usersList.css";
+import template from "./usersList.pug";
 
 interface User {
     id: number,

@@ -18,6 +18,10 @@ class ChatsAPI extends BaseAPI {
         return this.http.post('/', {data});
     }
 
+    getChat(id): Promise<unknown> {
+        return this.http.get(`/${id}/common`);
+    }
+
     async read(): Promise<unknown> {
         return this.http.get('/');
     }

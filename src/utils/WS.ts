@@ -1,18 +1,21 @@
-import {EventBus} from "./EventBus";
+import { EventBus } from "./EventBus";
 
 export enum WSEvents {
     message = 'message',
+    closed = 'closed',
+    open = 'open'
 }
 
 export class WS extends EventBus {
     private _socket: WebSocket;
 
-    constructor(url:string, chatId:string) {
+    constructor(url: string, chatId: string) {
         super();
         this._socket = new WebSocket(url);
 
         this._socket.addEventListener('open', () => {
             console.log('Соединение установлено');
+            this.emit(WSEvents.open, { chatId });
         });
 
         this._socket.addEventListener('close', event => {
@@ -23,15 +26,16 @@ export class WS extends EventBus {
             }
 
             console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+            this.emit(WSEvents.closed, { chatId });
         });
 
-        this._socket.addEventListener('error', (event: Event & {message: string}) => {
+        this._socket.addEventListener('error', (event: Event & { message: string }) => {
             console.log('Ошибка', event.message);
         });
 
         this._socket.addEventListener('message', event => {
-            const {data} = event;
-            this.emit(WSEvents.message, {chatId, message: JSON.parse(data)});
+            const { data } = event;
+            this.emit(WSEvents.message, { chatId, message: JSON.parse(data) });
         });
     }
 
@@ -42,10 +46,18 @@ export class WS extends EventBus {
         }));
     }
 
-   getLastMessages() {
+    sendPing() {
+        this._socket.send(JSON.stringify({type: 'ping'}));
+    }
+
+    getLastMessages() {
         this._socket.send(JSON.stringify({
             content: "0",
             type: 'get old',
         }))
+    }
+
+    get getReadyState() {
+        return this._socket.readyState;
     }
 }

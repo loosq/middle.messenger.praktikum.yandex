@@ -56,20 +56,21 @@ class Profile extends Block<ProfileProps> {
                 submit: async (e: Event & {target: HTMLFormElement}) => {
                     e.preventDefault();
                     e.stopImmediatePropagation();
+
                     if (e.target) {
                         const form = new FormData(e.target);
-                        const avatar = form.get('avatar');
-                        if (avatar) {
-                            try {
-                                await UserController.changeAvatar({avatar});
-                            } catch (e) {
-                                Store.set('error/profileForm', e.message);
-                                this.children.button.setProps({isActive: false});
-                                return;
-                            }
-                        }
+                        // const avatar = form.get('avatar');
+                        // if (avatar) {
+                        //     try {
+                        //         await UserController.changeAvatar({avatar});
+                        //     } catch (e) {
+                        //         Store.set('error/profileForm', e.message);
+                        //         this.children.button.setProps({isActive: false});
+                        //         return;
+                        //     }
+                        // }
 
-                        //data.delete('avatar');
+                        form.delete('avatar');
                         const formData = Object.fromEntries(form);
                         console.log(formData)
                         if (Object.values(formData).some(v => !v)){

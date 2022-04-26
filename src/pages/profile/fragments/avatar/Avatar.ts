@@ -1,9 +1,9 @@
-import Block from "../../../../utils/Block";
+import Block, { BlockProps } from "../../../../utils/Block";
 import template from "./avatar.pug";
 import Store, {StoreEvents} from "../../../../utils/Store";
 const {RESOURCES_URL} = require('../../../../constants');
 
-interface AvatarProps {
+interface AvatarProps extends BlockProps {
     avatar: string,
     resourceUrl: string
 }

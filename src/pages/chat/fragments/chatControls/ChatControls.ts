@@ -1,4 +1,4 @@
-import Block from "../../../../utils/Block";
+import Block, { BlockProps } from "../../../../utils/Block";
 import template from "./chatControls.pug"
 import "./chatControls.css";
 
@@ -7,7 +7,7 @@ interface Control {
     icon: string
 }
 
-interface ChatControlsProps {
+interface ChatControlsProps extends BlockProps {
     isControlsVisible: boolean
     controls: Control[],
 };

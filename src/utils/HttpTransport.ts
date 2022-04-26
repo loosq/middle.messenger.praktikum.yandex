@@ -49,7 +49,7 @@ export default class HTTPTransport {
         console.log(options)
         return this.request<Response>(this.endpoint + path, {
             method: Methods.PUT,
-            data: {...options}
+            ...options
         });
     };
 
