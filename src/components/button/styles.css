@@ -7,3 +7,8 @@
     font-size: 13px;
     line-height: 15px;
 }
+
+.button--link {
+    color: var(--accentColor);
+    background-color: transparent;
+}

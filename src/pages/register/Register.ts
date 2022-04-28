@@ -1,6 +1,5 @@
 import Block from "../../utils/Block";
 import withRouter from "../../utils/withRouter";
-import Modal from "../../components/modal/Modal";
 import template from "./register.pug";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";

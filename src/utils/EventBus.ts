@@ -24,6 +24,7 @@ export class EventBus {
     }
 
     emit(event, ...args) {
+        
         if (!this.listeners[event]) {
             console.error(`Нет события: ${event}`);
             return;
@@ -31,7 +32,7 @@ export class EventBus {
 
         this.listeners[event].forEach(function(listener) {
             //console.log(`EventBus: exec event: ${event}`)
-            listener(...args);
+             listener(...args);
         });
     }
 }

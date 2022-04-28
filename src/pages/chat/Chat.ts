@@ -8,7 +8,6 @@ import { ChatControls } from "./fragments/chatControls/ChatControls";
 import { ChatHeader } from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
 import Store, { StoreEvents } from "../../utils/Store";
-import { AddUser } from "../../components/addUser/AddUser";
 import ChatsController from "../../controllers/ChatsController";
 import { MessagesList } from "./fragments/messagesList/MessagesList";
 

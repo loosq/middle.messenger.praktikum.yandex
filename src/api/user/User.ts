@@ -34,6 +34,10 @@ class UserAPI extends BaseAPI {
     findUsers(login: FindUsers) {
         return this.http.post('/user/search', { data: { login } });
     }
+
+    findUserById(id: number) {
+        return this.http.get(`/user/${id}`);
+    }
 }
 
 export default new UserAPI();

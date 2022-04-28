@@ -22,19 +22,3 @@
   left: 0;
   top: 0;
 }
-
-.text-input__input {
-  width: 100%;
-  padding: 15px 0 6px;
-  font-size: 13px;
-  line-height: 15px;
-}
-
-.text-input__error {
-  color: var(--errorColor);
-  font-size: 10px;
-  line-height: 12px;
-  position: absolute;
-  left: 0;
-  bottom: -14px;
-}

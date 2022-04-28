@@ -1,55 +1,49 @@
-import Block from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/Block";
 import template from "./inputGroup.pug"
 import "./inputGroup.css"
-import {Input} from "./fragments/input/Input";
-import {Error} from "./fragments/error/Error";
+import { Input } from "./../input/Input";
+import { Error } from "./fragments/error/Error";
 import validate from "../../utils/validation";
 
-interface InputGroupProps {
+export interface InputGroupProps extends BlockProps {
     name: string,
-    label: string,
+    label?: string,
     errorMessage?: string,
     validateAs?: string,
-    setValidationStatus?: (arg1:string, arg2:boolean) => void,
-    children?: any[],
-    value: string
+    value?: string,
+    onInputChange?: (status: boolean, name: string) => void
 }
 
 export class InputGroup extends Block<InputGroupProps> {
-    isValid;
+    constructor(props: InputGroupProps) {
+        super(props);
+    }
+    
+    initChildren(): void {
+        this.children.input = new Input({
+            ...this.props,
+            events: {
+                input: (e: Event & {target: {value: string}}) => this.validationHandler(e.target.value)
+            }
+        });
+        this.children.error = new Error({
+            errorMessage: this.props.errorMessage,
+            isValid: true
+        }); 
+    }
 
     validationHandler = (value) => {
         if (!value) return;
 
-        const {setValidationStatus, validateAs, name} = this.props;
+        const {validateAs, onInputChange, name} = this.props;
         const isValid = !!validate(validateAs, value);
-        this.isValid = isValid;
         this.children.error.setProps({isValid});
-
-        if (setValidationStatus) {
-            setValidationStatus(name, isValid)
+        if (typeof onInputChange === 'function') {
+            onInputChange(isValid, name);
         }
     }
 
-    componentDidMount(oldProps: {} = {}) {
-
-        this.children.input = new Input({
-            ...this.props,
-            value: this.props.value || '',
-            events: {
-                input: (e) => this.validationHandler(e.target.value),
-                focus: (e) => this.validationHandler(e.target.value),
-                blur: (e) => this.validationHandler(e.target.value)
-            }
-        });
-
-        this.children.error = new Error({
-            isValid: true,
-            errorMessage: this.props.errorMessage
-        });
-    }
-
     render() {
-        return this.compile(template, {...this.props});
+        return this.compile(template, { ...this.props });
     }
 }

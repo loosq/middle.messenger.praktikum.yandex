@@ -1,5 +1,6 @@
-import {EventBus} from './EventBus';
-import {nanoid} from "nanoid";
+import { EventBus } from './EventBus';
+import GlobalEventBus from './GlobalEventBus';
+import { nanoid } from "nanoid";
 import Router from "./Router";
 
 export interface BlockProps {
@@ -27,17 +28,17 @@ export default abstract class Block<TProps extends BlockProps> {
     private _element: HTMLElement;
 
     constructor(componentData: object = {}) {
-        const {props, children, classNames} = this.getChildren(componentData);
+        //console.log('Start rendering ', this.constructor.name)
+        const { props, children, classNames } = this._getChildren(componentData);
         this.children = children;
         this.classNames = classNames;
         this._meta = {
             props
         };
         this.props = this._makePropsProxy(props);
-
+        this.initChildren();
         this._registerEvents(this.eventBus);
         this.eventBus.emit(Block.EVENTS.INIT);
-        this.initChildren();
     }
 
     private _registerEvents(eventBus) {
@@ -51,26 +52,36 @@ export default abstract class Block<TProps extends BlockProps> {
         this._addClasses();
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
-    protected initChildren() {}
+    protected initChildren() { }
+
+    emit(event, data = {}) {
+        GlobalEventBus.emit(event, data);
+    }
+
+    on(event, handler) {
+        GlobalEventBus.on(event, handler);
+    }
 
     componentDidMount(oldProps = {}) {
+        
     }
 
     private _componentDidMount() {
+        //console.log('Rendered', this.constructor.name);
         this.componentDidMount();
         this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
 
         const childrenArray = Object.values(this.children);
         const childrenIsComponent = childrenArray.every(c => c instanceof Block);
 
-        if(childrenIsComponent) {
+        if (childrenIsComponent) {
             childrenArray.forEach(child => {
                 child.dispatchComponentDidMount();
             });
         }
     }
 
-    getChildren(componentData: any) {
+    _getChildren(componentData: any) {
         const children: any = {};
         const props: any = {};
         let classNames: any = [];
@@ -87,7 +98,7 @@ export default abstract class Block<TProps extends BlockProps> {
             }
         })
 
-        return {props, children, classNames};
+        return { props, children, classNames };
     }
 
     dispatchComponentDidMount() {
@@ -152,7 +163,7 @@ export default abstract class Block<TProps extends BlockProps> {
 
     private _render() {
         const fragment = this.render();
-        const newElement = fragment.firstElementChild as HTMLElement;
+        const newElement = fragment.firstElementChild as HTMLElement || "";
 
         if (this._element) {
             this._removeEvents();
@@ -160,7 +171,7 @@ export default abstract class Block<TProps extends BlockProps> {
         }
         this._element = newElement;
 
-        this._addEvents()
+        this._addEvents();
     }
 
     protected render(): DocumentFragment {
@@ -170,14 +181,14 @@ export default abstract class Block<TProps extends BlockProps> {
 
     private _addClasses() {
         // @ts-ignore
-        const {classNames} = this.props;
+        const { classNames } = this.props;
 
         if (classNames) {
             this.element.classList.add(...classNames);
         }
     }
 
-    getContent(): HTMLElement | null {
+    getContent(): HTMLElement | string {
         return this.element;
     }
 
@@ -191,7 +202,7 @@ export default abstract class Block<TProps extends BlockProps> {
             },
             set(target, prop, value) {
                 target[prop] = value;
-                self.eventBus.emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+                self.eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
                 return true;
             },
             deleteProperty() {
@@ -206,27 +217,32 @@ export default abstract class Block<TProps extends BlockProps> {
 
     compile(template: (context: any) => string, context: any = {}) {
         const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
+        //console.log(this);
+
+
         Object.entries(this.children).forEach(([key, child]) => {
             const childrenIsArray = Array.isArray(child) && child.every(v => v instanceof Block);
             if (childrenIsArray) {
-                context[key] = child.map(({id}) => `<div data-id="id-${id}"></div>`);
+                context[key] = child.map(({ id }) => `<div data-id="id-${id}"></div>`);
                 return;
             }
 
             context[key] = `<div data-id="id-${child.id}"></div>`;
         });
 
-        const htmlString = template(context)
+        const htmlString = template(context);
         fragment.innerHTML = htmlString;
+
 
         Object.entries(this.children).forEach(([key, child]) => {
             const isChildrenArray = Array.isArray(child) && child.every(v => v instanceof Block) as boolean;
 
             if (isChildrenArray) {
-                const childrenIds = child.map(({id}) => id);
+                const childrenIds = child.map(({ id }) => id);
                 const stubs = childrenIds.map(id => fragment.content.querySelector(`[data-id="id-${id}"]`)) as [];
+
                 stubs.forEach((stub: HTMLElement) => {
-                    const childById = child.find(ch => "id-"+ch.id === stub.dataset.id)
+                    const childById = child.find(ch => "id-" + ch.id === stub.dataset.id)
                     stub.replaceWith(childById.getContent());
                     this._addChildEvents(childById);
                 });
@@ -247,15 +263,5 @@ export default abstract class Block<TProps extends BlockProps> {
         });
 
         return fragment.content;
-    }
-
-    show() {
-        // @ts-ignore
-        this._element?.style?.display = 'block';
-    }
-
-    hide() {
-        // @ts-ignore
-        this._element?.style?.display = 'none';
     }
 }

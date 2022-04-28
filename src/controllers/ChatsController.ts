@@ -107,12 +107,13 @@ class ChatsController {
         console.log('Incoming message', data);
         if (!data.chatId || !data.message || (data.message && data.message.type === 'pong')) return;
 
+        // клгда пришла пачка сообщений
         if (Array.isArray(data.message)) {
             data.message.reverse().forEach(msg => {
                 this.addMessage(msg, data.chatId);
             });
         }
-
+        // Когда пришло 1 сообщение
         if ('content' in data.message) {
             this.addMessage(data.message, data.chatId);
         }

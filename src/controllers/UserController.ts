@@ -41,13 +41,13 @@ class UserController {
             Store.set('user/login', data.login);
             Store.set('user/password', data.password);
             Store.set('error/modalForm', '');
-            Router.go('/login');
+            Router.go('/messenger');
         }
     }
 
     async logout() {
         await this.api.delete();
-        Router.go('/login')
+        Router.go('/')
     }
 
     async checkUserData() {
@@ -95,6 +95,20 @@ class UserController {
         } else {
             Store.set('user/searchedUsers', []);
         }
+    }
+
+    async findUserById(id) {
+        const response = await this.api.findUserById(id);
+        let result = {};
+
+        if (response.reson) {
+            console.error(response.reson);
+            return result;
+        } else {
+            result = JSON.parse(response);
+        }
+
+        return result;
     }
 }
 

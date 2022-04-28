@@ -9,7 +9,6 @@ import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
 import UserController from "../../controllers/UserController";
 import ProfileError from "./fragments/profileError/ProfileError";
-import ChangePassModal from "./fragments/changePassModal/ChangePassModal";
 import Avatar from "./fragments/avatar/Avatar";
 
 interface ProfileProps extends BlockProps {
@@ -35,7 +34,7 @@ class Profile extends Block<ProfileProps> {
                                 this.children.button.setProps({isActive: true});
                                 break;
 
-                            case '/logout':
+                            case '/':
                                 Router.go(href);
                                 break;
 
@@ -130,11 +129,8 @@ class Profile extends Block<ProfileProps> {
             }
         });
         this.children.goBackButton = new GoBackButton({});
-        this.children.profileInputsList = new ProfileInputsList({
-            isEdit: false
-        });
+        this.children.profileInputsList = new ProfileInputsList({isEdit: false});
         this.children.profileError = new ProfileError({label: ''});
-        this.children.changePassModal = new ChangePassModal();
         this.children.avatar = new Avatar({});
     }
 

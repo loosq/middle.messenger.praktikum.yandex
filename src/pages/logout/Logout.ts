@@ -13,7 +13,7 @@ class Logout extends Block<{}> {
         } catch (e) {
             console.error(e)
         } finally {
-            Router.go('/login');
+            Router.go('/');
         }
     }
 }

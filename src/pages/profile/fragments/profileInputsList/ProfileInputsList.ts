@@ -1,11 +1,19 @@
-import Block from "../../../../utils/Block";
+import Block, { BlockProps } from "../../../../utils/Block";
 import template from "./profileInputsList.pug"
 import "./profileInputsList.css";
-import Store from "../../../../utils/Store";
+import Store, { StoreEvents } from "../../../../utils/Store";
+
+interface ProfileInputsListProps extends BlockProps {
+    isEdit?: boolean
+}
 
 class ProfileInputsList extends Block<{}> {
+    constructor() {
+        super();
+        Store.on(StoreEvents.Updated, this.handleStoreUpdate.bind(this))
+    }
 
-    componentDidMount(oldProps: {} = {}) {
+    handleStoreUpdate() {
         const {user: {login, name, secondName, phone, email, displayName}} = Store.getState();
         const userData = [
             {
@@ -39,8 +47,11 @@ class ProfileInputsList extends Block<{}> {
                 name: 'display_name'
             }
         ];
+        console.log(userData);
+        
         this.setProps({userData});
     }
+    
 
     render() {
         return this.compile(template, {...this.props});
