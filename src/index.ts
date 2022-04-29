@@ -7,22 +7,18 @@ import { Chat } from './pages/chat/Chat';
 import Profile from './pages/profile/Profile';
 import Error from './pages/error/Error';
 import Router from './utils/Router';
-import UserController from './controllers/UserController';
-import { renderDOM } from './utils/renderDOM';
-import PopUp from './components/popUp/PopUp';
 import ModalController from './controllers/ModalController';
+const { URLS } = require('./constants.ts');
 
 document.addEventListener('DOMContentLoaded', async () => {
     const linksContainer = document.getElementById('links') as HTMLElement;
-    ModalController.init();
-    
     Router
-        .use('/messenger', Chat)
-        .use('/settings', Profile)
-        .use('/', Login)
-        .use('/sign-up', Register)
-        .use('/error', Error)
-        .use('/logout', Logout)
+        .use(URLS.messenger, Chat)
+        .use(URLS.settings, Profile)
+        .use(URLS.login, Login)
+        .use(URLS.signUp, Register)
+        .use(URLS.error, Error)
+        .use(URLS.logout, Logout)
         .start();
 
     // try {
@@ -33,11 +29,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     //     Router.go('/');
     // }
 
-    Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
-        link.addEventListener('click', ({ target }: Event & { target: { id: string } }) => {
-            Router.go(`/${target?.id || ''}`)
-        })
-    });
+    ModalController.init();
+    // Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
+    //     link.addEventListener('click', ({ target }: Event & { target: { id: string } }) => {
+    //         Router.go(`/${target?.id || ''}`)
+    //     })
+    // });
 })
 
 

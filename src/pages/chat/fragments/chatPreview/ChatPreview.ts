@@ -38,7 +38,7 @@ export class ChatPreview extends Block<ChatPreviewProps> {
 
     constructor() {
         super();
-        Store.on(StoreEvents.Updated, this.handleStoreUpdate.bind(this));
+        Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
         this.chatPreviewsData = [];
     }
 
@@ -50,12 +50,12 @@ export class ChatPreview extends Block<ChatPreviewProps> {
             this.setProps({ chatPreviewsData: this.chatPreviewsData });
         }
         //console.log(state.openedChat, this.openedChat);
-        
-        this.setProps({openedChat: state.openedChat})
+
+        this.setProps({ openedChat: state.openedChat })
     }
 
     render() {
-         return this.compile(template, {
+        return this.compile(template, {
             ...this.props,
             moment,
             resourcesUrl: RESOURCES_URL

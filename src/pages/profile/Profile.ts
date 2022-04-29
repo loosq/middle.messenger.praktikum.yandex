@@ -1,10 +1,10 @@
 import Block, { BlockProps } from "../../utils/Block";
 import template from "./profile.pug"
 import "./profile.css";
-import {Button} from "../../components/button/Button";
+import { Button } from "../../components/button/Button";
 import ProfileInputsList from "./fragments/profileInputsList/ProfileInputsList";
 import GoBackButton from "./fragments/goBackButton/GoBackButton";
-import Store, {StoreEvents} from "../../utils/Store";
+import Store, { StoreEvents } from "../../utils/Store";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
 import UserController from "../../controllers/UserController";
@@ -21,8 +21,8 @@ class Profile extends Block<ProfileProps> {
         this.props = {
             ...props,
             events: {
-                click: (e: Event & {target: {dataset: {href: string}}}) => {
-                    const {href} = e.target?.dataset;
+                click: (e: Event & { target: { dataset: { href: string } } }) => {
+                    const { href } = e.target?.dataset;
 
                     if (href) {
                         e.preventDefault();
@@ -30,8 +30,8 @@ class Profile extends Block<ProfileProps> {
 
                         switch (href) {
                             case '/changeData':
-                                this.children.profileInputsList.setProps({isEdit: true});
-                                this.children.button.setProps({isActive: true});
+                                this.children.profileInputsList.setProps({ isEdit: true });
+                                this.children.button.setProps({ isActive: true });
                                 break;
 
                             case '/':
@@ -39,12 +39,12 @@ class Profile extends Block<ProfileProps> {
                                 break;
 
                             case '/changePassword':
-                                this.children.changePassModal.setProps({isPassModalVisible: true});
+                                this.children.changePassModal.setProps({ isPassModalVisible: true });
                                 break;
 
                             case '/changeAvatar':
                                 const input = this.getContent()?.querySelector('#avatar') as HTMLElement;
-                                this.children.button.setProps({isActive: true});
+                                this.children.button.setProps({ isActive: true });
                                 if (input) {
                                     input.click();
                                 }
@@ -52,7 +52,7 @@ class Profile extends Block<ProfileProps> {
                         }
                     }
                 },
-                submit: async (e: Event & {target: HTMLFormElement}) => {
+                submit: async (e: Event & { target: HTMLFormElement }) => {
                     e.preventDefault();
                     e.stopImmediatePropagation();
 
@@ -72,7 +72,7 @@ class Profile extends Block<ProfileProps> {
                         form.delete('avatar');
                         const formData = Object.fromEntries(form);
                         console.log(formData)
-                        if (Object.values(formData).some(v => !v)){
+                        if (Object.values(formData).some(v => !v)) {
                             Store.set('error/profileForm', 'Some values are missing!');
                             return;
                         }
@@ -80,7 +80,7 @@ class Profile extends Block<ProfileProps> {
                         try {
                             const response = await UserController.updateData(formData);
                             console.log(response, JSON.parse(response))
-                            const {id, first_name, second_name, avatar, login, phone, email, display_name} = JSON.parse(response);
+                            const { id, first_name, second_name, avatar, login, phone, email, display_name } = JSON.parse(response);
                             Store.set('user/login', login);
                             Store.set('user/id', id);
                             Store.set('user/name', first_name);
@@ -89,16 +89,14 @@ class Profile extends Block<ProfileProps> {
                             Store.set('user/email', email);
                             Store.set('user/phone', phone);
                             Store.set('user/avatar', avatar);
-                            Store.set('error/profileForm', '');
-                            this.children.button.setProps({isActive: false});
-                            this.children.profileInputsList.setProps({isEdit: false});
+                            this.children.button.setProps({ isActive: false });
+                            this.children.profileInputsList.setProps({ isEdit: false });
                         } catch (e) {
                             console.error(e);
-                            Store.set('error/profileForm', e.message);
                         }
                     }
                 },
-                change: async (e: Event & {target: {files: Blob[]}}) => {
+                change: async (e: Event & { target: { files: Blob[] } }) => {
                     if (e.target.files && e.target.files.length > 0) {
                         const file = e.target.files[0];
                         const src = URL.createObjectURL(file);
@@ -111,13 +109,13 @@ class Profile extends Block<ProfileProps> {
             }
         }
 
-        Store.on(StoreEvents.Updated, this.onChangeState);
+        Store.on(StoreEvents.updated, this.onChangeState);
     }
 
     onChangeState = () => {
         const state = Store.getState();
-        const {profileForm} = state.error;
-        this.children.profileError.setProps({label: profileForm});
+        const { profileForm } = state.error;
+        this.children.profileError.setProps({ label: profileForm });
     };
 
     initChildren() {
@@ -129,13 +127,13 @@ class Profile extends Block<ProfileProps> {
             }
         });
         this.children.goBackButton = new GoBackButton({});
-        this.children.profileInputsList = new ProfileInputsList({isEdit: false});
-        this.children.profileError = new ProfileError({label: ''});
+        this.children.profileInputsList = new ProfileInputsList({ isEdit: false });
+        this.children.profileError = new ProfileError({ label: '' });
         this.children.avatar = new Avatar({});
     }
 
     componentDidMount() {
-        const {user: {name}} = Store.getState();
+        const { user: { name } } = Store.getState();
 
         const userActions = [
             {
@@ -151,11 +149,11 @@ class Profile extends Block<ProfileProps> {
                 action: 'logout'
             }
         ];
-        this.setProps({name, userActions});
+        this.setProps({ name, userActions });
     }
 
     render() {
-        return this.compile(template, {...this.props});
+        return this.compile(template, { ...this.props });
     }
 }
 

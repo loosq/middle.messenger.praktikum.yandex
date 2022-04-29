@@ -9,7 +9,7 @@ export class MessagesList extends Block<{}> {
     haveChats;
     constructor() {
         super();
-        Store.on(StoreEvents.Updated, this.handleStoreUpdate.bind(this))
+        Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this))
     }
 
     handleStoreUpdate() {

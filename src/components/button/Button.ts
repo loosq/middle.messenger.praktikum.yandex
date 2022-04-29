@@ -5,7 +5,8 @@ import "./styles.css"
 export interface ButtonProps extends BlockProps {
     value: string,
     type?: string,
-    isActive?: boolean
+    isActive?: boolean,
+    data?: string
 }
 
 export class Button extends Block<ButtonProps> {

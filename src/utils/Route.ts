@@ -22,6 +22,8 @@ export default class Route {
     }
 
     leave(): void {
+        console.log(this._block);
+        
         if (this._block) {
             this._block.hide();
         }

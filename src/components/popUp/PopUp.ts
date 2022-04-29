@@ -1,5 +1,4 @@
 import Block, { BlockProps } from "../../utils/Block";
-import GlobalEventBus from "../../utils/GlobalEventBus";
 import template from "./template.pug";
 import "./styles.css";
 import { InputGroup, InputGroupProps } from "../inputGroup/InputGroup";
@@ -21,7 +20,8 @@ export default class PopUp extends Block<PopUpProps> {
         this.props = {
             ...props,
             events: {
-                submit: (e: Event) => this.handleSubmit(e)
+                submit: (e: Event & { target: HTMLFormElement }) => this.handleSubmit(e),
+                click: (e: Event & { target: { dataset: DOMStringMap } }) => this.handleClick(e)
             }
         }
     }
@@ -34,6 +34,8 @@ export default class PopUp extends Block<PopUpProps> {
         }
         this.inputsStatuses = {}
         inputs?.forEach(input => {
+            console.log(input);
+
             this.inputsStatuses[input.name] = false;
             this.children.inputsGroup.push(new InputGroup({
                 ...input,
@@ -54,7 +56,12 @@ export default class PopUp extends Block<PopUpProps> {
 
     handleSubmit(e: Event & { target: HTMLFormElement }) {
         e.preventDefault();
-        const data = new FormData(e.target);
+        const formData = new FormData(e.target);
+        let data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value
+        }
+
         this.emit(PopUpEvents.submit, {
             type: this.props.type,
             data
@@ -62,7 +69,21 @@ export default class PopUp extends Block<PopUpProps> {
     }
 
     showErrorMessage({ message }) {
-        this.children.serverError.setProps({ errorMessage: message })
+        if (message) {
+            this.children.serverError.setProps({ errorMessage: message });
+        }
+    }
+
+    handleClick(e: Event & { target: { dataset: DOMStringMap } }) {
+        e.stopImmediatePropagation();
+        const { link } = e.target.dataset;
+
+        if (link) {
+            this.emit(PopUpEvents.click, {
+                type: this.props.type,
+                link
+            })
+        }
     }
 
     render(): DocumentFragment {

@@ -1,12 +1,7 @@
-interface RegisterConfig {
-    title: string,
-    buttonLabel: string,
-    inputs: any,
-    link: string,
-    classNames: string[]
-}
+import { PopUpProps } from "../../../components/popUp/PopUp";
 
-const registerConfig: RegisterConfig = {
+const registerConfig: PopUpProps = {
+    type: 'sign-up',
     title: "Регистрация",
     inputs: [
         {
@@ -52,9 +47,18 @@ const registerConfig: RegisterConfig = {
             validateAs: 'password'
         }
     ],
-    buttonLabel: "Зарегистрироваться",
-    link: "Войти",
-    classNames: []
+    buttons: [
+        {
+            type: 'submit',
+            value: 'Зарегистрироваться',
+            isActive: false,
+        }, {
+            type: 'link',
+            value: 'Войти',
+            isActive: true,
+            data: "/"
+        }
+    ]
 }
 
 export default registerConfig;

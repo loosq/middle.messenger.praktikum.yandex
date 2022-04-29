@@ -2,6 +2,7 @@ import { UserDataCreate, UserDataLogin, UserPasswordUpdate } from "../api/user/t
 import UserAPI from "../api/user/User";
 import Store from "../utils/Store";
 import Router from "../utils/Router";
+const {URLS} = require('./../constants');
 
 class UserController {
     api;
@@ -15,10 +16,6 @@ class UserController {
 
     async register(data: UserDataCreate) {
         let res;
-        if (data.password !== data.password_repeat) {
-            Store.set('error/modalForm', 'Passwords are not the same');
-            return;
-        }
 
         const { password_repeat, ...userDataCreate } = data;
 
@@ -40,14 +37,13 @@ class UserController {
             Store.set('user/phone', data.phone);
             Store.set('user/login', data.login);
             Store.set('user/password', data.password);
-            Store.set('error/modalForm', '');
-            Router.go('/messenger');
+            Router.go(URLS.messenger);
         }
     }
 
     async logout() {
         await this.api.delete();
-        Router.go('/')
+        Router.go(URLS.login);
     }
 
     async checkUserData() {
@@ -55,20 +51,11 @@ class UserController {
             const response = await this.api.read();
 
             if (!response.reason) {
-                const { id, first_name, second_name, avatar, login, phone, email, display_name } = JSON.parse(response);
-                Store.set('user/login', login);
-                Store.set('user/id', id);
-                Store.set('user/name', first_name);
-                Store.set('user/displayName', display_name);
-                Store.set('user/secondName', second_name);
-                Store.set('user/email', email);
-                Store.set('user/phone', phone);
-                Store.set('user/avatar', avatar);
+                const userData = JSON.parse(response);
+                Store.setUser(userData)
             };
-            return true;
         } catch (e) {
-            console.error(e);
-            return false;
+            console.error(e.reason ? e.reason : e.message);
         }
     }
 

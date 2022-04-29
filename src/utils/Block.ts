@@ -15,6 +15,7 @@ export default abstract class Block<TProps extends BlockProps> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
+        FLOW_CDUM: "flow:component-did-unmount",
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render"
     };
@@ -46,11 +47,12 @@ export default abstract class Block<TProps extends BlockProps> {
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDUM, this.componentDidUnmount.bind(this));
     }
 
     init() {
         this._addClasses();
-        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
     protected initChildren() { }
 
@@ -62,8 +64,12 @@ export default abstract class Block<TProps extends BlockProps> {
         GlobalEventBus.on(event, handler);
     }
 
+    off(event, handler) {
+        GlobalEventBus.off(event, handler);
+    }
+
     componentDidMount(oldProps = {}) {
-        
+
     }
 
     private _componentDidMount() {
@@ -263,5 +269,14 @@ export default abstract class Block<TProps extends BlockProps> {
         });
 
         return fragment.content;
+    }
+
+    protected componentDidUnmount() {}
+
+    hide() {
+        this.eventBus.emit(Block.EVENTS.FLOW_CDUM);
+        if (this._element) {
+            this._element.style.display = 'none';
+        }
     }
 }

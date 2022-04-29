@@ -1,87 +1,48 @@
 import Block, { BlockProps } from "../../utils/Block";
-import Modal from "../../components/modal/Modal";
-import template from "./login.pug";
 import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
-import { UserDataLogin } from "../../api/user/types";
-import Store from "../../utils/Store";
 import withRouter from "../../utils/withRouter";
-import PopUp from "../../components/popUp/PopUp";
-import {PopUpEvents} from "../../controllers/ModalController";
-import GlobalEventBus from "../../utils/GlobalEventBus";
+import { PopUpEvents } from "../../controllers/ModalController";
+const { URLS } = require('./../../constants.ts');
 
-interface LoginProps extends BlockProps {};
+interface LoginProps extends BlockProps { };
 
 class Login extends Block<LoginProps> {
     constructor(props: LoginProps) {
-        super(props);        
-        this.emit(PopUpEvents.show, loginConfig);
-        this.on(PopUpEvents.submit, this.handleSubmit.bind(this))
+        super(props);
+        this.on(PopUpEvents.submit, this.handleSubmit.bind(this));
+        this.on(PopUpEvents.click, this.handleClick.bind(this));
     }
 
-    async handleSubmit(data) {
-        let res;
+    async handleSubmit({ data }) {
+        let response;
         try {
-            res = await UserController.login(data);
-            console.log(res);
-            
-        } catch (error) {
-            const response = JSON.parse(error);
-            console.log(response);
-            
-            this.emit(PopUpEvents.showErrorMessage, {message: response.reason});
+            response = await UserController.login(data);
+            if (response === 'OK') {
+                this.emit(PopUpEvents.hide);
+                this.props.$router?.go(URLS.messenger);
+            }
+        } catch (error) {            
+            const message = response.reason ? response.reason : 'Что то пошло не так';
+            this.emit(PopUpEvents.showErrorMessage, { message });
         }
     }
 
-    // componentDidMount() {
-    //     const userData = Store.getState().user;
-    //     this.children.modal = new Modal({
-    //         ...loginConfig,
-    //         userData,
-    //         onSubmit: async (e: Event) => {
-    //             let res;
+    componentDidMount(oldProps?: {}): void {
+        this.emit(PopUpEvents.show, loginConfig);
+    }
 
-    //             if (e.target) {
-    //                 // @ts-ignore
-    //                 const formData = Object.fromEntries(new FormData(e.target)) as UserDataLogin;
+    handleClick({ type, link }) {
+        if (type !== 'login') return;
 
-    //                 if (Object.values(formData).some(v => !v)) {
-    //                     Store.set('error/modalForm', 'Some values are missing!');
-    //                     return;
-    //                 }
+        this.emit(PopUpEvents.hide);
+        this.props.$router?.go(link);
+    }
 
-    //                 try {
-    //                     res = await UserController.login(formData);
-    //                 } catch (error) {
-    //                     const response = JSON.parse(error);
-    //                     if (response.reason) {
-    //                         Store.set('error/modalForm', response.reason);
-    //                         return;
-    //                     }
-    //                 }
-
-    //                 if (res === 'OK') {
-    //                     Store.set('error/modalForm', '');
-    //                     await UserController.checkUserData();
-    //                     this.props.$router?.go('/messenger')
-    //                 }
-    //             }
-
-    //         }
-    //     });
-    // }
-
-    // initChildren() {
-    //     this.children.popUp = new PopUp();
-    //     console.log(this.children);
-
-    // }
-
-    // render() {
-    //     console.log(this.props);
-
-    //     return this.compile(template, {...this.props});
-    // }
+    componentDidUnmount() {
+        this.off(PopUpEvents.submit, this.handleSubmit.bind(this));
+        this.off(PopUpEvents.click, this.handleClick.bind(this));
+    }
 }
 
 export default withRouter(Login);

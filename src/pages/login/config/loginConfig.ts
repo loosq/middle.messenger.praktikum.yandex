@@ -26,7 +26,8 @@ const loginConfig: PopUpProps = {
         }, {
             type: 'link',
             value: 'Нет аккаунта?',
-            isActive: true
+            isActive: true,
+            data: "/sign-up"
         }
     ]
 }

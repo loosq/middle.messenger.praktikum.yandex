@@ -10,11 +10,11 @@ interface ProfileInputsListProps extends BlockProps {
 class ProfileInputsList extends Block<{}> {
     constructor() {
         super();
-        Store.on(StoreEvents.Updated, this.handleStoreUpdate.bind(this))
+        Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this))
     }
 
     handleStoreUpdate() {
-        const {user: {login, name, secondName, phone, email, displayName}} = Store.getState();
+        const { user: { login, name, secondName, phone, email, displayName } } = Store.getState();
         const userData = [
             {
                 key: 'Почта',
@@ -48,13 +48,13 @@ class ProfileInputsList extends Block<{}> {
             }
         ];
         console.log(userData);
-        
-        this.setProps({userData});
+
+        this.setProps({ userData });
     }
-    
+
 
     render() {
-        return this.compile(template, {...this.props});
+        return this.compile(template, { ...this.props });
     }
 }
 

@@ -9,11 +9,14 @@ import { ChatHeader } from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
 import Store, { StoreEvents } from "../../utils/Store";
 import ChatsController from "../../controllers/ChatsController";
+import UserController from "../../controllers/UserController";
 import { MessagesList } from "./fragments/messagesList/MessagesList";
+import { PopUpEvents } from "../../controllers/ModalController";
+import { addChatData } from "./mocks/addChatData";
+import { addUserData } from "./mocks/addUserData";
 
 interface ChatProps extends BlockProps {
-    isControlsVisible?: boolean,
-    isAddUserVisible?: boolean
+    isControlsVisible?: boolean
 }
 
 export class Chat extends Block<ChatProps> {
@@ -27,7 +30,8 @@ export class Chat extends Block<ChatProps> {
         super(props);
         this.currentChat = null;
         this.isMessagesLoading = Store.getState().isMessagesLoading;
-        Store.on(StoreEvents.Updated, this.onChangeState.bind(this));
+        Store.on(StoreEvents.updated, this.onChangeState.bind(this));
+        UserController.checkUserData();
         this.props.isControlsVisible = false;
         this.props.events = {
             click: this.handleClick.bind(this)
@@ -42,7 +46,7 @@ export class Chat extends Block<ChatProps> {
             this.children.chatInput.setProps({ chatOpen: true })
         }
 
-        this.children.chatControls.setProps({isControlsVisible: state.chatPreviews.length === 0});
+        this.children.chatControls.setProps({ isControlsVisible: state.chatPreviews.length === 0 });
     }
 
     initChildren() {
@@ -50,10 +54,9 @@ export class Chat extends Block<ChatProps> {
         const haveNoChats = state.chatPreviews.length === 0;
         this.children.chatPreview = new ChatPreview();
         this.children.chatInput = new ChatInput({ chatOpen: false });
-        this.children.chatControls = new ChatControls({controls: chatControls.controls, isControlsVisible: haveNoChats});
+        this.children.chatControls = new ChatControls({ controls: chatControls.controls, isControlsVisible: haveNoChats });
         this.children.chatHeader = new ChatHeader();
         this.children.chatOperations = new ChatOperations({});
-        this.children.addUser = new AddUser({ isAddUserVisible: false });
         this.children.messagesList = new MessagesList();
     }
 
@@ -70,13 +73,15 @@ export class Chat extends Block<ChatProps> {
             case 'chat-controls':
                 this.handleControlsClick(this.props.isControlsVisible);
                 break;
-            case 'add-user':
-                this.children.addUser.setProps({ isAddUserVisible: true });
+            case 'add-chat':
                 this.children.chatControls.setProps({ isControlsVisible: false });
+                this.emit(PopUpEvents.show, addChatData);
                 break;
-            case 'add-user-close-button':
-                this.children.addUser.setProps({ isAddUserVisible: false });
-                break;
+            // case 'add-user':
+            //     this.children.chatControls.setProps({ isControlsVisible: false });
+            //     this.emit(PopUpEvents.show, addChatData);
+            //   break;
+
             case 'chat-preview':
                 this.currentChat = chatId;
                 this.currentUserToChat = chatId;
@@ -90,9 +95,9 @@ export class Chat extends Block<ChatProps> {
                     this.currentChat = chats[0] || null;
                 }
                 break;
-            case 'add-user-to-chat':
-                ChatsController.create([newChatUserId]);
-                this.children.addUser.setProps({ isAddUserVisible: false });
+            case 'add-user':
+                this.children.chatControls.setProps({ isControlsVisible: false });
+                this.emit(PopUpEvents.show, addUserData);
                 break;
             case 'send-message':
                 const currentChat = Store.getState().openedChat;

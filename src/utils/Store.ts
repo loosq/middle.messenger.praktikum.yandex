@@ -1,4 +1,4 @@
-import {EventBus} from "./EventBus";
+import { EventBus } from "./EventBus";
 
 interface User {
     id: string | number,
@@ -12,11 +12,6 @@ interface User {
     avatar: string,
     searchedUsers?: string[],
     chats?: []
-}
-
-interface Error {
-    modalForm: string,
-    profileForm: string
 }
 
 interface ChatPreviewDefault {
@@ -44,12 +39,11 @@ interface ChatPreview extends ChatPreviewDefault {
 
 
 interface ChatsMessages {
-    chatsMessages?: {[key: string]: []}
+    chatsMessages?: { [key: string]: [] }
 }
 
 interface State {
     user: User,
-    error: Error,
     chatPreviews: ChatPreview[],
     chatsMessages: ChatsMessages,
     isMessagesLoading: boolean,
@@ -57,7 +51,7 @@ interface State {
 }
 
 export enum StoreEvents {
-    Updated = 'updated',
+    updated = 'updated',
 }
 
 class Store extends EventBus {
@@ -79,10 +73,6 @@ class Store extends EventBus {
                 searchedUsers: [],
                 chats: []
             },
-            error: {
-                modalForm: '',
-                profileForm: ''
-            },
             chatPreviews: [],
             chatsMessages: {},
             isMessagesLoading: false,
@@ -93,20 +83,20 @@ class Store extends EventBus {
     // Мутации, возможно вынести в отдельный файл
     addChatPreview(chatPreview) {
         const chatPreviews = this.state['chatPreviews'];
-        const hasChatPreview = chatPreviews.find(({id}) => id === chatPreview.id);
+        const hasChatPreview = chatPreviews.find(({ id }) => id === chatPreview.id);
         if (!hasChatPreview) {
             chatPreviews.push(chatPreview);
-            this.emit(StoreEvents.Updated);
+            this.emit(StoreEvents.updated);
         }
     }
 
     deleteChatPreview(chatPreviewId) {
-        const hasChatPreview = this.state['chatPreviews'].find(({id}) => id == chatPreviewId);
+        const hasChatPreview = this.state['chatPreviews'].find(({ id }) => id == chatPreviewId);
 
         if (hasChatPreview) {
             delete this.state.chatsMessages[chatPreviewId];
-            this.state['chatPreviews'] = this.state['chatPreviews'].filter(({id}) => id !== chatPreviewId);
-            this.emit(StoreEvents.Updated);
+            this.state['chatPreviews'] = this.state['chatPreviews'].filter(({ id }) => id !== chatPreviewId);
+            this.emit(StoreEvents.updated);
         }
     }
 
@@ -114,8 +104,13 @@ class Store extends EventBus {
         const chat = this.state['chatsMessages'][chatId];
         if (Array.isArray(chat)) {
             chat.push(message);
-            this.emit(StoreEvents.Updated);
+            this.emit(StoreEvents.updated);
         }
+    }
+
+    setUser(user) {
+        this.state.user = { ...this.state.user, ...user };
+        this.emit(StoreEvents.updated);
     }
 
     public set(key: string, value: any) {
@@ -123,13 +118,13 @@ class Store extends EventBus {
 
         if (key.includes('/')) {
             const keySplit = key.split('/');
-            Object.assign(this.state[keySplit[0]], {[keySplit[1]]: value});
+            Object.assign(this.state[keySplit[0]], { [keySplit[1]]: value });
         } else {
-            valueToMerge = {[key]: value};
+            valueToMerge = { [key]: value };
             Object.assign(this.state, valueToMerge);
         }
         console.log('Setting store', this.state)
-        this.emit(StoreEvents.Updated);
+        this.emit(StoreEvents.updated);
     };
 
     public getState() {

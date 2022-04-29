@@ -5,4 +5,13 @@ enum Constants {
     WS_CHATS_URL = 'wss://ya-praktikum.tech/ws/chats'
 }
 
-module.exports = Constants
+const URLS = {
+    login: '/',
+    messenger: '/messenger',
+    settings: '/settings',
+    signUp: '/sign-up',
+    logout: '/logout',
+    error: '/error'
+}
+
+module.exports = {Constants, URLS}

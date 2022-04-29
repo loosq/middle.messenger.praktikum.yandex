@@ -1,35 +1,43 @@
-import Block from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/Block";
 import withRouter from "../../utils/withRouter";
-import template from "./register.pug";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
-import {UserDataCreate} from "../../api/user/types";
+import {PopUpEvents} from "../../controllers/ModalController";
 
-class Register extends Block<{}> {
-    initChildren() {
-        this.children.modal = new Modal({
-            ...registerConfig,
-            onSubmit: async (e: Event) => {
-                if (e.target) {
-                    // @ts-ignore
-                    const formData = Object.fromEntries(new FormData(e.target)) as UserDataCreate;
+interface RegisterProps extends BlockProps { };
 
-                    if (Object.values(formData).some(v => !v)){
-                        throw new Error('Some values are missing!')
-                    }
-
-                    try {
-                        await UserController.register(formData as UserDataCreate);
-                    } catch (e) {
-                        console.log(e)
-                    }
-                }
-            }
-        });
+class Register extends Block<RegisterProps> {
+    constructor(props: RegisterProps) {
+        super(props);        
+        this.on(PopUpEvents.submit, this.handleSubmit.bind(this));
+        this.on(PopUpEvents.click, this.handleClick.bind(this));
     }
 
-    render() {
-        return this.compile(template);
+    async handleSubmit(data) {
+        let response;
+        try {
+            response = await UserController.register(data);            
+        } catch (error) {
+            response = JSON.parse(error);
+            const message = response.reason ? response.reason : 'Что то пошло не так';
+            this.emit(PopUpEvents.showErrorMessage, { message });
+        }
+    }
+
+    handleClick({ type, link }) {  
+        if (type !== 'sign-up') return;
+
+        this.emit(PopUpEvents.hide);
+        this.props.$router?.go(link);
+    }
+
+    componentDidMount() {
+        this.emit(PopUpEvents.show, registerConfig);
+     }
+
+    componentDidUnmount() {        
+        this.off(PopUpEvents.submit, this.handleSubmit.bind(this));
+        this.off(PopUpEvents.click, this.handleClick.bind(this));
     }
 }
 
