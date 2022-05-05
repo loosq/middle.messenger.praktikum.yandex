@@ -1,7 +1,8 @@
-import Block, { BlockProps } from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./avatar.pug";
-import Store, { StoreEvents } from "../../../../utils/Store";
-const { RESOURCES_URL } = require('../../../../constants');
+import Store, {StoreEvents} from "../../../../utils/Store";
+
+const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 
 interface AvatarProps extends BlockProps {
     avatar: string,
@@ -10,25 +11,24 @@ interface AvatarProps extends BlockProps {
 
 export default class Avatar extends Block<AvatarProps> {
     constructor(props) {
-        super(props);
-        this.props = {
+        super({
             ...props,
             resourceUrl: RESOURCES_URL,
             avatar: Store.getState().user.avatar
-        }
+        });
 
-        Store.on(StoreEvents.updated, this.onChangeState);
+        Store.on(StoreEvents.updated, this.handleChangeState.bind(this));
     }
 
-    onChangeState = () => {
+    handleChangeState = () => {
         const avatar = Store.getState().user.avatar;
 
         if (avatar) {
-            this.setProps({ avatar })
+            this.setProps({avatar})
         }
     };
 
     render() {
-        return this.compile(template, { ...this.props });
+        return this.compile(template, {...this.props});
     }
 }

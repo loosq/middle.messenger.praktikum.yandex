@@ -1,6 +1,6 @@
 ul(class=`profile__info ${isEdit ? 'profile__info--isEdit' : 'profile__info--noEdit'}`)
-  if userData
-    each dataUser in userData
+  if userInputsData
+    each dataUser in userInputsData
       li(class="profile__item row content-between items-center")
         span #{dataUser.key}
         input(value=`${dataUser.value}` name=`${dataUser.name}`)

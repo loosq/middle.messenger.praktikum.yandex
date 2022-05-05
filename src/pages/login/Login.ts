@@ -1,11 +1,14 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/Block";
 import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
-import { PopUpEvents } from "../../controllers/ModalController";
-const { URLS } = require('./../../constants.ts');
+import {PopUpEvents} from "../../controllers/ModalController";
+import Store from "../../utils/Store";
 
-interface LoginProps extends BlockProps { };
+const {URLS} = require('./../../constants.ts');
+
+interface LoginProps extends BlockProps {
+};
 
 class Login extends Block<LoginProps> {
     constructor(props: LoginProps) {
@@ -14,25 +17,35 @@ class Login extends Block<LoginProps> {
         this.on(PopUpEvents.click, this.handleClick.bind(this));
     }
 
-    async handleSubmit({ data }) {
+    async handleSubmit(event) {
+        if (event.type !== 'login') return;
+
         let response;
         try {
-            response = await UserController.login(data);
+            response = await UserController.login(event.data);
             if (response === 'OK') {
+                await UserController.checkUserData();
                 this.emit(PopUpEvents.hide);
                 this.props.$router?.go(URLS.messenger);
+                Store.set('isMessagesLoading', true);
             }
-        } catch (error) {            
-            const message = response.reason ? response.reason : 'Что то пошло не так';
-            this.emit(PopUpEvents.showErrorMessage, { message });
+        } catch (error) {
+            response = JSON.parse(error);
+            const message = response.reason ? response.reason : error.message;
+            this.emit(PopUpEvents.showErrorMessage, {message});
         }
     }
 
-    componentDidMount(oldProps?: {}): void {
-        this.emit(PopUpEvents.show, loginConfig);
+    async componentDidMount(oldProps?: {}): Promise<void> {
+        const isLoggedIn = await UserController.checkUserData();
+        if (isLoggedIn) {
+            this.props.$router?.go(URLS.messenger);
+        } else {
+            this.emit(PopUpEvents.show, loginConfig);
+        }
     }
 
-    handleClick({ type, link }) {
+    handleClick({type, link}) {
         if (type !== 'login') return;
 
         this.emit(PopUpEvents.hide);

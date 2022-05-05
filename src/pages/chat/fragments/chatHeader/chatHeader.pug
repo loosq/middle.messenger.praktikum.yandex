@@ -1,3 +1,4 @@
 div(class='row items-center')
-  object(class="current-chat__user-avatar" type="image/png" data=`${resourcesUrl}`)
-  span(class="current-chat__user-name") #{userName}
+  if userToChat
+    object(class="current-chat__user-avatar" type="image/png" data=`${userToChat.avatar ? resourcesUrl + userToChat.avatar : ''}`)
+    span(class="current-chat__user-name") #{userToChat.login}

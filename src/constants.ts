@@ -14,4 +14,6 @@ const URLS = {
     error: '/error'
 }
 
-module.exports = {Constants, URLS}
+const MODAL_TIMEOUT = 5000;
+
+module.exports = {Constants, URLS, MODAL_TIMEOUT}

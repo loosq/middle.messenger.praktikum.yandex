@@ -1,9 +1,9 @@
-import Block from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/Block";
 import withRouter from "../../utils/withRouter"
 import template from "./error.pug"
 import errorData from "./mocks/errors"
 
-class Error extends Block<{}> {
+class Error extends Block<BlockProps> {
 
     constructor(props) {
         super(props);

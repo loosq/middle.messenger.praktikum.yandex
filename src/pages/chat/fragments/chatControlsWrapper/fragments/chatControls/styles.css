@@ -3,9 +3,10 @@
   border-radius: 12px;
   background: var(--white);
   box-shadow: 0 0 6px rgb(0 0 0 / 14%);
-  z-index: 1;
+  z-index: 2;
   right: -6px;
-   top: 6px;
+   top: 66px;
+  user-select: none;
 }
 
 .controls-popup span {

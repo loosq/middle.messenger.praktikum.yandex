@@ -1,9 +1,9 @@
-import Block from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import withRouter from "../../../../utils/withRouter";
 import template from "./chatOperations.pug"
 import "./chatOperations.css";
 
-class ChatOperations extends Block<{}> {
+class ChatOperations extends Block<BlockProps> {
     constructor(props = {}) {
         super(props);
         this.props = {

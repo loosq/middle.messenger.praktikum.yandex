@@ -1,7 +1,7 @@
-import Block from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./profileError.pug"
 
-interface ProfileErrorProps {
+interface ProfileErrorProps extends BlockProps {
     label?: string
 }
 

@@ -1,9 +1,11 @@
-import Block, { BlockProps } from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./chatPreview.pug"
 import "./chatPreview.css";
 import moment from 'moment';
-import Store, { StoreEvents } from "../../../../utils/Store";
-const { RESOURCES_URL } = require('../../../../constants');
+import Store, {StoreEvents} from "../../../../utils/Store";
+
+const {Constants: {RESOURCES_URL}} = require('../../../../constants');
+
 interface User {
     first_name: string,
     second_name: string,
@@ -36,10 +38,24 @@ export interface ChatPreviewProps extends BlockProps {
 export class ChatPreview extends Block<ChatPreviewProps> {
     chatPreviewsData;
 
-    constructor() {
-        super();
+    constructor(props: ChatPreviewProps) {
+        super({
+            ...props,
+            moment,
+            resourcesUrl: RESOURCES_URL,
+            events: {
+                click: (e: Event) => this.setOpenedChatId(e)
+            }
+        });
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
         this.chatPreviewsData = [];
+    }
+
+    setOpenedChatId(e) {
+        const {chatId} = e.target.dataset;
+        if(!chatId) return;
+
+        Store.set('openedChat', chatId)
     }
 
     handleStoreUpdate() {
@@ -47,18 +63,12 @@ export class ChatPreview extends Block<ChatPreviewProps> {
 
         if (state.chatPreviews.length !== this.chatPreviewsData.length) {
             this.chatPreviewsData = state.chatPreviews;
-            this.setProps({ chatPreviewsData: this.chatPreviewsData });
+            this.setProps({chatPreviewsData: this.chatPreviewsData});
         }
-        //console.log(state.openedChat, this.openedChat);
-
-        this.setProps({ openedChat: state.openedChat })
+        this.setProps({openedChat: state.openedChat})
     }
 
     render() {
-        return this.compile(template, {
-            ...this.props,
-            moment,
-            resourcesUrl: RESOURCES_URL
-        });
+        return this.compile(template, {...this.props});
     }
 }

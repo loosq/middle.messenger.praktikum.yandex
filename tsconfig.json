@@ -9,6 +9,7 @@
     "module": "commonjs",
     "strictNullChecks": true,
     "sourceMap": true,
+    "rootDir": ".",
     "esModuleInterop": true
   },
   "exclude": ["node_modules", "**/*.spec.ts"]

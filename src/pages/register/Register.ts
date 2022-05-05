@@ -3,6 +3,7 @@ import withRouter from "../../utils/withRouter";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
 import {PopUpEvents} from "../../controllers/ModalController";
+const {URLS} = require('../../constants');
 
 interface RegisterProps extends BlockProps { };
 
@@ -13,13 +14,19 @@ class Register extends Block<RegisterProps> {
         this.on(PopUpEvents.click, this.handleClick.bind(this));
     }
 
-    async handleSubmit(data) {
+    async handleSubmit({data, type}) {
+        if (type !== 'sign-up') return;
+
         let response;
         try {
-            response = await UserController.register(data);            
+            response = await UserController.register(data);
+            if (response === 'OK') {
+                this.emit(PopUpEvents.hide);
+                this.props.$router?.go(URLS.messenger);
+            }
         } catch (error) {
-            response = JSON.parse(error);
-            const message = response.reason ? response.reason : 'Что то пошло не так';
+            response = typeof error === 'string' ? JSON.parse(error) : error;
+            const message = response.reason ? response.reason : response.message;
             this.emit(PopUpEvents.showErrorMessage, { message });
         }
     }

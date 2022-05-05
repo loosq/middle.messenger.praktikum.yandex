@@ -1,11 +1,13 @@
-import { EventBus } from "./EventBus";
+import {EventBus} from "./EventBus";
+import {Stats} from "fs";
+import {userTransform} from "./userTransfrom";
 
-interface User {
+export interface User {
     id: string | number,
     login: string,
-    password: string,
-    name: string,
+    password?: string,
     email: string,
+    firstName: string,
     secondName: string,
     phone: string,
     displayName: string,
@@ -37,7 +39,6 @@ interface ChatPreview extends ChatPreviewDefault {
     isChosen?: boolean
 }
 
-
 interface ChatsMessages {
     chatsMessages?: { [key: string]: [] }
 }
@@ -64,9 +65,9 @@ class Store extends EventBus {
                 id: '',
                 login: '',
                 password: '',
-                name: '',
                 email: '',
                 secondName: '',
+                firstName: '',
                 phone: '',
                 displayName: '',
                 avatar: '',
@@ -83,25 +84,16 @@ class Store extends EventBus {
     // Мутации, возможно вынести в отдельный файл
     addChatPreview(chatPreview) {
         const chatPreviews = this.state['chatPreviews'];
-        const hasChatPreview = chatPreviews.find(({ id }) => id === chatPreview.id);
+        const hasChatPreview = chatPreviews.find(({id}) => id === chatPreview.id);
         if (!hasChatPreview) {
             chatPreviews.push(chatPreview);
+            this.state.chatsMessages[chatPreview.id] = [];
             this.emit(StoreEvents.updated);
         }
     }
 
-    deleteChatPreview(chatPreviewId) {
-        const hasChatPreview = this.state['chatPreviews'].find(({ id }) => id == chatPreviewId);
-
-        if (hasChatPreview) {
-            delete this.state.chatsMessages[chatPreviewId];
-            this.state['chatPreviews'] = this.state['chatPreviews'].filter(({ id }) => id !== chatPreviewId);
-            this.emit(StoreEvents.updated);
-        }
-    }
-
-    addMessageToChat(message, chatId) {
-        const chat = this.state['chatsMessages'][chatId];
+    addMessageToChat(message, openedChat) {
+        const chat = this.state['chatsMessages'][openedChat];
         if (Array.isArray(chat)) {
             chat.push(message);
             this.emit(StoreEvents.updated);
@@ -109,7 +101,7 @@ class Store extends EventBus {
     }
 
     setUser(user) {
-        this.state.user = { ...this.state.user, ...user };
+        this.state.user =  userTransform(user);
         this.emit(StoreEvents.updated);
     }
 
@@ -118,9 +110,9 @@ class Store extends EventBus {
 
         if (key.includes('/')) {
             const keySplit = key.split('/');
-            Object.assign(this.state[keySplit[0]], { [keySplit[1]]: value });
+            Object.assign(this.state[keySplit[0]], {[keySplit[1]]: value});
         } else {
-            valueToMerge = { [key]: value };
+            valueToMerge = {[key]: value};
             Object.assign(this.state, valueToMerge);
         }
         console.log('Setting store', this.state)

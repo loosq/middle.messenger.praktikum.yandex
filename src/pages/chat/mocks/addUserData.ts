@@ -17,6 +17,12 @@ export const addUserData: PopUpProps = {
             type: 'submit',
             value: 'Добавить',
             isActive: false,
+        },
+        {
+            type: 'link',
+            value: 'Закрыть',
+            isActive: true,
+            data: 'close'
         }
     ]
 }

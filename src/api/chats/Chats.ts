@@ -39,6 +39,10 @@ class ChatsAPI extends BaseAPI {
             '/', {data: {chatId}});
     }
 
+    async getChatUsersList(chatId): Promise<unknown> {
+        return this.http.get(`/${chatId}/users`);
+    }
+
     async update(): Promise<any> {}
 }
 

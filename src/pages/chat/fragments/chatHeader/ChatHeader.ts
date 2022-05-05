@@ -1,18 +1,37 @@
-import Block from "../../../../utils/Block";
-import store from "../../../../utils/Store";
+import Block, {BlockProps} from "../../../../utils/Block";
+import {StoreEvents} from "../../../../utils/Store";
 import template from "./chatHeader.pug"
 import "./chatHeader.css";
-const {RESOURCES_URL} = require('../../../../constants');
+import Store from "../../../../utils/Store";
+import ChatsController from "../../../../controllers/ChatsController";
+const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 
-export class ChatHeader extends Block<{}> {
+interface ChatHeaderProps extends BlockProps {
+    openedChat?: string | number;
+}
 
-    componentDidMount(oldProps: {} = {}) {
-        //@ts-ignore
-        const userName = store.getState()?.userName;
-        this.setProps({userName})
+export class ChatHeader extends Block<ChatHeaderProps> {
+    openedChat: string | number;
+
+    constructor(props: ChatHeaderProps) {
+        super({
+            ...props,
+            userToChat: {},
+            resourcesUrl: RESOURCES_URL,
+        });
+        Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
+    }
+
+    async handleStoreUpdate() {
+        const openedChat = Store.getState().openedChat;
+        if (this.openedChat != openedChat) {
+            this.openedChat = openedChat;
+            const userToChat = await ChatsController.setChatUser(openedChat);
+            this.setProps({userToChat})
+        }
     }
 
     render() {
-        return this.compile(template, {...this.props, resourcesUrl: RESOURCES_URL});
+        return this.compile(template, {...this.props});
     }
 }

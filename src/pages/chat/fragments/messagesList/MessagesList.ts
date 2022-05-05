@@ -1,14 +1,24 @@
-import Block from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/Block";
 import "./messagesList.css";
 import template from "./messagesList.pug"
 import moment from "moment"
-import Store, { StoreEvents } from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/Store";
 
-export class MessagesList extends Block<{}> {
-    userId;
-    haveChats;
-    constructor() {
-        super();
+interface MessagesListProps extends BlockProps {
+    userId: number | string,
+    haveChats: boolean,
+    moment: typeof moment
+}
+
+export class MessagesList extends Block<MessagesListProps> {
+    constructor(props: BlockProps) {
+        super({
+            ...props,
+            userId: Store.getState().user.id,
+            haveChats: Store.getState().chatPreviews.length !== 0,
+            moment: moment
+        });
+
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this))
     }
 
@@ -18,17 +28,17 @@ export class MessagesList extends Block<{}> {
         const messages = state.chatsMessages[openedChat];
 
         if (Array.isArray(messages)) {
-            this.setProps({ messages });
+            this.setProps({messages});
         }
 
-        if (this.userId !== state.user.id) {
-            this.userId = state.user.id;
+        if (this.props.userId !== state.user.id) {
+            this.setProps({userId: state.user.id})
         }
 
-        this.setProps({ haveChats: state.chatPreviews.length !== 0 });
+        this.setProps({haveChats: state.chatPreviews.length !== 0});
     }
 
     render() {
-        return this.compile(template, { ...this.props, currentUserId: this.userId, moment });
+        return this.compile(template, {...this.props});
     }
 }

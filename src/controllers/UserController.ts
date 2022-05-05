@@ -52,10 +52,13 @@ class UserController {
 
             if (!response.reason) {
                 const userData = JSON.parse(response);
-                Store.setUser(userData)
+                Store.setUser(userData);
+                return true;
             };
         } catch (e) {
-            console.error(e.reason ? e.reason : e.message);
+            const error = typeof e === 'string' ? JSON.parse(e) : e;
+            console.error(error.reason ? error.reason : e.message);
+            return false;
         }
     }
 

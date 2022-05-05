@@ -1,4 +1,4 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/Block";
 import template from "./template.pug";
 import "./styles.css";
 import { InputGroup, InputGroupProps } from "../inputGroup/InputGroup";
@@ -11,31 +11,30 @@ export interface PopUpProps extends BlockProps {
     title?: string,
     inputs?: InputGroupProps[],
     buttons?: ButtonProps[],
+    withTimeout?: boolean
 }
 
 export default class PopUp extends Block<PopUpProps> {
     inputsStatuses;
+
     constructor(props: PopUpProps) {
-        super(props);
-        this.props = {
+        super({
             ...props,
             events: {
                 submit: (e: Event & { target: HTMLFormElement }) => this.handleSubmit(e),
                 click: (e: Event & { target: { dataset: DOMStringMap } }) => this.handleClick(e)
             }
-        }
+        });
     }
 
     initChildren(): void {
-        const { inputs, buttons } = this.props;
+        const {inputs, buttons} = this.props;
         this.children = {
             inputsGroup: [],
             buttons: []
         }
         this.inputsStatuses = {}
         inputs?.forEach(input => {
-            console.log(input);
-
             this.inputsStatuses[input.name] = false;
             this.children.inputsGroup.push(new InputGroup({
                 ...input,
@@ -43,18 +42,18 @@ export default class PopUp extends Block<PopUpProps> {
             }))
         });
         buttons?.forEach(button => this.children.buttons.push(new Button(button)));
-        this.children.serverError = new Error({ isModalError: true });
+        this.children.serverError = new Error({isModalError: true});
     }
 
-    onInputChange(status, inputName: string) {
+    onInputChange(status, inputName: string): void {
         this.inputsStatuses[inputName] = status;
         const isAllInputsValid = Object.values(this.inputsStatuses).every(inputStatus => inputStatus === true);
         const buttonSubmit = this.children.buttons.find((button) => button.props.type === 'submit');
-        this.children.serverError.setProps({ errorMessage: "" })
-        buttonSubmit.setProps({ isActive: isAllInputsValid })
+        this.children.serverError.setProps({errorMessage: ""})
+        buttonSubmit.setProps({isActive: isAllInputsValid})
     }
 
-    handleSubmit(e: Event & { target: HTMLFormElement }) {
+    handleSubmit(e: Event & { target: HTMLFormElement }): void {
         e.preventDefault();
         const formData = new FormData(e.target);
         let data = {};
@@ -68,15 +67,19 @@ export default class PopUp extends Block<PopUpProps> {
         })
     }
 
-    showErrorMessage({ message }) {
+    showErrorMessage({message}): void {
         if (message) {
-            this.children.serverError.setProps({ errorMessage: message });
+            this.children.serverError.setProps({errorMessage: message});
         }
     }
 
-    handleClick(e: Event & { target: { dataset: DOMStringMap } }) {
+    handleClick(e: Event & { target: { dataset: DOMStringMap } }): void {
         e.stopImmediatePropagation();
-        const { link } = e.target.dataset;
+        const {link} = e.target.dataset;
+        if (link === 'close') {
+            this.emit(PopUpEvents.hide);
+            return;
+        }
 
         if (link) {
             this.emit(PopUpEvents.click, {
@@ -87,6 +90,6 @@ export default class PopUp extends Block<PopUpProps> {
     }
 
     render(): DocumentFragment {
-        return this.compile(template, { ...this.props });
+        return this.compile(template, {...this.props});
     }
 }

@@ -8,33 +8,19 @@ import Profile from './pages/profile/Profile';
 import Error from './pages/error/Error';
 import Router from './utils/Router';
 import ModalController from './controllers/ModalController';
-const { URLS } = require('./constants.ts');
+const { URLS: {messenger, settings, login, signUp, error, logout} } = require('./constants.ts');
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const linksContainer = document.getElementById('links') as HTMLElement;
     Router
-        .use(URLS.messenger, Chat)
-        .use(URLS.settings, Profile)
-        .use(URLS.login, Login)
-        .use(URLS.signUp, Register)
-        .use(URLS.error, Error)
-        .use(URLS.logout, Logout)
+        .use(messenger, Chat)
+        .use(settings, Profile)
+        .use(login, Login)
+        .use(signUp, Register)
+        .use(error, Error)
+        .use(logout, Logout)
         .start();
 
-    // try {
-    //     const isLoggedIn = await UserController.checkUserData();
-    //     Router.go(isLoggedIn ? '/chat' : '/login');
-    // } catch (e) {
-    //     console.error(e);
-    //     Router.go('/');
-    // }
-
     ModalController.init();
-    // Array.from(linksContainer.getElementsByClassName('link')).forEach(link => {
-    //     link.addEventListener('click', ({ target }: Event & { target: { id: string } }) => {
-    //         Router.go(`/${target?.id || ''}`)
-    //     })
-    // });
 })
 
 

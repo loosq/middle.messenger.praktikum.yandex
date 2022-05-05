@@ -4,9 +4,10 @@ import "./styles.css"
 
 export interface ButtonProps extends BlockProps {
     value: string,
-    type?: string,
+    type?: 'button' | 'submit' | 'link',
     isActive?: boolean,
-    data?: string
+    data?: string,
+    href?: string
 }
 
 export class Button extends Block<ButtonProps> {

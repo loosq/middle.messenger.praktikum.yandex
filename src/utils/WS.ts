@@ -6,6 +6,13 @@ export enum WSEvents {
     open = 'open'
 }
 
+export enum WSReadyStates {
+    connecting = 0,
+    open = 1,
+    closing = 2,
+    closed = 3
+}
+
 export class WS extends EventBus {
     private _socket: WebSocket;
 
@@ -14,23 +21,23 @@ export class WS extends EventBus {
         this._socket = new WebSocket(url);
 
         this._socket.addEventListener('open', () => {
-            console.log('Соединение установлено');
+            //console.log('Соединение установлено');
             this.emit(WSEvents.open, { chatId });
         });
 
         this._socket.addEventListener('close', event => {
             if (event.wasClean) {
-                console.log('Соединение закрыто чисто');
+                //console.log('Соединение закрыто чисто');
             } else {
-                console.log('Обрыв соединения');
+                //console.log('Обрыв соединения');
             }
 
-            console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+            //console.log(`Код: ${event.code} | Причина: ${event.reason}`);
             this.emit(WSEvents.closed, { chatId });
         });
 
         this._socket.addEventListener('error', (event: Event & { message: string }) => {
-            console.log('Ошибка', event.message);
+            //console.log('Ошибка', event.message);
         });
 
         this._socket.addEventListener('message', event => {

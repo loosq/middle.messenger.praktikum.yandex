@@ -1,12 +1,18 @@
 import { PopUpProps } from "../../../components/popUp/PopUp";
 
-export const addChatData: PopUpProps = {
-    type: 'add-chat',
-    title: 'Создать',
+export const changePassword: PopUpProps = {
+    type: 'change-password',
+    title: 'Изменить пароль',
     inputs: [
         {
-            name: 'title',
-            label: 'Название чата',
+            name: 'oldPassword',
+            label: 'Старый пароль',
+            errorMessage: 'Поле не может быть пустым',
+            validateAs: 'trim'
+        },
+        {
+            name: 'newPassword',
+            label: 'Новый пароль',
             errorMessage: 'Поле не может быть пустым',
             validateAs: 'trim'
         }
@@ -14,7 +20,7 @@ export const addChatData: PopUpProps = {
     buttons: [
         {
             type: 'submit',
-            value: 'Создать',
+            value: 'Изменить',
             isActive: false,
         },
         {

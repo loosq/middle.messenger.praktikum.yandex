@@ -1,10 +1,11 @@
 div(class="profile column items-center content-center text-center full-width relative")
   | !{goBackButton}
-  form(class="column" enctype="multipart/form-data")
+  div(class="column")
     div(class="profile__data")
-      div(class="profile__img-wrapper relative" data-href="/changeAvatar")
+      form(class="profile__img-wrapper relative" enctype="multipart/form-data" data-href="/changeAvatar")
         | !{avatar}
       h3(class="profile__title") #{userName}
+  form(class="column")
     | !{profileInputsList}
     | !{profileError}
     if userActions

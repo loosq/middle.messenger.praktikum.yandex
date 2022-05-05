@@ -1,50 +1,63 @@
-import ChatsAPI, { NewChat, AddNewUserToChat } from "../api/chats/Chats";
+import ChatsAPI, {NewChat, AddNewUserToChat} from "../api/chats/Chats";
 import UserAPI from "../api/user/User";
-import { ChatPreviewDefault } from "../pages/chat/fragments/chatPreview/ChatPreview";
+import {ChatPreviewDefault} from "../pages/chat/fragments/chatPreview/ChatPreview";
 import GlobalEventBus from "../utils/GlobalEventBus";
-import { randomIntInRange } from "../utils/lodash";
-import Store, { StoreEvents } from "../utils/Store";
-import { WS, WSEvents } from "../utils/WS";
-import { PopUpEvents } from "./ModalController";
-const { Constants } = require('./../constants');
+import {randomIntInRange} from "../utils/lodash";
+import Store, {StoreEvents} from "../utils/Store";
+import {WS, WSEvents, WSReadyStates} from "../utils/WS";
+import {PopUpEvents} from "./ModalController";
+import {chatIsDeleted} from "../pages/chat/mocks/chatIsDeleted";
+import UserController from "./UserController";
+import {chatDeletedError} from "../pages/chat/mocks/chatDeletedError";
+
+const {Constants} = require('./../constants');
 const reopenWebSocketTimeout = 10000;
 
 class ChatsController {
     api;
-    state;
     chatSockets;
     user;
-    openedChat;
 
     constructor() {
         this.api = ChatsAPI;
         this.chatSockets = {};
         this.user = Store.getState().user;
-        this.openedChat = Store.getState().openedChat;
+        Store.set('isMessagesLoading', true);
+        this.subscribe();
+        if (!this.user.id) {
+            UserController.checkUserData();
+        }
+    }
+
+    subscribe() {
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
         GlobalEventBus.on(PopUpEvents.change, this.handleChangeEvent.bind(this));
         GlobalEventBus.on(PopUpEvents.submit, this.handleSubmit.bind(this));
     }
 
-    async handleSubmit({ data, type }) {
+    async handleSubmit({data, type}) {
         if (type === 'add-chat') {
             GlobalEventBus.emit(PopUpEvents.hide);
-            this.create(data.title)
+            await this.create(data.title)
         }
         if (type === 'add-user') {
+            GlobalEventBus.emit(PopUpEvents.hide);
             await this.addUser(data.userId)
+        }
+        if (type === 'delete-chat') {
+            GlobalEventBus.emit(PopUpEvents.hide);
+            await this.delete();
         }
     }
 
     async addUser(login) {
         const userId = await this.getUserId(login);
-        console.log(userId);
-        debugger
+        const openedChat = Store.getState().openedChat;
         this.api.addUser({
             users: [
                 this.user.id, userId
             ],
-            chatId: this.openedChat
+            chatId: openedChat
         });
     }
 
@@ -59,7 +72,7 @@ class ChatsController {
         }
     }
 
-    async handleChangeEvent({ inputType, value }) {
+    async handleChangeEvent({inputType, value}) {
         if (inputType !== 'userId') return;
 
         let result;
@@ -72,7 +85,7 @@ class ChatsController {
                 // Store.set('user/searchedUsers', result)
             }
         } catch (e) {
-            console.log(e.message);
+            console.error(e.message);
         }
     }
 
@@ -80,25 +93,28 @@ class ChatsController {
         const state = Store.getState();
 
         this.user = state.user;
-        this.openedChat = state.openedChat;
     }
 
     async init() {
         // Получить все чаты
         Store.set('isMessagesLoading', true);
+        await this.prepareChats();
+    }
+
+    async prepareChats(chosenChatId = null) {
         const chats = await this.getAll();
 
         if (Array.isArray(chats) && chats.length) {
-            // Сохранить в стор обьекты чата для сообщений и превьюшки и открыть сокет на чат
-            console.log(chats);
-
-            Promise.all(chats.map(async chat => {
-                this.add(chat);
-                const token = await this.getToken(chat.id);
-                await this.openChatSocket(chat.id, token);
+            this.chatSockets = {};
+            Store.set('chatPreviews', []);
+            await Promise.all(chats.map(async chat => {
+                Store.addChatPreview(chat);
+                await this.openChatSocket(chat.id);
             }));
-            Store.set('openedChat', chats[0].id);
+            const {id} = chosenChatId ? chats.find(({id}) => chosenChatId === id) : chats[0];
+            Store.set('openedChat', id);
         }
+        Store.set('isMessagesLoading', false);
     }
 
     add(chat: ChatPreviewDefault) {
@@ -108,51 +124,31 @@ class ChatsController {
 
     async create(title) {
         try {
-            const newChat = await this.api.create({ title });
-            const { id } = JSON.parse(newChat);
-            Store.set('openedChat', id);
-            const chatTokenResponse = await this.api.getChatToken(id);
-            const { token } = JSON.parse(chatTokenResponse);
-            this.openChatSocket(id, token);
+            const newChat = await this.api.create({title});
+            const {id} = JSON.parse(newChat);
+            if (id) {
+                await this.prepareChats(id);
+            }
         } catch (e) {
             console.error(e.message);
         }
     }
 
-    // async create(users, title = 'new chat') {
-    //     const newChatId = await this.api.create({ title });
-    //     if (!newChatId.reason) {
-    //         try {
-    //             const chatId = JSON.parse(newChatId).id;
-    //             await this.api.addUser({ users: [String(this.user.id), ...users], chatId });
-    //             const newChat = {
-    //                 id: chatId,
-    //                 title: "new-chat",
-    //                 avatar: "",
-    //                 unread_count: 0,
-    //                 last_message: {
-    //                     user: this.user,
-    //                     time: new Date().toISOString(),
-    //                     content: ""
-    //                 }
-    //             }
-    //             this.add(newChat);
-    //             Store.set('openedChat', chatId);
-    //             const chatTokenResponse = await this.api.getChatToken(chatId);
-    //             const { token } = JSON.parse(chatTokenResponse);
-    //             this.openChatSocket(chatId, token);
-    //         } catch (e) {
-    //             console.error(e.message);
-    //         }
-    //     }
-    // }
-
-    async delete(id) {
-        // удалить чат
-        await this.api.delete(id)
-        // удалить чат из стора
-        Store.deleteChatPreview(id);
-        delete this.chatSockets[id];
+    async delete() {
+        const {openedChat} = Store.getState();
+        try {
+            const isChatDeleted = await this.api.delete(openedChat);
+            if (isChatDeleted) {
+                GlobalEventBus.emit(PopUpEvents.show, chatIsDeleted);
+                await this.prepareChats();
+            }
+        } catch (e) {
+            const error = JSON.parse(e);
+            GlobalEventBus.emit(PopUpEvents.show, chatDeletedError);
+            if (error.reason) {
+                GlobalEventBus.emit(PopUpEvents.showErrorMessage, { message: error.reason });
+            }
+        }
     }
 
     async getAll() {
@@ -168,34 +164,30 @@ class ChatsController {
     }
 
     addMessage(text, chatId) {
-        // доюавить сообщение в чат
-        Store.addMessageToChat(text, chatId);
+        this.chatSockets[chatId].sendMessage(text);
     }
-
 
     handleNewMessage(data) {
         console.log('Incoming message', data);
-        if (!data.chatId || !data.message || (data.message && data.message.type === 'pong')) return;
+        if (!data.chatId || !data.message || (data.message &&  ['pong', 'user connected'].includes(data.message.type))) return;
 
         // клгда пришла пачка сообщений
         if (Array.isArray(data.message)) {
-            data.message.reverse().forEach(msg => {
-                this.addMessage(msg, data.chatId);
-            });
+            data.message.reverse().forEach(msg => Store.addMessageToChat(msg, data.chatId));
         }
         // Когда пришло 1 сообщение
         if ('content' in data.message) {
-            this.addMessage(data.message, data.chatId);
+            Store.addMessageToChat(data.message, data.chatId);
         }
 
         Store.set('isMessagesLoading', false);
     }
 
-    async openChatSocket(id, token) {
-        if (!id || !this.user.id || (id in this.chatSockets)) return;
+    async openChatSocket(id) {
+        const token = await this.getToken(id);
+        if (!id || !this.user.id || (id in this.chatSockets) || !token) return;
 
         try {
-            console.log('openChatSocket called');
             const socketUrl = `${Constants.WS_CHATS_URL}/${this.user.id}/${id}/${token}`;
             const chatSocket = new WS(socketUrl, id);
             this.chatSockets[id] = chatSocket;
@@ -203,39 +195,52 @@ class ChatsController {
             chatSocket.on(WSEvents.closed, this.handleCloseChatSocket.bind(this, id));
             chatSocket.on(WSEvents.open, this.handleOpenChatSocket.bind(this, id));
             // соединение рвётся сервером по истечению 60 сек
-            setInterval(() => {
-                chatSocket.sendPing();
-            }, randomIntInRange(40, 59) * 1000);
-        }
-        catch (e) {
+            const sendingPingInterval = randomIntInRange(40, 59) * 1000;
+            const intervalId = setInterval(async () => {
+                if (chatSocket.getReadyState === WSReadyStates.open) {
+                    chatSocket.sendPing();
+                } else  {
+                    clearInterval(intervalId);
+                    await this.openChatSocket(id);
+                }
+
+            }, sendingPingInterval);
+        } catch (e) {
             console.error(e.message);
         }
 
     }
 
     async handleOpenChatSocket(id) {
-        await this.chatSockets[id].getLastMessages()
+        Store.set('isMessagesLoading', true);
+        await this.chatSockets[id].getLastMessages();
     };
 
     handleCloseChatSocket(chatId) {
         delete this.chatSockets[chatId]
-        const timerId = setTimeout(() => {
-            const token = this.getToken(chatId);
-            this.openChatSocket(chatId, token);
+        const timerId = setTimeout(async () => {
+            await this.openChatSocket(chatId);
+            clearTimeout(timerId);
         }, reopenWebSocketTimeout)
-    }
-
-    sendMessage(text, chatId) {
-        console.log(text, chatId);
-
-        this.chatSockets[chatId].sendMessage(text);
     }
 
     async getToken(id) {
         const chatTokenResponse = await this.api.getChatToken(id);
-        const { token } = JSON.parse(chatTokenResponse);
+        const {token} = JSON.parse(chatTokenResponse);
 
         return token;
+    }
+
+    async setChatUser(chatId) {
+        let usersList = [];
+        try {
+            const response = await this.api.getChatUsersList(chatId);
+            usersList = JSON.parse(response);
+        } catch (e) {
+            console.error(e)
+        }
+        // TODO пока непонятно как в интерфейсе отображать несколько пользователей, возвращаем первого
+        return usersList[0];
     }
 }
 

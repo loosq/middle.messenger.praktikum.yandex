@@ -7,7 +7,6 @@ div(class="row full-width")
   div(class=`current-chat column content-center relative ${isMessagesLoading ? 'current-chat--loading' : ''}`)
     div(class="current-chat__user row items-center absolute")
       | !{chatHeader}
-      | !{chatControls}
-      a(class="chat-controls-icon" data-href="chat-controls")
+      | !{chatControlsWrapper}
     | !{messagesList}
     | !{chatInput}
