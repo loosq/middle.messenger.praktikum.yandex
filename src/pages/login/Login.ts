@@ -20,20 +20,7 @@ class Login extends Block<LoginProps> {
     async handleSubmit(event) {
         if (event.type !== 'login') return;
 
-        let response;
-        try {
-            response = await UserController.login(event.data);
-            if (response === 'OK') {
-                await UserController.checkUserData();
-                this.emit(PopUpEvents.hide);
-                this.props.$router?.go(URLS.messenger);
-                Store.set('isMessagesLoading', true);
-            }
-        } catch (error) {
-            response = JSON.parse(error);
-            const message = response.reason ? response.reason : error.message;
-            this.emit(PopUpEvents.showErrorMessage, {message});
-        }
+        await UserController.login(event.data);
     }
 
     async componentDidMount(oldProps?: {}): Promise<void> {

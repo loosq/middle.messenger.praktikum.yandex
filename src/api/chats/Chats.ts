@@ -15,7 +15,7 @@ class ChatsAPI extends BaseAPI {
     }
 
     create(data: NewChat): Promise<unknown> {
-        return this.http.post('/', {data});
+        return this.http.post('/', {data, headers: {"Content-Type": "application/json"}});
     }
 
     getChat(id): Promise<unknown> {
@@ -27,7 +27,7 @@ class ChatsAPI extends BaseAPI {
     }
 
     addUser(data: AddNewUserToChat): Promise<unknown> {
-        return this.http.put('/users', {data});
+        return this.http.put('/users', {data, headers: {"Content-Type": "application/json"}});
     }
 
     getChatToken(chatId): Promise<unknown> {
@@ -36,7 +36,7 @@ class ChatsAPI extends BaseAPI {
 
     async delete(chatId): Promise<unknown> {
         return this.http.delete(
-            '/', {data: {chatId}});
+            '/', {data: {chatId}, headers: {"Content-Type": "application/json"}});
     }
 
     async getChatUsersList(chatId): Promise<unknown> {

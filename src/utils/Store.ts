@@ -92,6 +92,21 @@ class Store extends EventBus {
         }
     }
 
+    removeChat(chatId) {
+        const haveChat = this.state.chatPreviews.some(({id}) => id === chatId);
+        if (haveChat) {
+            this.state.chatPreviews = this.state.chatPreviews.filter(({id}) => id !== chatId);
+            this.emit(StoreEvents.updated);
+        }
+    }
+
+    removeChatMessages(chatId) {
+        if (chatId in this.state.chatsMessages) {
+            delete this.state.chatsMessages[chatId];
+            this.emit(StoreEvents.updated);
+        }
+    }
+
     addMessageToChat(message, openedChat) {
         const chat = this.state['chatsMessages'][openedChat];
         if (Array.isArray(chat)) {

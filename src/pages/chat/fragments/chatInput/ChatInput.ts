@@ -1,7 +1,7 @@
 import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./chatInput.pug"
 import "./chatInput.css";
-import Store from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/Store";
 import ChatsController from "../../../../controllers/ChatsController";
 
 interface ChatInputProps extends BlockProps {
@@ -26,6 +26,12 @@ export class ChatInput extends Block<ChatInputProps> {
                 }
             }
         });
+        Store.on(StoreEvents.updated, this.handleStoreChange.bind(this));
+    }
+
+    handleStoreChange() {
+        const {openedChat} = Store.getState();
+        this.setProps({chatOpen: !!openedChat})
     }
 
     render() {

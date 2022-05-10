@@ -1,15 +1,18 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/Block";
 import withRouter from "../../utils/withRouter";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
 import {PopUpEvents} from "../../controllers/ModalController";
+import Store from "../../utils/Store";
+
 const {URLS} = require('../../constants');
 
-interface RegisterProps extends BlockProps { };
+interface RegisterProps extends BlockProps {
+};
 
 class Register extends Block<RegisterProps> {
     constructor(props: RegisterProps) {
-        super(props);        
+        super(props);
         this.on(PopUpEvents.submit, this.handleSubmit.bind(this));
         this.on(PopUpEvents.click, this.handleClick.bind(this));
     }
@@ -17,21 +20,10 @@ class Register extends Block<RegisterProps> {
     async handleSubmit({data, type}) {
         if (type !== 'sign-up') return;
 
-        let response;
-        try {
-            response = await UserController.register(data);
-            if (response === 'OK') {
-                this.emit(PopUpEvents.hide);
-                this.props.$router?.go(URLS.messenger);
-            }
-        } catch (error) {
-            response = typeof error === 'string' ? JSON.parse(error) : error;
-            const message = response.reason ? response.reason : response.message;
-            this.emit(PopUpEvents.showErrorMessage, { message });
-        }
+        await UserController.register(data);
     }
 
-    handleClick({ type, link }) {  
+    handleClick({type, link}) {
         if (type !== 'sign-up') return;
 
         this.emit(PopUpEvents.hide);
@@ -40,9 +32,9 @@ class Register extends Block<RegisterProps> {
 
     componentDidMount() {
         this.emit(PopUpEvents.show, registerConfig);
-     }
+    }
 
-    componentDidUnmount() {        
+    componentDidUnmount() {
         this.off(PopUpEvents.submit, this.handleSubmit.bind(this));
         this.off(PopUpEvents.click, this.handleClick.bind(this));
     }

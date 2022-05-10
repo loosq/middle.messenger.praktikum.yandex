@@ -16,7 +16,8 @@ export class MessagesList extends Block<MessagesListProps> {
             ...props,
             userId: Store.getState().user.id,
             haveChats: Store.getState().chatPreviews.length !== 0,
-            moment: moment
+            openedChat: Store.getState().openedChat,
+             moment
         });
 
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this))
@@ -35,10 +36,17 @@ export class MessagesList extends Block<MessagesListProps> {
             this.setProps({userId: state.user.id})
         }
 
+        if (!openedChat) {
+            this.setProps({
+                messages: []
+            });
+        }
+        this.setProps({openedChat});
         this.setProps({haveChats: state.chatPreviews.length !== 0});
     }
 
     render() {
+        console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }

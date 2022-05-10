@@ -33,12 +33,15 @@ class Profile extends Block<ProfileProps> {
                 change: async (e: Event & { target: { files: Blob[] } }) => {
                     if (e.target.files && e.target.files.length > 0) {
                         const file = e.target.files[0];
+                        const formData = new FormData();
+                        formData.append('avatar', file);
+                        const changeAvaResult = await UserController.changeAvatar(formData);
+
                         const src = URL.createObjectURL(file);
                         const preview = (this.getContent() as HTMLElement).querySelector(".profile__img");
-                        if (preview) {
+                        if (preview && changeAvaResult) {
                             preview['src'] = src;
                         }
-                        await UserController.changeAvatar({avatar: file, headers: {"content-type": "multipart/form-data"}})
                     }
 
                 }

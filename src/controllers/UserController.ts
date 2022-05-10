@@ -1,7 +1,13 @@
-import { UserDataCreate, UserDataLogin, UserPasswordUpdate } from "../api/user/types";
+import {UserDataCreate, UserDataLogin, UserPasswordUpdate} from "../api/user/types";
 import UserAPI from "../api/user/User";
 import Store from "../utils/Store";
 import Router from "../utils/Router";
+import GlobalEventBus from "../utils/GlobalEventBus";
+import {PopUpEvents} from "./ModalController";
+import {avatarSuccessChange} from "../pages/profile/mocks/avatarSuccessChange";
+import {avatarChangeError} from "../pages/profile/mocks/avatarChangeError";
+import {type} from "os";
+
 const {URLS} = require('./../constants');
 
 class UserController {
@@ -10,34 +16,44 @@ class UserController {
     constructor() {
         this.api = UserAPI;
     }
+
     async login(data: UserDataLogin) {
-        return await this.api.login(data);
+        let response;
+        try {
+            response = await this.api.login(data);
+            if (response === 'OK') {
+                await this.checkUserData();
+                GlobalEventBus.emit(PopUpEvents.hide);
+                Router.go(URLS.messenger);
+                Store.set('isMessagesLoading', true);
+            }
+        } catch (e) {
+            const error = JSON.parse(e);
+            if (error.reason) {
+                GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: error.reason});
+            }
+        }
     }
 
     async register(data: UserDataCreate) {
-        let res;
+        const {password_repeat, ...userDataCreate} = data;
 
-        const { password_repeat, ...userDataCreate } = data;
-
-        try {
-            res = await this.api.create(userDataCreate);
-        } catch (error) {
-            const response = JSON.parse(error);
-            Store.set('error/modalForm', response.reason || 'Something went wrong');
+        if (password_repeat !== userDataCreate.password) {
+            GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: 'Пароли не совпадают'});
             return;
         }
 
-        const response = JSON.parse(res);
-        if (response.id) {
-            Store.set('user/id', response.id);
-            Store.set('user/name', data.first_name);
-            Store.set('user/secondName', data.second_name);
-            Store.set('user/displayName', `${data.first_name} ${data.second_name}`);
-            Store.set('user/email', data.email);
-            Store.set('user/phone', data.phone);
-            Store.set('user/login', data.login);
-            Store.set('user/password', data.password);
+        try {
+            await this.api.create(userDataCreate);
+            await this.checkUserData();
+            GlobalEventBus.emit(PopUpEvents.hide);
             Router.go(URLS.messenger);
+            Store.set('isMessagesLoading', true);
+        } catch (e) {
+            const error = JSON.parse(e);
+            if (error.reason) {
+                GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: error.reason});
+            }
         }
     }
 
@@ -54,7 +70,8 @@ class UserController {
                 const userData = JSON.parse(response);
                 Store.setUser(userData);
                 return true;
-            };
+            }
+            ;
         } catch (e) {
             const error = typeof e === 'string' ? JSON.parse(e) : e;
             console.error(error.reason ? error.reason : e.message);
@@ -70,8 +87,21 @@ class UserController {
         return await this.api.updatePass(data);
     }
 
-    async changeAvatar(avatar) {
-        return await this.api.updateAvatar(avatar);
+    async changeAvatar(data) {
+        try {
+            let response = await this.api.updateAvatar(data);
+            // TODO подумать как избавится от такой костылины
+            response = typeof response === 'string' && response ? JSON.parse(response) : response;
+            if (response && response.id) {
+                GlobalEventBus.emit(PopUpEvents.show, avatarSuccessChange);
+                return true;
+            } else {
+                throw new Error('Что то пошло не так')
+            }
+        } catch (e) {
+            GlobalEventBus.emit(PopUpEvents.show, avatarChangeError);
+            GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: e.message})
+        }
     }
 
     async findUsers(login) {

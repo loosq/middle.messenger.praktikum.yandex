@@ -46,7 +46,6 @@ export default class HTTPTransport {
     };
 
     public put<Response = void>(path = '/', options: Options): Promise<Response> {
-        console.log(options)
         return this.request<Response>(this.endpoint + path, {
             method: Methods.PUT,
             ...options
@@ -72,10 +71,7 @@ export default class HTTPTransport {
 
     private request<Response>(url: string, options: Options = {method: Methods.GET}, timeout: number = 5000): Promise<Response> {
         const {headers = {}, method, data} = options;
-        const defaultHeaders = {
-            "accept": "application/json",
-            "Content-Type": "application/json"
-        };
+        const defaultHeaders = {"accept": "application/json"};
 
         return new Promise((resolve, reject) => {
             if (!method) {
@@ -111,11 +107,18 @@ export default class HTTPTransport {
             xhr.onabort = () => reject({reason: 'abort'});
             xhr.onerror = () => reject({reason: 'network error'});
             xhr.ontimeout = () => reject({reason: 'timeout error'});
+            const isFormData = data instanceof FormData;
 
-            if (isGet || !data) {
-                xhr.send();
-            } else {
-                xhr.send(JSON.stringify(data));
+            try {
+                if (isGet || !data) {
+                    xhr.send();
+                } else if (isFormData){
+                    xhr.send(data);
+                } else {
+                    xhr.send(JSON.stringify(data));
+                }
+            } catch (e) {
+                console.log(e)
             }
         });
     };

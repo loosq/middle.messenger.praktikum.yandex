@@ -31,6 +31,7 @@ export class ChatControls extends Block<ChatControlsProps> {
                 this.emit(PopUpEvents.show, addChatData);
                 break;
             case 'delete-user':
+                console.log('delete user');
                 break;
             case 'add-user':
                 this.emit(PopUpEvents.show, addUserData);

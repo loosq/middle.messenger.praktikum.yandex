@@ -8,6 +8,7 @@ const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 
 interface ChatHeaderProps extends BlockProps {
     openedChat?: string | number;
+    userToChat?: boolean | object
 }
 
 export class ChatHeader extends Block<ChatHeaderProps> {
@@ -16,22 +17,27 @@ export class ChatHeader extends Block<ChatHeaderProps> {
     constructor(props: ChatHeaderProps) {
         super({
             ...props,
-            userToChat: {},
+            userToChat: false,
             resourcesUrl: RESOURCES_URL,
         });
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
     }
 
     async handleStoreUpdate() {
-        const openedChat = Store.getState().openedChat;
-        if (this.openedChat != openedChat) {
+        const {openedChat} = Store.getState();
+        if ((this.openedChat != openedChat) && openedChat) {
             this.openedChat = openedChat;
             const userToChat = await ChatsController.setChatUser(openedChat);
-            this.setProps({userToChat})
+            this.setProps({userToChat});
+        }
+
+        if (!openedChat) {
+            this.setProps({userToChat: false})
         }
     }
 
     render() {
+        console.log(this.props.userToChat)
         return this.compile(template, {...this.props});
     }
 }

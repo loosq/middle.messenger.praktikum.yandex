@@ -14,16 +14,7 @@ import { MessagesList } from "./fragments/messagesList/MessagesList";
 export class Chat extends Block<BlockProps> {
     constructor(props: BlockProps) {
         super(props);
-        Store.on(StoreEvents.updated, this.onChangeState.bind(this));
         ChatsController.init();
-    }
-
-    onChangeState = () => {
-        const state = Store.getState();
-
-        if (+state.openedChat > 0) {
-            this.children.chatInput.setProps({ chatOpen: true })
-        }
     }
 
     initChildren() {

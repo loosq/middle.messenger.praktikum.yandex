@@ -9,6 +9,9 @@ import {PopUpEvents} from "./ModalController";
 import {chatIsDeleted} from "../pages/chat/mocks/chatIsDeleted";
 import UserController from "./UserController";
 import {chatDeletedError} from "../pages/chat/mocks/chatDeletedError";
+import {chatIsCreated} from "../pages/chat/mocks/chatIsCreated";
+import {userIsAdded} from "../pages/chat/mocks/userIsAdded";
+import {userAddedError} from "../pages/chat/mocks/userAddedError";
 
 const {Constants} = require('./../constants');
 const reopenWebSocketTimeout = 10000;
@@ -53,12 +56,22 @@ class ChatsController {
     async addUser(login) {
         const userId = await this.getUserId(login);
         const openedChat = Store.getState().openedChat;
-        this.api.addUser({
-            users: [
-                this.user.id, userId
-            ],
-            chatId: openedChat
-        });
+        try {
+            const response = await this.api.addUser({
+                users: [
+                    this.user.id, userId
+                ],
+                chatId: openedChat
+            });
+            if (response === 'OK') {
+                GlobalEventBus.emit(PopUpEvents.show, userIsAdded);
+            }
+        } catch (error){
+            console.log(error)
+            const {reason} = JSON.parse(error);
+            GlobalEventBus.emit(PopUpEvents.show, userAddedError);
+            GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: reason})
+        }
     }
 
     async getUserId(login) {
@@ -66,7 +79,11 @@ class ChatsController {
         try {
             result = await UserAPI.findUsers(login);
             result = JSON.parse(result);
-            return result[0].id
+            if (Array.isArray(result) && result[0]) {
+                return result[0].id;
+            } else {
+                throw new Error('Не удалось добавить пользователя');
+            }
         } catch (e) {
             console.error(e.message)
         }
@@ -104,14 +121,22 @@ class ChatsController {
     async prepareChats(chosenChatId = null) {
         const chats = await this.getAll();
 
-        if (Array.isArray(chats) && chats.length) {
+        if (Array.isArray(chats)) {
             this.chatSockets = {};
             Store.set('chatPreviews', []);
             await Promise.all(chats.map(async chat => {
                 Store.addChatPreview(chat);
                 await this.openChatSocket(chat.id);
             }));
-            const {id} = chosenChatId ? chats.find(({id}) => chosenChatId === id) : chats[0];
+
+            let id;
+            if (chosenChatId) {
+                id = chosenChatId;
+            } else if (chats.length) {
+                id = chats[0].id;
+            } else {
+                id = chosenChatId;
+            }
             Store.set('openedChat', id);
         }
         Store.set('isMessagesLoading', false);
@@ -128,6 +153,7 @@ class ChatsController {
             const {id} = JSON.parse(newChat);
             if (id) {
                 await this.prepareChats(id);
+                GlobalEventBus.emit(PopUpEvents.show, chatIsCreated);
             }
         } catch (e) {
             console.error(e.message);
@@ -139,6 +165,8 @@ class ChatsController {
         try {
             const isChatDeleted = await this.api.delete(openedChat);
             if (isChatDeleted) {
+                Store.removeChat(openedChat);
+                Store.removeChatMessages(openedChat);
                 GlobalEventBus.emit(PopUpEvents.show, chatIsDeleted);
                 await this.prepareChats();
             }
