@@ -8,5 +8,4 @@
 * ```npm run build-dist``` собирает проект прод версию
 
 ## Ссылка на пулл-реквест:
-https://github.com/loosq/middle.messenger.praktikum.yandex/pull/1
-https://github.com/loosq/middle.messenger.praktikum.yandex/pull/2
+https://github.com/loosq/middle.messenger.praktikum.yandex/pull/3

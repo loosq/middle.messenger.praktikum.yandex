@@ -1,45 +1,33 @@
 import BaseAPI from '../api';
-
-export interface NewChat {
-    title: string
-}
-
-export interface AddNewUserToChat {
-    users: number[],
-    chatId: number
-  }
+import {NewChat, CreatedChatResponse, AddNewUserToChat, TokenResponse, DeletedChatResponse, ChatUsersResponse} from "./types";
 
 class ChatsAPI extends BaseAPI {
     constructor() {
         super('/chats');
     }
 
-    create(data: NewChat): Promise<unknown> {
+    create(data: NewChat): Promise<NewChat> {
         return this.http.post('/', {data, headers: {"Content-Type": "application/json"}});
     }
 
-    getChat(id): Promise<unknown> {
-        return this.http.get(`/${id}/common`);
-    }
-
-    async read(): Promise<unknown> {
+    async read(): Promise<CreatedChatResponse> {
         return this.http.get('/');
     }
 
-    addUser(data: AddNewUserToChat): Promise<unknown> {
+    addUser(data: AddNewUserToChat): Promise<string> {
         return this.http.put('/users', {data, headers: {"Content-Type": "application/json"}});
     }
 
-    getChatToken(chatId): Promise<unknown> {
+    getChatToken(chatId): Promise<TokenResponse> {
         return this.http.post(`/token/${chatId}`);
     }
 
-    async delete(chatId): Promise<unknown> {
+    async delete(chatId): Promise<DeletedChatResponse> {
         return this.http.delete(
             '/', {data: {chatId}, headers: {"Content-Type": "application/json"}});
     }
 
-    async getChatUsersList(chatId): Promise<unknown> {
+    async getChatUsersList(chatId): Promise<ChatUsersResponse> {
         return this.http.get(`/${chatId}/users`);
     }
 

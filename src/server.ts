@@ -3,7 +3,7 @@
 const express = require(`express`);
 const path = require(`path`);
 const app = express();
-const {DEFAULT_PORT, BUILD_PATH} = require('./constants.ts');
+const {Constants: {DEFAULT_PORT, BUILD_PATH}} = require('./constants.ts');
 
 const port = process.env.PORT || DEFAULT_PORT;
 const srcFolderNameLength = 4;

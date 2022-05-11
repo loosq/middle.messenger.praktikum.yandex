@@ -1,4 +1,4 @@
-.text-input__labelError {
+.text-input__label-error {
     color: var(--errorColor);
     font-size: 10px;
     line-height: 12px;
@@ -8,7 +8,7 @@
   }
 
 
-  .text-input__modalError {
+  .text-input__modal-error {
     color: var(--errorColor);
     font-size: 14px;
     line-height: 16px;

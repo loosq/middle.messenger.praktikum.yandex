@@ -12,7 +12,7 @@ export interface BlockProps {
     }
 }
 
-export default abstract class Block<TProps extends BlockProps> {
+export default abstract class Block<TProps extends BlockProps = {}> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",

@@ -1,7 +1,7 @@
 div
   if chatPreviewsData && chatPreviewsData.length
     each chatPreview in chatPreviewsData
-      a(class=`chat-preview row relative ${chatPreview.id == openedChat ? 'chat-preview--isChosen' : ''}` data-chat-id=`${chatPreview.id}`)
+      a(class=`chat-preview row relative ${chatPreview.id == openedChat ? 'chat-preview--is-chosen' : ''}` data-chat-id=`${chatPreview.id}`)
         object(class="chat-preview__img" type="image/png" data=`${resourcesUrl}${chatPreview.last_message ? chatPreview.last_message.user.avatar : ''}`)
         div(class="column items-start")
           if chatPreview.last_message && chatPreview.last_message.user.login

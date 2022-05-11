@@ -24,7 +24,7 @@ interface ProfileInputsListProps extends BlockProps {
 }
 
 class ProfileInputsList extends Block<ProfileInputsListProps> {
-    constructor(props: ProfileInputsListProps) {
+    constructor(props: ProfileInputsListProps = {}) {
         super({...props, isEdited: false});
         Store.on(StoreEvents.updated, this.handleStoreUpdate.bind(this));
         this.handleStoreUpdate();

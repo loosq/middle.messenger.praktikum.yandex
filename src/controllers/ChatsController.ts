@@ -1,4 +1,4 @@
-import ChatsAPI, {NewChat, AddNewUserToChat} from "../api/chats/Chats";
+import ChatsAPI from "../api/chats/Chats";
 import UserAPI from "../api/user/User";
 import {ChatPreviewDefault} from "../pages/chat/fragments/chatPreview/ChatPreview";
 import GlobalEventBus from "../utils/GlobalEventBus";
@@ -6,12 +6,8 @@ import {randomIntInRange} from "../utils/lodash";
 import Store, {StoreEvents} from "../utils/Store";
 import {WS, WSEvents, WSReadyStates} from "../utils/WS";
 import {PopUpEvents} from "./ModalController";
-import {chatIsDeleted} from "../pages/chat/mocks/chatIsDeleted";
 import UserController from "./UserController";
-import {chatDeletedError} from "../pages/chat/mocks/chatDeletedError";
-import {chatIsCreated} from "../pages/chat/mocks/chatIsCreated";
-import {userIsAdded} from "../pages/chat/mocks/userIsAdded";
-import {userAddedError} from "../pages/chat/mocks/userAddedError";
+import {chatDeletedError, chatIsDeleted, chatIsCreated, userIsAdded, userAddedError} from "../pages/chat/mocks/";
 
 const {Constants} = require('./../constants');
 const reopenWebSocketTimeout = 10000;

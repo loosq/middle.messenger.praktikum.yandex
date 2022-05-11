@@ -10,7 +10,7 @@ interface AvatarProps extends BlockProps {
 }
 
 export default class Avatar extends Block<AvatarProps> {
-    constructor(props) {
+    constructor(props = {}) {
         super({
             ...props,
             resourceUrl: RESOURCES_URL,

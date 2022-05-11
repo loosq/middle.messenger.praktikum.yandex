@@ -4,7 +4,7 @@ import "./profile.css";
 import {Button} from "../../components/button/Button";
 import ProfileInputsList from "./fragments/profileInputsList/ProfileInputsList";
 import GoBackButton from "./fragments/goBackButton/GoBackButton";
-import Store, {StoreEvents} from "../../utils/Store";
+import Store from "../../utils/Store";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
 import UserController from "../../controllers/UserController";
@@ -13,11 +13,7 @@ import Avatar from "./fragments/avatar/Avatar";
 import userActions from "./config/userActions";
 import {PopUpEvents} from "../../controllers/ModalController";
 const {URLS} = require('./../../constants.ts');
-import {changePassword} from "./mocks/changePassword";
-import {changePasswordSuccess} from "./mocks/changePasswordSuccess";
-import {changeDataSuccess} from "./mocks/dataChangedSuccess";
-import {changeDataError} from "./mocks/changeDataError";
-
+import {changePassword, changePasswordSuccess, changeDataSuccess, changeDataError} from "./mocks";
 
 interface ProfileProps extends BlockProps {
     isEdit?: boolean
@@ -129,10 +125,10 @@ class Profile extends Block<ProfileProps> {
             type: 'submit',
             href: '/profileSave'
         });
-        this.children.goBackButton = new GoBackButton({});
-        this.children.profileInputsList = new ProfileInputsList({});
+        this.children.goBackButton = new GoBackButton();
+        this.children.profileInputsList = new ProfileInputsList();
         this.children.profileError = new ProfileError({label: ''});
-        this.children.avatar = new Avatar({});
+        this.children.avatar = new Avatar();
     }
 
     render() {

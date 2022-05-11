@@ -6,7 +6,6 @@ import GlobalEventBus from "../utils/GlobalEventBus";
 import {PopUpEvents} from "./ModalController";
 import {avatarSuccessChange} from "../pages/profile/mocks/avatarSuccessChange";
 import {avatarChangeError} from "../pages/profile/mocks/avatarChangeError";
-import {type} from "os";
 
 const {URLS} = require('./../constants');
 
@@ -71,7 +70,7 @@ class UserController {
                 Store.setUser(userData);
                 return true;
             }
-            ;
+
         } catch (e) {
             const error = typeof e === 'string' ? JSON.parse(e) : e;
             console.error(error.reason ? error.reason : e.message);

@@ -5,7 +5,7 @@
 
 .profile__item {
   height: 32px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--devider);
 }
 
 .profile__info-controls li:last-child {
@@ -21,6 +21,6 @@
   pointer-events: none;
 }
 
-.profile__info--isEdit input {
+.profile__info--is-edit input {
   pointer-events: all;
 }

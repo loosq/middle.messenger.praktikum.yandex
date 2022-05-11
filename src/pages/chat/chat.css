@@ -1,6 +1,6 @@
 .chats-wrapper {
     background: #fbfbfb;
-    border-right: 1px solid #eaeaea;
+    border-right: 1px solid var(--devider);
     height: 100%;
     align-self: flex-start;
 }
@@ -23,7 +23,7 @@
     color: var(--secondaryColor);
 }
 
-.current-chat__info-messageCentered {
+.current-chat__info-message-centered {
     top: 50%;
     left: 50%;
     transform: translateX(-50%);

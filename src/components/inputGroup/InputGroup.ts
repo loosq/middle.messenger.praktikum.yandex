@@ -25,7 +25,9 @@ export class InputGroup extends Block<InputGroupProps> {
         this.children.input = new Input({
             ...this.props,
             events: {
-                input: (e: Event & { target: { value: string } }) => this.validationHandler(e.target.value)
+                input: (e: Event & { target: { value: string } }) => this.validationHandler(e.target.value),
+                focus: (e: Event & { target: { value: string } }) => this.validationHandler(e.target.value),
+                blur: (e: Event & { target: { value: string } }) => this.validationHandler(e.target.value)
             }
         });
         this.children.error = new Error({
@@ -40,7 +42,7 @@ export class InputGroup extends Block<InputGroupProps> {
         const { validateAs, onInputChange, name, sendOnChangeEvent } = this.props;
         const isValid = !!validate(validateAs, value);
         this.children.error.setProps({ isValid });
-        
+
         if (sendOnChangeEvent) {
             this.emit(PopUpEvents.change, { inputType: name, value })
         }

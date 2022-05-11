@@ -1,7 +1,7 @@
 import PopUp, { PopUpProps } from '../components/popUp/PopUp';
 import Block, { BlockProps } from '../utils/Block';
 import { renderDOM } from '../utils/renderDOM';
-const {MODAL_TIMEOUT} = require('../constants');
+const {MODAL_TIMEOUT, URLS} = require('../constants');
 
 export enum PopUpEvents {
     show = 'show',
@@ -50,7 +50,10 @@ class ModalController extends Block<BlockProps> {
 
     addListener() {
         document.addEventListener('keydown', ({key}) => {
-            if ('Escape' === key) {
+            const {pathname} = window.location;
+            const noEscCloseModalPages = [URLS.login, URLS.signUp];
+
+            if ('Escape' === key && !noEscCloseModalPages.includes(pathname)) {
                 this.handlePopUpHide();
             }
         })

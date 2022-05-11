@@ -22,7 +22,7 @@
   bottom: 0;
   height: 1px;
   width: calc(100% - 20px);
-  background: #eaeaea;
+  background: var(--devider);
 }
 
 .chat-preview__time {
@@ -61,6 +61,6 @@
   white-space: nowrap;
 }
 
-.chat-preview--isChosen {
+.chat-preview--is-chosen {
   background: aliceblue;
 }

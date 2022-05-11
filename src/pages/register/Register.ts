@@ -3,9 +3,6 @@ import withRouter from "../../utils/withRouter";
 import registerConfig from "./config/registerConfig";
 import UserController from "../../controllers/UserController";
 import {PopUpEvents} from "../../controllers/ModalController";
-import Store from "../../utils/Store";
-
-const {URLS} = require('../../constants');
 
 interface RegisterProps extends BlockProps {
 };
