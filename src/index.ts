@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         .use(logout, Logout)
         .start();
 
+    Router.go(login);
+
     ModalController.init();
 })
 
