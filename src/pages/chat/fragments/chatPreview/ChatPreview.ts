@@ -38,7 +38,7 @@ export interface ChatPreviewProps extends BlockProps {
 export class ChatPreview extends Block<ChatPreviewProps> {
     chatPreviewsData;
 
-    constructor(props: ChatPreviewProps) {
+    constructor(props: ChatPreviewProps = {}) {
         super({
             ...props,
             moment,

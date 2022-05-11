@@ -7,7 +7,7 @@ interface ChatControlsWrapperProps extends BlockProps {
 }
 
 export class ChatControlsWrapper extends Block<ChatControlsWrapperProps> {
-    constructor(props: ChatControlsWrapperProps) {
+    constructor(props: ChatControlsWrapperProps = {}) {
         super({
             ...props,
             events: {

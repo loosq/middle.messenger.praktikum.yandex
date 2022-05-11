@@ -11,7 +11,7 @@ interface MessagesListProps extends BlockProps {
 }
 
 export class MessagesList extends Block<MessagesListProps> {
-    constructor(props: BlockProps) {
+    constructor(props: BlockProps = {}) {
         super({
             ...props,
             userId: Store.getState().user.id,

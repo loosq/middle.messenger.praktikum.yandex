@@ -9,7 +9,7 @@ interface ChatInputProps extends BlockProps {
 }
 
 export class ChatInput extends Block<ChatInputProps> {
-    constructor(props: ChatInputProps) {
+    constructor(props: ChatInputProps = {}) {
         super({
             ...props,
             events: {

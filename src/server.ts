@@ -14,5 +14,5 @@ app.use((err, req, res, next) => {
     console.error(`Something went wrong`, err);
     next(err);
 });
-app.get(`/`, (req, res) => res.sendFile(`${distPath}/dist/index.html`));
+app.get(`*`, (req, res) => res.sendFile(`${distPath}/dist/index.html`));
 app.listen(port);

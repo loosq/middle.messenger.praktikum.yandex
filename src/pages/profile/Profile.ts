@@ -12,7 +12,7 @@ import ProfileError from "./fragments/profileError/ProfileError";
 import Avatar from "./fragments/avatar/Avatar";
 import userActions from "./config/userActions";
 import {PopUpEvents} from "../../controllers/ModalController";
-const {URLS} = require('./../../constants.ts');
+const {URLS: {logout}} = require('./../../constants.ts');
 import {changePassword, changePasswordSuccess, changeDataSuccess, changeDataError} from "./mocks";
 
 interface ProfileProps extends BlockProps {
@@ -51,17 +51,18 @@ class Profile extends Block<ProfileProps> {
     }
 
     async handleModalSubmit({type, data}) {
-        if (type === 'change-password') {
-            try {
-                const response = await UserController.changePassword(data);
-                if (response === 'OK') {
-                    this.emit(PopUpEvents.show, changePasswordSuccess)
-                }
-            } catch (e) {
-                const error = JSON.parse(e);
-                if (error.reason) {
-                    this.emit(PopUpEvents.showErrorMessage, {message: error.reason})
-                }
+        if (type !== 'change-password') return;
+
+        this.children.profileInputsList.setProps({isEdit: false});
+        try {
+            const response = await UserController.changePassword(data);
+            if (response === 'OK') {
+                this.emit(PopUpEvents.show, changePasswordSuccess)
+            }
+        } catch (e) {
+            const error = JSON.parse(e);
+            if (error.reason) {
+                this.emit(PopUpEvents.showErrorMessage, {message: error.reason});
             }
         }
     }
@@ -78,7 +79,7 @@ class Profile extends Block<ProfileProps> {
                 break;
 
             case '/logout':
-                Router.go(URLS.logout);
+                Router.go(logout);
                 break;
 
             case '/changePassword':
