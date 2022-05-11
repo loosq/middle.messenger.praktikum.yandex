@@ -6,7 +6,6 @@ import { ChatInput } from "./fragments/chatInput/ChatInput";
 import { ChatControlsWrapper } from "./fragments/chatControlsWrapper/ChatControlsWrapper";
 import { ChatHeader } from "./fragments/chatHeader/ChatHeader";
 import ChatOperations from "./fragments/chatOperations/ChatOperations";
-import Store, { StoreEvents } from "../../utils/Store";
 import ChatsController from "../../controllers/ChatsController";
 import { MessagesList } from "./fragments/messagesList/MessagesList";
 
@@ -18,12 +17,12 @@ export class Chat extends Block<BlockProps> {
     }
 
     initChildren() {
-        this.children.chatPreview = new ChatPreview({});
-        this.children.chatInput = new ChatInput({});
+        this.children.chatPreview = new ChatPreview();
+        this.children.chatInput = new ChatInput();
         this.children.chatControlsWrapper = new ChatControlsWrapper({});
-        this.children.chatHeader = new ChatHeader({});
-        this.children.chatOperations = new ChatOperations({});
-        this.children.messagesList = new MessagesList({});
+        this.children.chatHeader = new ChatHeader();
+        this.children.chatOperations = new ChatOperations();
+        this.children.messagesList = new MessagesList();
     }
 
     render() {

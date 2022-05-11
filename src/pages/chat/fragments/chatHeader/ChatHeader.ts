@@ -14,7 +14,7 @@ interface ChatHeaderProps extends BlockProps {
 export class ChatHeader extends Block<ChatHeaderProps> {
     openedChat: string | number;
 
-    constructor(props: ChatHeaderProps) {
+    constructor(props: ChatHeaderProps = {}) {
         super({
             ...props,
             userToChat: false,

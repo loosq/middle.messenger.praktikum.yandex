@@ -4,7 +4,7 @@
   "repository": "https://github.com/loosq/messenger",
   "scripts": {
     "start": "npm run build-dist && ts-node src/server.ts",
-    "start-server-dev": "nodemon src/server.ts",
+    "start-server-dev": "cross-env nodemon src/server.ts",
     "build-dev": "parcel src/index.html --no-cache",
     "build-dist": "parcel build src/index.html",
     "lint": "concurrently \"npm run lintJs\" \"npm run lintCss\"",

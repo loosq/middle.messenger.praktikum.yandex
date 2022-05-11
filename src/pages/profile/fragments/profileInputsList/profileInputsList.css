@@ -23,4 +23,5 @@
 
 .profile__info--is-edit input {
   pointer-events: all;
+  font-style: italic;
 }
