@@ -1,54 +1,54 @@
 .chats-wrapper {
-    background: #fbfbfb;
-    border-right: 1px solid var(--devider);
-    height: 100%;
-    align-self: flex-start;
+  background: #fbfbfb;
+  border-right: 1px solid var(--devider);
+  height: 100%;
+  align-self: flex-start;
 }
 
 .operations-wrapper {
-    padding: 20px 10px;
+  padding: 20px 10px;
 }
 
 .current-chat {
-    padding: 0 20px;
-    flex-grow: 1;
+  padding: 0 20px;
+  flex-grow: 1;
 }
 
 .current-chat--loading {
-    pointer-events: none;
-    opacity: .3;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .current-chat__info-message {
-    color: var(--secondaryColor);
+  color: var(--secondaryColor);
 }
 
 .current-chat__info-message-centered {
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .current-chat__date {
-    color: var(--secondaryColor);
+  color: var(--secondaryColor);
 }
 
 .chat-controls-icon {
-    width: 14px;
-    height: 28px;
-    padding: 4px;
-    cursor: pointer;
-    margin-left: auto;
-    background: url("./assets/controls.svg") no-repeat center center;
+  width: 14px;
+  height: 28px;
+  padding: 4px;
+  cursor: pointer;
+  margin-left: auto;
+  background: url("./assets/controls.svg") no-repeat center center;
 }
 
 .init-chat-button {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: no-repeat center/50% url("./assets/pencil.svg"), var(--accentColor);
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 20px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: no-repeat center/50% url("./assets/pencil.svg"), var(--accentColor);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
 }

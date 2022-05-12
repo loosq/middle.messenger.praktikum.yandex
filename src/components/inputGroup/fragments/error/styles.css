@@ -1,21 +1,20 @@
 .text-input__label-error {
-    color: var(--errorColor);
-    font-size: 10px;
-    line-height: 12px;
-    position: absolute;
-    left: 0;
-    bottom: -14px;
-  }
+  color: var(--errorColor);
+  font-size: 10px;
+  line-height: 12px;
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+}
 
-
-  .text-input__modal-error {
-    color: var(--errorColor);
-    font-size: 14px;
-    line-height: 16px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 18px;
-    width: 100%;
-    text-align: center;
-  }
+.text-input__modal-error {
+  color: var(--errorColor);
+  font-size: 14px;
+  line-height: 16px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 18px;
+  width: 100%;
+  text-align: center;
+}

@@ -1,13 +1,13 @@
 .popup {
-    width: 340px;
-    min-height: 200px;
-    padding: 50px 30px 30px;
-    box-shadow: 0 0 6px rgb(0 0 0 / 14%);
-    border-radius: 12px;
-    background-color: var(--white);
+  width: 340px;
+  min-height: 200px;
+  padding: 50px 30px 30px;
+  box-shadow: 0 0 6px rgb(0 0 0 / 14%);
+  border-radius: 12px;
+  background-color: var(--white);
 }
 
 .popup__title {
-    margin: 0;
-    margin-bottom: 40px;
+  margin: 0;
+  margin-bottom: 40px;
 }
