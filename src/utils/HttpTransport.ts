@@ -27,11 +27,10 @@ interface Options {
 }
 
 export default class HTTPTransport {
-    static API_URL = 'https://ya-praktikum.tech/api/v2';
     protected endpoint: string;
 
     constructor(endpoint:string = '') {
-        this.endpoint = `${HTTPTransport.API_URL}${endpoint}`
+        this.endpoint = endpoint;
     }
 
     public get<Response>(path = '/'): Promise<Response> {

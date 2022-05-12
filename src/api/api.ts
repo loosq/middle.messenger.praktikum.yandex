@@ -1,10 +1,11 @@
 import HTTPTransport from "../utils/HttpTransport";
+const {Constants: {API_URL}} = require('../constants');
 
 export default abstract class BaseAPI {
     protected http: HTTPTransport;
 
     constructor(endpoint:string = '') {
-        this.http = new HTTPTransport(endpoint);
+        this.http = new HTTPTransport(API_URL + endpoint);
     }
 
     public abstract create?(data: unknown): Promise<unknown>;
