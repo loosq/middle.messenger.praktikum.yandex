@@ -111,6 +111,14 @@ ul {
   right: 0;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .z10 {
   z-index: 10;
+}
+
+.hide {
+  display: none;
 }

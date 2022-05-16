@@ -4,8 +4,18 @@
 @import "root.css";
 @import "base.css";
 
-#root {
-  height: 100vh;
+body {
   background: var(--white);
   font-family: var(--mainFont);
+}
+
+#root {
+  height: 100vh;
+}
+
+#modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

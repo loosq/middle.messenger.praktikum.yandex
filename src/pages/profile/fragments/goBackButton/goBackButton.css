@@ -1,0 +1,4 @@
+.profile__side {
+  width: 64px;
+  border-right: 1px solid var(--devider);
+}

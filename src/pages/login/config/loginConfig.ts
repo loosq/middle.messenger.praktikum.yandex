@@ -1,32 +1,35 @@
-interface LoginConfig {
-    title: string,
-    buttonLabel: string,
-    inputs: any,
-    link: string,
-    inputsValidationState: {},
-    classNames: string[]
-}
+import { PopUpProps } from "../../../components/popUp/PopUp";
 
-const loginConfig: LoginConfig = {
-    title: "Вход",
-    buttonLabel: "Автаризоваться",
+
+const loginConfig: PopUpProps = {
+    type: 'login',
+    title: 'Вход',
     inputs: [
         {
-            name: "user_name",
-            label: "Логин",
-            errorMessage: "Не верный логин",
+            name: 'login',
+            label: 'Логин',
+            errorMessage: 'Не верный логин',
             validateAs: 'login'
         },
         {
-            name: "user_password",
-            label: "Пароль",
-            errorMessage: "Не верный пароль",
+            name: 'password',
+            label: 'Пароль',
+            errorMessage: 'Не верный пароль',
             validateAs: 'password'
         }
     ],
-    link: "Нет аккаунта?",
-    inputsValidationState: {},
-    classNames: []
+    buttons: [
+        {
+            type: 'submit',
+            value: 'Автаризоваться',
+            isActive: false,
+        }, {
+            type: 'link',
+            value: 'Нет аккаунта?',
+            isActive: true,
+            data: "/sign-up"
+        }
+    ]
 }
 
 export default loginConfig;

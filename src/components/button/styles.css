@@ -1,0 +1,14 @@
+.button {
+  margin-top: auto;
+  background: var(--accentColor);
+  padding: 10px;
+  color: var(--white);
+  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.button--link {
+  color: var(--accentColor);
+  background-color: transparent;
+}

@@ -22,11 +22,11 @@
   bottom: 0;
   height: 1px;
   width: calc(100% - 20px);
-  background: #eaeaea;
+  background: var(--devider);
 }
 
 .chat-preview__time {
-  top: 10px;
+  bottom: 10px;
   right: 10px;
   font-size: 12px;
   color: var(--secondaryColor);
@@ -41,7 +41,7 @@
   font-size: 14px;
   line-height: 21px;
   right: 10px;
-  bottom: 10px;
+  top: 10px;
 }
 
 .chat-preview__name {
@@ -55,4 +55,12 @@
   font-size: 14px;
   line-height: 16px;
   color: var(--secondaryColor);
+  max-width: 92px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-preview--is-chosen {
+  background: aliceblue;
 }

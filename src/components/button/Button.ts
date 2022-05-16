@@ -1,13 +1,13 @@
-import Block from "../../utils/Block";
-import template from "./button.pug"
-import "./button.css"
+import Block, { BlockProps } from "../../utils/Block";
+import template from "./template.pug"
+import "./styles.css"
 
-interface ButtonProps {
-    label: string,
-    type?: string
-    classNames?: string[],
+export interface ButtonProps extends BlockProps {
+    value: string,
+    type?: 'button' | 'submit' | 'link',
     isActive?: boolean,
-    events?: any
+    data?: string,
+    href?: string
 }
 
 export class Button extends Block<ButtonProps> {

@@ -1,36 +1,46 @@
-import {EventBus} from './EventBus';
-import {nanoid} from "nanoid";
+import { EventBus } from './EventBus';
+import GlobalEventBus from './GlobalEventBus';
+import { nanoid } from "nanoid";
+import Router from "./Router";
+import {log} from "util";
 
-export default abstract class Block<TProps> {
+export interface BlockProps {
+    classNames?: string[],
+    $router?: typeof Router,
+    events?: {
+        [key: string]: (e: Event) => void
+    }
+}
+
+export default abstract class Block<TProps extends BlockProps = {}> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
+        FLOW_CDUM: "flow:component-did-unmount",
         FLOW_CDU: "flow:component-did-update",
         FLOW_RENDER: "flow:render"
     };
 
     public id = nanoid(6);
-    private _meta;
-    children: Record<string, any>;
-    protected classNames: string[];
+    private _meta: { props: any };
+    protected children: Record<string, any>;
+    classNames: string[];
     protected props: TProps;
     private eventBus: () => EventBus;
-    private _element;
+    private _element: HTMLElement;
 
     constructor(componentData: object = {}) {
+        //console.log('Start rendering ', this.constructor.name)
+        const { props, children, classNames } = this._getChildren(componentData);
         const eventBus = new EventBus();
-        const {props, children, classNames} = this.getChildren(componentData);
+        this.eventBus = () => eventBus;
         this.children = children;
         this.classNames = classNames;
-        this.initChildren();
         this._meta = {
             props
         };
-
         this.props = this._makePropsProxy(props);
-
-        this.eventBus = () => eventBus;
-
+        this.initChildren();
         this._registerEvents(eventBus);
         eventBus.emit(Block.EVENTS.INIT);
     }
@@ -40,23 +50,46 @@ export default abstract class Block<TProps> {
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDUM, this.componentDidUnmount.bind(this));
     }
 
     init() {
-        this._addClasses();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-    }
-    protected initChildren() {}
-
-    private _componentDidMount() {
-        this.componentDidMount();
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    }
+    protected initChildren() { }
+
+    emit(event, data = {}) {
+        GlobalEventBus.emit(event, data);
+    }
+
+    on(event, handler) {
+        GlobalEventBus.on(event, handler);
+    }
+
+    off(event, handler) {
+        GlobalEventBus.off(event, handler);
     }
 
     componentDidMount(oldProps = {}) {
+
     }
 
-    getChildren(componentData: any) {
+    private _componentDidMount() {
+        //console.log('Rendered', this.constructor.name);
+        this.componentDidMount();
+        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+
+        const childrenArray = Object.values(this.children);
+        const childrenIsComponent = childrenArray.every(c => c instanceof Block);
+
+        if (childrenIsComponent) {
+            childrenArray.forEach(child => {
+                child.dispatchComponentDidMount();
+            });
+        }
+    }
+
+    _getChildren(componentData: any) {
         const children: any = {};
         const props: any = {};
         let classNames: any = [];
@@ -73,7 +106,7 @@ export default abstract class Block<TProps> {
             }
         })
 
-        return {props, children, classNames};
+        return { props, children, classNames };
     }
 
     dispatchComponentDidMount() {
@@ -85,7 +118,7 @@ export default abstract class Block<TProps> {
         if (!response) {
             return;
         }
-        this._render();
+        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
     componentDidUpdate(oldProps, newProps) {
@@ -126,9 +159,19 @@ export default abstract class Block<TProps> {
         })
     }
 
+    private _addChildEvents(child) {
+        if (!('events' in child.props)) return;
+
+        if (child.props.events) {
+            Object.entries(child.props.events).forEach(([event, handler]) => {
+                child.getContent().addEventListener(event, handler)
+            })
+        }
+    }
+
     private _render() {
         const fragment = this.render();
-        const newElement = fragment.firstElementChild as HTMLElement;
+        const newElement = fragment.firstElementChild as HTMLElement || "";
 
         if (this._element) {
             this._removeEvents();
@@ -136,28 +179,19 @@ export default abstract class Block<TProps> {
         }
         this._element = newElement;
 
-        this._addEvents()
+        this._addEvents();
     }
 
     protected render(): DocumentFragment {
         return new DocumentFragment();
     }
 
-    private _addClasses() {
-        // @ts-ignore Возможно добавить в мету
-        if (this.props.classList) {
-            // @ts-ignore
-            this.element.classList = this.props.classList;
-        }
-    }
-
-    getContent(): HTMLElement | null {
+    getContent(): HTMLElement | string {
         return this.element;
     }
 
     private _makePropsProxy(props) {
         const self = this;
-
         return new Proxy(props, {
             get(target, prop) {
                 const value = target[prop];
@@ -165,7 +199,7 @@ export default abstract class Block<TProps> {
             },
             set(target, prop, value) {
                 target[prop] = value;
-                self.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+                self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
                 return true;
             },
             deleteProperty() {
@@ -184,31 +218,28 @@ export default abstract class Block<TProps> {
         Object.entries(this.children).forEach(([key, child]) => {
             const childrenIsArray = Array.isArray(child) && child.every(v => v instanceof Block);
             if (childrenIsArray) {
-                context[key] = child.map(({id}) => `<div data-id="id-${id}"></div>`);
+                context[key] = child.map(({ id }) => `<div data-id="id-${id}"></div>`);
                 return;
             }
 
             context[key] = `<div data-id="id-${child.id}"></div>`;
         });
 
-        const htmlString = template(context)
+        const htmlString = template(context);
         fragment.innerHTML = htmlString;
+
 
         Object.entries(this.children).forEach(([key, child]) => {
             const isChildrenArray = Array.isArray(child) && child.every(v => v instanceof Block) as boolean;
 
             if (isChildrenArray) {
-                const childrenIds = child.map(({id}) => id);
+                const childrenIds = child.map(({ id }) => id);
                 const stubs = childrenIds.map(id => fragment.content.querySelector(`[data-id="id-${id}"]`)) as [];
-                stubs.forEach((stub: HTMLElement) => {
-                    const childById = child.find(ch => "id-"+ch.id === stub.dataset.id)
-                    stub.replaceWith(childById.getContent());
 
-                    if (childById.events) {
-                        Object.entries(childById.events).forEach(([event, handler]) => {
-                            childById.getContent().addEventListener(event, handler)
-                        })
-                    }
+                stubs.forEach((stub: HTMLElement) => {
+                    const childById = child.find(ch => "id-" + ch.id === stub.dataset.id)
+                    stub.replaceWith(childById.getContent());
+                    this._addChildEvents(childById);
                 });
                 return;
             }
@@ -216,15 +247,29 @@ export default abstract class Block<TProps> {
             if (!stub) {
                 return;
             }
+            const content = child.getContent()!;
+            stub.replaceWith(content);
+            this._addChildEvents(child);
 
-            stub.replaceWith(child.getContent()!);
+            if (stub.childNodes.length) {
+                content.append(...stub.childNodes);
+            }
 
             //add classes
             if (Array.isArray(child.classNames) && child.classNames.length) {
-                child.getContent()!.classList.add(...child.classNames);
+                child.getContent().classList.add(...child.classNames);
             }
         });
 
         return fragment.content;
+    }
+
+    protected componentDidUnmount() {}
+
+    hide() {
+        this.eventBus().emit(Block.EVENTS.FLOW_CDUM);
+        if (this._element) {
+            this._element.style.display = 'none';
+        }
     }
 }

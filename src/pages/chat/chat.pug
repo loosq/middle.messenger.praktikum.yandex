@@ -1,18 +1,12 @@
-div(class="row")
+div(class="row full-width")
+  | !{addUser}
   div(class="chats-wrapper relative")
     div(class="operations-wrapper column")
       | !{chatOperations}
     | !{chatPreview}
-  div(class="current-chat column content-center relative")
+  div(class=`current-chat column content-center relative ${isMessagesLoading ? 'current-chat--loading' : ''}`)
     div(class="current-chat__user row items-center absolute")
       | !{chatHeader}
-      | !{chatControls}
-    span(class="text-center current-chat__info-message") Выберите чат чтобы отправить сообщение
-    span(class="current-chat__date text-center") 19 Июня
-    each chat in chatData
-      p(class=`current-chat-message relative ${!chat.isMy && 'current-chat-message__incoming'}`) #{chat.message}
-        span(class="current-chat-message__date absolute")
-          svg(width="11" height="5" viewBox="0 0 11 5" fill="none" xmlns="http://www.w3.org/2000/svg")
-            use(href="#ticks")
-          time #{chat.time}
+      | !{chatControlsWrapper}
+    | !{messagesList}
     | !{chatInput}

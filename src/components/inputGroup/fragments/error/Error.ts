@@ -1,17 +1,15 @@
-import Block from "../../../../utils/Block";
-import template from "./error.pug"
+import Block, { BlockProps } from "../../../../utils/Block";
+import template from "./template.pug"
+import "./styles.css";
 
-interface ErrorProps {
+interface ErrorProps extends BlockProps {
     isValid: boolean,
-    errorMessage?: string
+    errorMessage?: string,
+    isModalError?: false
 }
 
 export class Error extends Block<ErrorProps> {
-    constructor(props: ErrorProps) {
-        super(props);
-    }
-
     render() {
-        return this.compile(template, {...this.props});
+        return this.compile(template, { ...this.props });
     }
 }

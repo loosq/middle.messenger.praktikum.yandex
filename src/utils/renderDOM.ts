@@ -1,13 +1,13 @@
-import Block from "../utils/Block";
+import Block, { BlockProps } from "../utils/Block";
 
-export function renderDOM(rootSelector: string, component: Block) {
+export function renderDOM(rootSelector: string, component: Block<BlockProps> | null = null) {
     const root = document.querySelector(rootSelector);
     if (!root) {
-        throw Error('No root is found')
+        throw Error('Root is missing')
     }
-
-    console.log(`Rendering: ${component?.constructor?.name} component`)
-    component.dispatchComponentDidMount();
     root.innerHTML = '';
-    root.append(component.getContent()!);
+    if (component instanceof Block) {
+        component.dispatchComponentDidMount();
+        root.append(component.getContent()!);
+    }
 }

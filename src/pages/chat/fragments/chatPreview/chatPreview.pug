@@ -1,7 +1,14 @@
-div(class="chat-preview row relative")
-  img(class="chat-preview__img" src=`/static/images/${chatPreviewData.avatar}` alt="Аватар пользователя")
-  div(class="column items-start")
-    span(class="chat-preview__name") #{chatPreviewData.name}
-    span(class="chat-preview__body") #{chatPreviewData.chat}
-  span(class="chat-preview__time absolute") #{chatPreviewData.time}
-  span(class="chat-preview__count absolute text-center") #{chatPreviewData.count}
+div
+  if chatPreviewsData && chatPreviewsData.length
+    each chatPreview in chatPreviewsData
+      a(class=`chat-preview row relative ${chatPreview.id == openedChat ? 'chat-preview--is-chosen' : ''}` data-chat-id=`${chatPreview.id}`)
+        object(class="chat-preview__img" type="image/png" data=`${resourcesUrl}${chatPreview.last_message ? chatPreview.last_message.user.avatar : ''}`)
+        div(class="column items-start")
+          if chatPreview.last_message && chatPreview.last_message.user.login
+            span(class="chat-preview__name") #{chatPreview.last_message.user.login}
+          if chatPreview.last_message && chatPreview.last_message.content
+            span(class="chat-preview__body") #{chatPreview.last_message.content}
+        if chatPreview.last_message && chatPreview.last_message.time
+          span(class="chat-preview__time absolute") !{moment(chatPreview.last_message.time).fromNow()}
+        if chatPreview.unread_count > 0
+          span(class="chat-preview__count absolute text-center") #{chatPreview.unread_count}

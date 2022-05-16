@@ -1,0 +1,12 @@
+form(class="popup column content-center items-center full-width" name="form" enctype="multipart/form-data")
+  div(class="radiused column")
+    if title
+      h2(class="popup__title text-center") #{title} 
+    if inputsGroup && inputsGroup.length
+      each inputGroup in inputsGroup
+        | !{inputGroup}
+    if buttons && buttons.length
+      each button in buttons
+        | !{button}
+    if serverError
+    | !{serverError}

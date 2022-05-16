@@ -1,0 +1,7 @@
+div(class="full-width")
+  if usersList
+    ul(class="full-width")
+        each user in usersList
+            li
+                a(class="user-list-link" data-href='add-user-to-chat' data-new-chat-user-id=`${user.id}`)
+                    span #{user.login}

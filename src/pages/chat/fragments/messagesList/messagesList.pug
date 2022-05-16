@@ -1,0 +1,16 @@
+div(class="full-width column current-chat-message-outer-wrapper")
+  div(class="full-width column current-chat-message-wrapper")
+    div(class="full-width current-chat-message-inner-wrapper")
+      if messages && openedChat
+        if messages.length === 0
+          span(class="text-center current-chat__info-message current-chat__info-message-centered absolute") Напишите что нибудь
+        else
+        each message in messages
+          p(class=`current-chat-message relative ${message.user_id === userId ? '' : 'current-chat-message__incoming'}`) #{message.content}
+            span(class="current-chat-message__date absolute")
+              time !{moment(message.time).format("HH:mm")}
+              svg(width="11" height="5" viewBox="0 0 11 5" fill="none" xmlns="http://www.w3.org/2000/svg")
+                use(href="#ticks")
+      else
+        span(class="text-center current-chat__info-message current-chat__info-message-centered absolute") #{haveChats ? 'Выберите чат чтобы отправить сообщение' : 'Что бы начать чат создайте чат и добавьте туда пользователя'}
+        //span(class="current-chat__date text-center") 19 Июня
