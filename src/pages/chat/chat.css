@@ -41,14 +41,3 @@
   margin-left: auto;
   background: url("./assets/controls.svg") no-repeat center center;
 }
-
-.init-chat-button {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  background: no-repeat center/50% url("./assets/pencil.svg"), var(--accentColor);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;
-}

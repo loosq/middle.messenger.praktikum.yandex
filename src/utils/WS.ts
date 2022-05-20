@@ -64,6 +64,10 @@ export class WS extends EventBus {
         }))
     }
 
+    close() {
+        this._socket.close();
+    }
+
     get getReadyState() {
         return this._socket.readyState;
     }

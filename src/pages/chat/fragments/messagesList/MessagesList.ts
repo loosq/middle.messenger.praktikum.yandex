@@ -46,7 +46,6 @@ export class MessagesList extends Block<MessagesListProps> {
     }
 
     render() {
-        console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }

@@ -60,6 +60,10 @@ class Store extends EventBus {
 
     constructor() {
         super();
+        this.restState();
+    }
+
+    restState() {
         this.state = {
             user: {
                 id: '',

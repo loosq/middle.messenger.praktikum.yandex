@@ -3,7 +3,6 @@ import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
 import {PopUpEvents} from "../../controllers/ModalController";
-import Store from "../../utils/Store";
 
 const {URLS} = require('./../../constants.ts');
 

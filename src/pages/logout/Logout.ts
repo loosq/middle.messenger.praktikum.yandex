@@ -2,6 +2,7 @@ import Block from "../../utils/Block";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
+import Store from "../../utils/Store";
 
 class Logout extends Block<{}> {
     constructor() {
@@ -10,6 +11,7 @@ class Logout extends Block<{}> {
     async componentDidMount(oldProps: {} = {}) {
         try {
             await UserController.logout();
+            Store.restState();
         } catch (e) {
             console.error(e)
         } finally {

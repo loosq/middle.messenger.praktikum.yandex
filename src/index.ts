@@ -1,5 +1,4 @@
 import '../static/css/styles.css';
-import '/static/icons/sprite.svg';
 import Login from './pages/login/Login';
 import Logout from './pages/logout/Logout';
 import Register from './pages/register/Register';

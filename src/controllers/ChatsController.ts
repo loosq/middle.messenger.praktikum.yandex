@@ -34,6 +34,19 @@ class ChatsController {
         GlobalEventBus.on(PopUpEvents.submit, this.handleSubmit.bind(this));
     }
 
+    unSubscribe() {
+        Store.off(StoreEvents.updated, this.handleStoreUpdate.bind(this));
+        GlobalEventBus.off(PopUpEvents.change, this.handleChangeEvent.bind(this));
+        GlobalEventBus.off(PopUpEvents.submit, this.handleSubmit.bind(this));
+    }
+
+    onDestroy() {
+        for (let key in this.chatSockets) {
+            this.chatSockets[key].close();
+        }
+        this.unSubscribe();
+    }
+
     async handleSubmit({data, type}) {
         if (type === 'add-chat') {
             GlobalEventBus.emit(PopUpEvents.hide);
@@ -62,7 +75,7 @@ class ChatsController {
             if (response === 'OK') {
                 GlobalEventBus.emit(PopUpEvents.show, userIsAdded);
             }
-        } catch (error){
+        } catch (error) {
             console.log(error)
             const {reason} = JSON.parse(error);
             GlobalEventBus.emit(PopUpEvents.show, userAddedError);
@@ -170,7 +183,7 @@ class ChatsController {
             const error = JSON.parse(e);
             GlobalEventBus.emit(PopUpEvents.show, chatDeletedError);
             if (error.reason) {
-                GlobalEventBus.emit(PopUpEvents.showErrorMessage, { message: error.reason });
+                GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: error.reason});
             }
         }
     }
@@ -193,7 +206,7 @@ class ChatsController {
 
     handleNewMessage(data) {
         console.log('Incoming message', data);
-        if (!data.chatId || !data.message || (data.message &&  ['pong', 'user connected'].includes(data.message.type))) return;
+        if (!data.chatId || !data.message || (data.message && ['pong', 'user connected'].includes(data.message.type))) return;
 
         // клгда пришла пачка сообщений
         if (Array.isArray(data.message)) {
@@ -223,7 +236,7 @@ class ChatsController {
             const intervalId = setInterval(async () => {
                 if (chatSocket.getReadyState === WSReadyStates.open) {
                     chatSocket.sendPing();
-                } else  {
+                } else {
                     clearInterval(intervalId);
                     await this.openChatSocket(id);
                 }

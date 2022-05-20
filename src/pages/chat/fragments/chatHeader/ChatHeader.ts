@@ -37,7 +37,6 @@ export class ChatHeader extends Block<ChatHeaderProps> {
     }
 
     render() {
-        console.log(this.props.userToChat)
         return this.compile(template, {...this.props});
     }
 }

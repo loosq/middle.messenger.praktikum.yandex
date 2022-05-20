@@ -25,6 +25,10 @@ export class Chat extends Block<BlockProps> {
         this.children.messagesList = new MessagesList();
     }
 
+    componentDidUnmount() {
+        ChatsController.onDestroy();
+    }
+
     render() {
         return this.compile(template, { ...this.props });
     }
