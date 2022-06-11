@@ -1,7 +1,7 @@
 import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./profileInputsList.pug"
 import "./profileInputsList.css";
-import Store, {StoreEvents} from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/store/Store";
 import {isEqual} from "../../../../utils/lodash";
 
 interface userInputProp {

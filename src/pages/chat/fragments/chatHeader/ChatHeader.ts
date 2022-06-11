@@ -1,8 +1,8 @@
 import Block, {BlockProps} from "../../../../utils/Block";
-import {StoreEvents} from "../../../../utils/Store";
+import {StoreEvents} from "../../../../utils/store/Store";
 import template from "./chatHeader.pug"
 import "./chatHeader.css";
-import Store from "../../../../utils/Store";
+import Store from "../../../../utils/store/Store";
 import ChatsController from "../../../../controllers/ChatsController";
 const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 

@@ -1,7 +1,7 @@
 import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./chatInput.pug"
 import "./chatInput.css";
-import Store, {StoreEvents} from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/store/Store";
 import ChatsController from "../../../../controllers/ChatsController";
 
 interface ChatInputProps extends BlockProps {

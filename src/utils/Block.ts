@@ -9,7 +9,8 @@ export interface BlockProps {
     $router?: typeof Router,
     events?: {
         [key: string]: (e: Event) => void
-    }
+    },
+    testAttr?: string
 }
 
 export default abstract class Block<TProps extends BlockProps = {}> {

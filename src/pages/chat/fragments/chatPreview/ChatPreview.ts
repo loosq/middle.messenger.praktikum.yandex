@@ -2,7 +2,7 @@ import Block, {BlockProps} from "../../../../utils/Block";
 import template from "./chatPreview.pug"
 import "./chatPreview.css";
 import moment from 'moment';
-import Store, {StoreEvents} from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/store/Store";
 
 const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 

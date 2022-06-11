@@ -4,7 +4,7 @@ import "./profile.css";
 import {Button} from "../../components/button/Button";
 import ProfileInputsList from "./fragments/profileInputsList/ProfileInputsList";
 import GoBackButton from "./fragments/goBackButton/GoBackButton";
-import Store from "../../utils/Store";
+import Store from "../../utils/store/Store";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/Router";
 import UserController from "../../controllers/UserController";

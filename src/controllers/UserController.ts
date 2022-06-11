@@ -1,6 +1,6 @@
 import {UserDataCreate, UserDataLogin, UserPasswordUpdate} from "../api/user/types";
 import UserAPI from "../api/user/User";
-import Store from "../utils/Store";
+import Store from "../utils/store/Store";
 import Router from "../utils/Router";
 import GlobalEventBus from "../utils/GlobalEventBus";
 import {PopUpEvents} from "./ModalController";

@@ -3,7 +3,7 @@ import UserAPI from "../api/user/User";
 import {ChatPreviewDefault} from "../pages/chat/fragments/chatPreview/ChatPreview";
 import GlobalEventBus from "../utils/GlobalEventBus";
 import {randomIntInRange} from "../utils/lodash";
-import Store, {StoreEvents} from "../utils/Store";
+import Store, {StoreEvents} from "../utils/store/Store";
 import {WS, WSEvents, WSReadyStates} from "../utils/WS";
 import {PopUpEvents} from "./ModalController";
 import UserController from "./UserController";
@@ -174,8 +174,8 @@ class ChatsController {
         try {
             const isChatDeleted = await this.api.delete(openedChat);
             if (isChatDeleted) {
+                Store.removeChatPreview(openedChat);
                 Store.removeChat(openedChat);
-                Store.removeChatMessages(openedChat);
                 GlobalEventBus.emit(PopUpEvents.show, chatIsDeleted);
                 await this.prepareChats();
             }
