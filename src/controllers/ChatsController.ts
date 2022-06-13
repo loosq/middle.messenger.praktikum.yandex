@@ -76,7 +76,6 @@ class ChatsController {
                 GlobalEventBus.emit(PopUpEvents.show, userIsAdded);
             }
         } catch (error) {
-            console.log(error)
             const {reason} = JSON.parse(error);
             GlobalEventBus.emit(PopUpEvents.show, userAddedError);
             GlobalEventBus.emit(PopUpEvents.showErrorMessage, {message: reason})

@@ -23,12 +23,14 @@ class Login extends Block<LoginProps> {
     }
 
     async componentDidMount(oldProps?: {}): Promise<void> {
-        const isLoggedIn = await UserController.checkUserData();
-        if (isLoggedIn) {
-            this.props.$router?.go(URLS.messenger);
-        } else {
-            this.emit(PopUpEvents.show, loginConfig);
-        }
+        UserController.checkUserData().then(isLoggedIn => {
+            if (isLoggedIn) {
+                this.props.$router?.go(URLS.messenger);
+            } else {
+                this.emit(PopUpEvents.show, loginConfig);
+            }
+        });
+
     }
 
     handleClick({type, link}) {

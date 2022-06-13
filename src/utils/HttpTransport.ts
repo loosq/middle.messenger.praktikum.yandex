@@ -117,7 +117,7 @@ export default class HTTPTransport {
                     xhr.send(JSON.stringify(data));
                 }
             } catch (e) {
-                console.log(e)
+                console.error(e)
             }
         });
     };

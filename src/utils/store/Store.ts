@@ -69,7 +69,7 @@ class Store extends EventBus {
             valueToMerge = {[key]: value};
             Object.assign(this.state, valueToMerge);
         }
-        console.log('Setting store', this.state)
+        //console.log('Setting store', this.state)
         this.emit(StoreEvents.updated);
     };
 

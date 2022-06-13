@@ -1,8 +1,7 @@
 import { EventBus } from './EventBus';
 import GlobalEventBus from './GlobalEventBus';
 import { nanoid } from "nanoid";
-import Router from "./Router";
-import {log} from "util";
+import Router from "./router/Router";
 
 export interface BlockProps {
     classNames?: string[],
@@ -183,7 +182,7 @@ export default abstract class Block<TProps extends BlockProps = {}> {
         this._addEvents();
     }
 
-    protected render(): DocumentFragment {
+    protected render(): DocumentFragment | HTMLElement {
         return new DocumentFragment();
     }
 
@@ -210,7 +209,7 @@ export default abstract class Block<TProps extends BlockProps = {}> {
     }
 
     private _createDocumentElement(tagName): HTMLElement {
-        return document.createElement(tagName);
+        return document && document.createElement(tagName);
     }
 
     compile(template: (context: any) => string, context: any = {}) {

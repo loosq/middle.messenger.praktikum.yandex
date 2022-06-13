@@ -1,7 +1,7 @@
 import Block from "../../utils/Block";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
-import Router from "../../utils/Router";
+import Router from "../../utils/router/Router";
 import Store from "../../utils/store/Store";
 
 class Logout extends Block<{}> {

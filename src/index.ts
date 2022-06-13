@@ -5,7 +5,7 @@ import Register from './pages/register/Register';
 import { Chat } from './pages/chat/Chat';
 import Profile from './pages/profile/Profile';
 import Error from './pages/error/Error';
-import Router from './utils/Router';
+import Router from './utils/router/Router';
 import ModalController from './controllers/ModalController';
 const { URLS: {messenger, settings, login, signUp, error, logout} } = require('./constants.ts');
 

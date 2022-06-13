@@ -6,7 +6,7 @@ import ProfileInputsList from "./fragments/profileInputsList/ProfileInputsList";
 import GoBackButton from "./fragments/goBackButton/GoBackButton";
 import Store from "../../utils/store/Store";
 import withRouter from "../../utils/withRouter";
-import Router from "../../utils/Router";
+import Router from "../../utils/router/Router";
 import UserController from "../../controllers/UserController";
 import ProfileError from "./fragments/profileError/ProfileError";
 import Avatar from "./fragments/avatar/Avatar";

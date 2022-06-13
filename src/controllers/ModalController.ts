@@ -35,7 +35,7 @@ class ModalController extends Block<BlockProps> {
     }
 
     handlePopUpShow(data: PopUpProps) {
-        console.log('New popup', data);
+        //console.log('New popup', data);
         this.component = new PopUp(data);
         this.type = data.type;
 
