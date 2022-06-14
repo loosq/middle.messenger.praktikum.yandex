@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../../../../../utils/Block";
+import Block, {BlockProps} from "../../../../../../utils/block/Block";
 import template from "./template.pug"
 import "./styles.css";
 import controls, {Control} from "./../../../../mocks/chatControls";

@@ -1,7 +1,7 @@
-import { EventBus } from './EventBus';
-import GlobalEventBus from './GlobalEventBus';
+import { EventBus } from '../EventBus';
+import GlobalEventBus from '../GlobalEventBus';
 import { nanoid } from "nanoid";
-import Router from "./router/Router";
+import Router from "../router/Router";
 
 export interface BlockProps {
     classNames?: string[],
@@ -30,7 +30,6 @@ export default abstract class Block<TProps extends BlockProps = {}> {
     private _element: HTMLElement;
 
     constructor(componentData: object = {}) {
-        //console.log('Start rendering ', this.constructor.name)
         const { props, children, classNames } = this._getChildren(componentData);
         const eventBus = new EventBus();
         this.eventBus = () => eventBus;

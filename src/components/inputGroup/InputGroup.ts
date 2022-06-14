@@ -1,4 +1,4 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/block/Block";
 import template from "./inputGroup.pug"
 import "./inputGroup.css"
 import { Input } from "./../input/Input";

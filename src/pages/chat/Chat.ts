@@ -1,4 +1,4 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/block/Block";
 import template from "./chat.pug"
 import "./chat.css";
 import { ChatPreview } from "./fragments/chatPreview/ChatPreview";

@@ -1,5 +1,5 @@
 import PopUp, { PopUpProps } from '../components/popUp/PopUp';
-import Block, { BlockProps } from '../utils/Block';
+import Block, { BlockProps } from '../utils/block/Block';
 import { renderDOM } from '../utils/renderDOM';
 const {MODAL_TIMEOUT, URLS} = require('../constants');
 

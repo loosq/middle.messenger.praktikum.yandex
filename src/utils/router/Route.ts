@@ -1,5 +1,5 @@
 import {renderDOM} from "../renderDOM"
-import Block from "../Block"
+import Block from "../block/Block"
 
 export default class Route {
     private _pathname: string;

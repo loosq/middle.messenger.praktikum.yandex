@@ -1,4 +1,4 @@
-import Block from "../../utils/Block";
+import Block from "../../utils/block/Block";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
 import Router from "../../utils/router/Router";

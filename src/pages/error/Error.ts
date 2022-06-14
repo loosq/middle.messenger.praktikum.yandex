@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/block/Block";
 import withRouter from "../../utils/withRouter"
 import template from "./error.pug"
 import errorData from "./mocks/errors"

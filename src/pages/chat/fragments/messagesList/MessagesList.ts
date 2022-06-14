@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import "./messagesList.css";
 import template from "./messagesList.pug"
 import moment from "moment"

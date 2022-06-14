@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/block/Block";
 import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";

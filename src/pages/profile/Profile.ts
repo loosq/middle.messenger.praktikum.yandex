@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/block/Block";
 import template from "./profile.pug"
 import "./profile.css";
 import {Button} from "../../components/button/Button";

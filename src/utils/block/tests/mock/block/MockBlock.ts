@@ -3,6 +3,6 @@ import template from "./template.pug";
 
 export default class MockBlock extends Block {
     render() {
-        return this.compile(template);
+        return this.compile(template, {...this.props});
     }
 }

@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import {StoreEvents} from "../../../../utils/store/Store";
 import template from "./chatHeader.pug"
 import "./chatHeader.css";

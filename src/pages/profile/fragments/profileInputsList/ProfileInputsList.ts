@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import template from "./profileInputsList.pug"
 import "./profileInputsList.css";
 import Store, {StoreEvents} from "../../../../utils/store/Store";
