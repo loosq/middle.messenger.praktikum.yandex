@@ -1,5 +1,5 @@
-import {renderDOM} from "./renderDOM"
-import Block from "./Block"
+import {renderDOM} from "../renderDOM"
+import Block from "../block/Block"
 
 export default class Route {
     private _pathname: string;
@@ -22,8 +22,6 @@ export default class Route {
     }
 
     leave(): void {
-        console.log(this._block);
-        
         if (this._block) {
             this._block.hide();
         }

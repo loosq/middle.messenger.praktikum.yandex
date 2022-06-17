@@ -1,55 +1,8 @@
-import {EventBus} from "./EventBus";
-import {Stats} from "fs";
-import {userTransform} from "./userTransfrom";
+import {EventBus} from "../EventBus";
+import {State} from "./types";
+import {userTransform} from "../userTransfrom";
+import defaultState from "./config";
 
-export interface User {
-    id: string | number,
-    login: string,
-    password?: string,
-    email: string,
-    firstName: string,
-    secondName: string,
-    phone: string,
-    displayName: string,
-    avatar: string,
-    searchedUsers?: string[],
-    chats?: []
-}
-
-interface ChatPreviewDefault {
-    id: number | string,
-    title: string,
-    avatar: string,
-    unread_count: number,
-    last_message: {
-        user: {
-            first_name: string,
-            second_name: string,
-            avatar: string,
-            email: string,
-            login: string,
-            phone: string
-        },
-        time: string,
-        content: string
-    }
-}
-
-interface ChatPreview extends ChatPreviewDefault {
-    isChosen?: boolean
-}
-
-interface ChatsMessages {
-    chatsMessages?: { [key: string]: [] }
-}
-
-interface State {
-    user: User,
-    chatPreviews: ChatPreview[],
-    chatsMessages: ChatsMessages,
-    isMessagesLoading: boolean,
-    openedChat: string
-}
 
 export enum StoreEvents {
     updated = 'updated',
@@ -60,25 +13,11 @@ class Store extends EventBus {
 
     constructor() {
         super();
-        this.state = {
-            user: {
-                id: '',
-                login: '',
-                password: '',
-                email: '',
-                secondName: '',
-                firstName: '',
-                phone: '',
-                displayName: '',
-                avatar: '',
-                searchedUsers: [],
-                chats: []
-            },
-            chatPreviews: [],
-            chatsMessages: {},
-            isMessagesLoading: false,
-            openedChat: ""
-        }
+        this.restState();
+    }
+
+    restState() {
+        this.state = JSON.parse(JSON.stringify(defaultState));
     }
 
     // Мутации, возможно вынести в отдельный файл
@@ -92,7 +31,7 @@ class Store extends EventBus {
         }
     }
 
-    removeChat(chatId) {
+    removeChatPreview(chatId) {
         const haveChat = this.state.chatPreviews.some(({id}) => id === chatId);
         if (haveChat) {
             this.state.chatPreviews = this.state.chatPreviews.filter(({id}) => id !== chatId);
@@ -100,7 +39,7 @@ class Store extends EventBus {
         }
     }
 
-    removeChatMessages(chatId) {
+    removeChat(chatId) {
         if (chatId in this.state.chatsMessages) {
             delete this.state.chatsMessages[chatId];
             this.emit(StoreEvents.updated);
@@ -130,7 +69,7 @@ class Store extends EventBus {
             valueToMerge = {[key]: value};
             Object.assign(this.state, valueToMerge);
         }
-        console.log('Setting store', this.state)
+        //console.log('Setting store', this.state)
         this.emit(StoreEvents.updated);
     };
 

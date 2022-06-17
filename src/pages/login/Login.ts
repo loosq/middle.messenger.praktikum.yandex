@@ -1,9 +1,8 @@
-import Block, {BlockProps} from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/block/Block";
 import loginConfig from "./config/loginConfig";
 import UserController from "../../controllers/UserController";
 import withRouter from "../../utils/withRouter";
 import {PopUpEvents} from "../../controllers/ModalController";
-import Store from "../../utils/Store";
 
 const {URLS} = require('./../../constants.ts');
 
@@ -24,12 +23,14 @@ class Login extends Block<LoginProps> {
     }
 
     async componentDidMount(oldProps?: {}): Promise<void> {
-        const isLoggedIn = await UserController.checkUserData();
-        if (isLoggedIn) {
-            this.props.$router?.go(URLS.messenger);
-        } else {
-            this.emit(PopUpEvents.show, loginConfig);
-        }
+        UserController.checkUserData().then(isLoggedIn => {
+            if (isLoggedIn) {
+                this.props.$router?.go(URLS.messenger);
+            } else {
+                this.emit(PopUpEvents.show, loginConfig);
+            }
+        });
+
     }
 
     handleClick({type, link}) {

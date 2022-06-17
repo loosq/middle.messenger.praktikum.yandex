@@ -1,6 +1,6 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import template from "./avatar.pug";
-import Store, {StoreEvents} from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/store/Store";
 
 const {Constants: {RESOURCES_URL}} = require('../../../../constants');
 

@@ -1,4 +1,4 @@
-import Block, { BlockProps } from "../../utils/Block";
+import Block, { BlockProps } from "../../utils/block/Block";
 import template from "./chat.pug"
 import "./chat.css";
 import { ChatPreview } from "./fragments/chatPreview/ChatPreview";
@@ -23,6 +23,10 @@ export class Chat extends Block<BlockProps> {
         this.children.chatHeader = new ChatHeader();
         this.children.chatOperations = new ChatOperations();
         this.children.messagesList = new MessagesList();
+    }
+
+    componentDidUnmount() {
+        ChatsController.onDestroy();
     }
 
     render() {

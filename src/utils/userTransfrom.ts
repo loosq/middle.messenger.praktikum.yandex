@@ -1,4 +1,4 @@
-import {User} from "./Store";
+import {User} from "./store/types";
 
 export const userTransform = (user: User) => {
     let result = {} as User;

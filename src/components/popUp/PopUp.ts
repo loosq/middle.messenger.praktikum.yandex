@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../utils/Block";
+import Block, {BlockProps} from "../../utils/block/Block";
 import template from "./template.pug";
 import "./styles.css";
 import { InputGroup, InputGroupProps } from "../inputGroup/InputGroup";
@@ -23,7 +23,7 @@ export default class PopUp extends Block<PopUpProps> {
             events: {
                 submit: (e: Event & { target: HTMLFormElement }) => this.handleSubmit(e),
                 click: (e: Event & { target: { dataset: DOMStringMap } }) => this.handleClick(e)
-            }
+            },
         });
     }
 

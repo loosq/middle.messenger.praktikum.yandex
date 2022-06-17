@@ -1,7 +1,7 @@
-form(class="popup column content-center items-center full-width" name="form" enctype="multipart/form-data")
+form(class="popup column content-center items-center full-width" name="form" enctype="multipart/form-data" data-test-id=`${type}`)
   div(class="radiused column")
     if title
-      h2(class="popup__title text-center") #{title} 
+      h2(class="popup__title text-center") #{title}
     if inputsGroup && inputsGroup.length
       each inputGroup in inputsGroup
         | !{inputGroup}

@@ -1,3 +1,5 @@
 a(class="chat-controls-icon" data-href="chat-controls")
- if isControlsVisible
-  | !{chatControls}
+ svg(class="absolute" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg")
+  use(href="#dots")
+  if isControlsVisible
+   | !{chatControls}

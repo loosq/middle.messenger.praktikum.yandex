@@ -1,15 +1,15 @@
-import { EventBus } from './EventBus';
-import GlobalEventBus from './GlobalEventBus';
+import { EventBus } from '../EventBus';
+import GlobalEventBus from '../GlobalEventBus';
 import { nanoid } from "nanoid";
-import Router from "./Router";
-import {log} from "util";
+import Router from "../router/Router";
 
 export interface BlockProps {
     classNames?: string[],
     $router?: typeof Router,
     events?: {
         [key: string]: (e: Event) => void
-    }
+    },
+    testAttr?: string
 }
 
 export default abstract class Block<TProps extends BlockProps = {}> {
@@ -30,7 +30,6 @@ export default abstract class Block<TProps extends BlockProps = {}> {
     private _element: HTMLElement;
 
     constructor(componentData: object = {}) {
-        //console.log('Start rendering ', this.constructor.name)
         const { props, children, classNames } = this._getChildren(componentData);
         const eventBus = new EventBus();
         this.eventBus = () => eventBus;
@@ -182,7 +181,7 @@ export default abstract class Block<TProps extends BlockProps = {}> {
         this._addEvents();
     }
 
-    protected render(): DocumentFragment {
+    protected render(): DocumentFragment | HTMLElement {
         return new DocumentFragment();
     }
 
@@ -209,7 +208,7 @@ export default abstract class Block<TProps extends BlockProps = {}> {
     }
 
     private _createDocumentElement(tagName): HTMLElement {
-        return document.createElement(tagName);
+        return document && document.createElement(tagName);
     }
 
     compile(template: (context: any) => string, context: any = {}) {

@@ -1,11 +1,10 @@
 # Проект messenger
-### Сылка на netlify https://wizardly-noyce-160bcb.netlify.app/
+### Сылка на heroku https://ujdbylf2022.herokuapp.com/
 
 ## Команды для запуска:
 * ```npm run start``` запускает проект на 3000 порту
-* ```npm run start-server-dev``` запускает проект на 3000 порту для отладки
-* ```npm run build``` собирает dev проект
-* ```npm run build-dist``` собирает проект прод версию
+* ```npm run dev``` запускает проект на 3000 порту для отладки
+* ```npm run test``` запускает тесты
 
 ## Ссылка на пулл-реквест:
-https://github.com/loosq/middle.messenger.praktikum.yandex/pull/3
+https://github.com/loosq/middle.messenger.praktikum.yandex/pull/4

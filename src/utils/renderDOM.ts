@@ -1,4 +1,4 @@
-import Block, { BlockProps } from "../utils/Block";
+import Block, { BlockProps } from "./block/Block";
 
 export function renderDOM(rootSelector: string, component: Block<BlockProps> | null = null) {
     const root = document.querySelector(rootSelector);

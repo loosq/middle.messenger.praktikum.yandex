@@ -1,8 +1,8 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import "./messagesList.css";
 import template from "./messagesList.pug"
 import moment from "moment"
-import Store, {StoreEvents} from "../../../../utils/Store";
+import Store, {StoreEvents} from "../../../../utils/store/Store";
 
 interface MessagesListProps extends BlockProps {
     userId: number | string,
@@ -46,7 +46,6 @@ export class MessagesList extends Block<MessagesListProps> {
     }
 
     render() {
-        console.log(this.props)
         return this.compile(template, {...this.props});
     }
 }

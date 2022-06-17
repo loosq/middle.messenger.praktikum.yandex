@@ -1,33 +1,26 @@
 import Route from "./Route";
 
 class Router {
-    routes;
-    history;
+    private _history;
+    private _routes;
     private _currentRoute;
     private _rootQuery;
-    private static __instance: Router;
 
     constructor(rootQuery: string = '') {
-        if (Router.__instance) {
-            return Router.__instance;
-        }
-
-        this.routes = [];
-        this.history = window.history;
+        this._routes = [];
+        this._history = window.history;
         this._currentRoute = null;
         this._rootQuery = rootQuery;
-
-        Router.__instance = this;
     }
 
-    use(pathname, block) {
+    public use(pathname, block) {
         const route = new Route(pathname, block, {rootQuery: this._rootQuery});
-        this.routes.push(route);
+        this._routes.push(route);
 
         return this;
     }
 
-    start(): void {
+    public start(): void {
         window.onpopstate = event => {
             this._onRoute(event.currentTarget.location.pathname);
         };
@@ -35,7 +28,20 @@ class Router {
         this._onRoute(window.location.pathname);
     }
 
-    _onRoute(pathname): void {
+    public go(pathname): void {
+        this._history.pushState({}, "", pathname);
+        this._onRoute(pathname);
+    }
+
+    public back(): void {
+        this._history.back()
+    }
+
+    public forward(): void {
+        this._history.forward()
+    }
+
+    private _onRoute(pathname): void {
         const route = this.getRoute(pathname);
         if (!route) {
             return;
@@ -49,21 +55,8 @@ class Router {
         route.render(route, pathname);
     }
 
-    go(pathname): void {
-        this.history.pushState({}, "", pathname);
-        this._onRoute(pathname);
-    }
-
-    back(): void {
-        this.history.back()
-    }
-
-    forward(): void {
-        this.history.forward()
-    }
-
-    getRoute(pathname) {
-        return this.routes.find(route => route.match(pathname));
+    private getRoute(pathname) {
+        return this._routes.find(route => route.match(pathname));
     }
 }
 

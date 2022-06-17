@@ -1,7 +1,7 @@
 import {UserDataCreate, UserDataLogin, UserPasswordUpdate} from "../api/user/types";
 import UserAPI from "../api/user/User";
-import Store from "../utils/Store";
-import Router from "../utils/Router";
+import Store from "../utils/store/Store";
+import Router from "../utils/router/Router";
 import GlobalEventBus from "../utils/GlobalEventBus";
 import {PopUpEvents} from "./ModalController";
 import {avatarSuccessChange} from "../pages/profile/mocks/avatarSuccessChange";
@@ -121,7 +121,6 @@ class UserController {
         let result = {};
 
         if (response.reson) {
-            console.error(response.reson);
             return result;
         } else {
             result = JSON.parse(response);

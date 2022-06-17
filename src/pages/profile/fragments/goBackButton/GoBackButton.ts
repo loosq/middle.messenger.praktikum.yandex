@@ -1,4 +1,4 @@
-import Block, {BlockProps} from "../../../../utils/Block";
+import Block, {BlockProps} from "../../../../utils/block/Block";
 import template from "./goBackButton.pug"
 import "./goBackButton.css";
 import withRouter from "../../../../utils/withRouter";
