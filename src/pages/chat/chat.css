@@ -39,5 +39,8 @@
   padding: 4px;
   cursor: pointer;
   margin-left: auto;
-  background: url("./assets/controls.svg") no-repeat center center;
+}
+
+.chat-controls-icon svg {
+  right: -20px;
 }
